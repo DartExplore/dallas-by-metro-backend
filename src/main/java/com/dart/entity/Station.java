@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "stations")
+@Table(name = "station")
 public class Station {
 
     @Id
@@ -22,26 +22,17 @@ public class Station {
 
     @ManyToMany
     @JoinTable(
-            name = "station_amenities",
+            name = "station_amenity",
             joinColumns = @JoinColumn(name = "station_id"),
             inverseJoinColumns = @JoinColumn(name = "amenity_id")
     )
     private List<Amenity> amenities;
 
-    @ManyToMany
-    @JoinTable(
-            name = "station_edges",
-            joinColumns = @JoinColumn(name = "station_id"),
-            inverseJoinColumns = @JoinColumn(name = "edge_id")
-    )
-    private List<Edge> edges;
-
-    public Station(String name, String location, PointOfInterest pointOfInterest, List<Amenity> amenities, List<Edge> edges) {
+    public Station(String name, String location, PointOfInterest pointOfInterest, List<Amenity> amenities) {
         this.name = name;
         this.location = location;
         this.pointOfInterest = pointOfInterest;
         this.amenities = amenities;
-        this.edges = edges;
     }
 
     public Station() {
@@ -88,12 +79,5 @@ public class Station {
         this.amenities = amenities;
     }
 
-    public List<Edge> getEdges() {
-        return edges;
-    }
-
-    public void setEdges(List<Edge> edges) {
-        this.edges = edges;
-    }
 }
 
