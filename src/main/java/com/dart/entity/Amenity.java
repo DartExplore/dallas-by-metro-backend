@@ -3,7 +3,7 @@ package com.dart.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "amenities")
+@Table(name = "amenity")
 public class Amenity {
 
     @Id
