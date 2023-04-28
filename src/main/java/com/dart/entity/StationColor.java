@@ -6,19 +6,47 @@ import javax.persistence.*;
 @Table(name = "station_color")
 public class StationColor {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "station1_id", referencedColumnName = "id", nullable = false)
-    private Station station1;
+    @EmbeddedId
+    private StationColorId id;
 
-    @Id
     @ManyToOne
-    @JoinColumn(name = "station2_id", referencedColumnName = "id", nullable = false)
-    private Station station2;
+    @MapsId("stationId")
+    @JoinColumn(name = "station_id")
+    private Station station;
 
     @Column(name = "color", nullable = false)
     private String color;
 
+    public StationColor(Station station, String color) {
+        this.station = station;
+        this.color = color;
+    }
+
     public StationColor() {
+
+    }
+
+    public StationColorId getId() {
+        return id;
+    }
+
+    public void setId(StationColorId id) {
+        this.id = id;
+    }
+
+    public Station getStation() {
+        return station;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

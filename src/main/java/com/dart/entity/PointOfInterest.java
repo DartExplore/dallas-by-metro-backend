@@ -1,6 +1,7 @@
 package com.dart.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "points_of_interest")
@@ -25,17 +26,21 @@ public class PointOfInterest {
     @Column(name = "type")
     private String type;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "station_id")
     private Station station;
 
-    public PointOfInterest(String name, String location, Integer walkingDistance, String picUrl, String type, Station station) {
+    @OneToMany(mappedBy = "pointOfInterest")
+    private List<Amenity> amenities;
+
+    public PointOfInterest(String name, String location, Integer walkingDistance, String picUrl, String type, Station station, List<Amenity> amenities) {
         this.name = name;
         this.location = location;
         this.walkingDistance = walkingDistance;
         this.picUrl = picUrl;
         this.type = type;
         this.station = station;
+        this.amenities = amenities;
     }
 
     public PointOfInterest() {
@@ -97,5 +102,12 @@ public class PointOfInterest {
     public void setStation(Station station) {
         this.station = station;
     }
-}
 
+    public List<Amenity> getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(List<Amenity> amenities) {
+        this.amenities = amenities;
+    }
+}

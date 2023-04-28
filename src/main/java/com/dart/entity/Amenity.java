@@ -1,3 +1,4 @@
+// Amenity.java
 package com.dart.entity;
 
 import javax.persistence.*;
@@ -6,14 +7,19 @@ import javax.persistence.*;
 @Table(name = "amenity")
 public class Amenity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    @EmbeddedId
+    private AmenityId id;
+
+    @ManyToOne
+    @MapsId("poiId")
+    @JoinColumn(name = "poi_id")
+    private PointOfInterest pointOfInterest;
 
     @Column(name = "amenity")
     private String amenity;
 
-    public Amenity(String amenity) {
+    public Amenity(PointOfInterest pointOfInterest, String amenity) {
+        this.pointOfInterest = pointOfInterest;
         this.amenity = amenity;
     }
 
@@ -21,12 +27,20 @@ public class Amenity {
 
     }
 
-    public Long getId() {
+    public AmenityId getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(AmenityId id) {
         this.id = id;
+    }
+
+    public PointOfInterest getPointOfInterest() {
+        return pointOfInterest;
+    }
+
+    public void setPointOfInterest(PointOfInterest pointOfInterest) {
+        this.pointOfInterest = pointOfInterest;
     }
 
     public String getAmenity() {

@@ -17,22 +17,13 @@ public class Station {
     @Column(name = "location")
     private String location;
 
-    @OneToOne(mappedBy = "station")
-    private PointOfInterest pointOfInterest;
+    @OneToMany(mappedBy = "station")
+    private List<PointOfInterest> pointOfInterest;
 
-    @ManyToMany
-    @JoinTable(
-            name = "station_amenity",
-            joinColumns = @JoinColumn(name = "station_id"),
-            inverseJoinColumns = @JoinColumn(name = "amenity_id")
-    )
-    private List<Amenity> amenities;
-
-    public Station(String name, String location, PointOfInterest pointOfInterest, List<Amenity> amenities) {
+    public Station(String name, String location, List<PointOfInterest> pointOfInterest) {
         this.name = name;
         this.location = location;
         this.pointOfInterest = pointOfInterest;
-        this.amenities = amenities;
     }
 
     public Station() {
@@ -63,21 +54,12 @@ public class Station {
         this.location = location;
     }
 
-    public PointOfInterest getPointOfInterest() {
+    public List<PointOfInterest> getPointOfInterest() {
         return pointOfInterest;
     }
 
-    public void setPointOfInterest(PointOfInterest pointOfInterest) {
+    public void setPointOfInterest(List<PointOfInterest> pointOfInterest) {
         this.pointOfInterest = pointOfInterest;
     }
-
-    public List<Amenity> getAmenities() {
-        return amenities;
-    }
-
-    public void setAmenities(List<Amenity> amenities) {
-        this.amenities = amenities;
-    }
-
 }
 
