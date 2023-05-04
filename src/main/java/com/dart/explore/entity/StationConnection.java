@@ -1,4 +1,4 @@
-package com.dart.entity;
+package com.dart.explore.entity;
 
 import javax.persistence.*;
 
