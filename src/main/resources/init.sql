@@ -30,21 +30,21 @@ CREATE TABLE amenity (
     CONSTRAINT amenity_amenity_check CHECK (amenity IN ('amenity1', 'amenity2', 'amenity3'))
 );
 
-DROP TABLE if EXISTS station_color;
-CREATE TABLE station_color (
-    station_id INTEGER,
-    color VARCHAR(255),
-    PRIMARY KEY (station_id, color),
-    FOREIGN KEY (station_id) REFERENCES station (station_id)
+DROP TABLE if EXISTS color;
+CREATE TABLE color (
+    color VARCHAR(16) PRIMARY KEY,
+    CONSTRAINT color_check CHECK (color IN ('BLUE', 'RED', 'ORANGE', 'GREEN'))
 );
 
 DROP TABLE if EXISTS station_connection;
 CREATE TABLE station_connection (
     station1_id INTEGER,
     station2_id INTEGER,
-    PRIMARY KEY (station1_id, station2_id),
+    color VARCHAR(16),
+    PRIMARY KEY (station1_id, station2_id, color),
     FOREIGN KEY (station1_id) REFERENCES station (station_id),
-    FOREIGN KEY (station2_id) REFERENCES station (station_id)
+    FOREIGN KEY (station2_id) REFERENCES station (station_id),
+    FOREIGN KEY (color) REFERENCES color (color)
 );
 
 DROP TABLE if EXISTS poi_amenity;
