@@ -6,30 +6,17 @@ import java.util.List;
 @Entity
 @Table(name = "points_of_interest")
 public class PointOfInterest {
-
     @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(name = "name")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long stationId;
     private String name;
-
-    @Column(name = "location")
     private String location;
-
-    @Column(name = "walking_distance")
     private Integer walkingDistance;
-
-    @Column(name = "pic_url")
     private String picUrl;
-
-    @Column(name = "type")
     private String type;
-
     @ManyToOne
     @JoinColumn(name = "station_id")
     private Station station;
-
     @OneToMany(mappedBy = "pointOfInterest")
     private List<Amenity> amenities;
 
@@ -47,12 +34,12 @@ public class PointOfInterest {
 
     }
 
-    public Long getId() {
-        return id;
+    public Long getStationId() {
+        return stationId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setStationId(Long stationId) {
+        this.stationId = stationId;
     }
 
     public String getName() {

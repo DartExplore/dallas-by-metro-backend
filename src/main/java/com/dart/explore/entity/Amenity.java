@@ -2,24 +2,24 @@
 package com.dart.explore.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "amenity")
 public class Amenity {
-
-    @EmbeddedId
-    private AmenityId id;
-
-    @ManyToOne
-    @MapsId("poiId")
-    @JoinColumn(name = "poi_id")
-    private PointOfInterest pointOfInterest;
-
-    @Column(name = "amenity")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long amenityId;
+    @ManyToMany
+    @JoinTable(
+            name = "poi_amenity",
+            joinColumns = @JoinColumn(name = "poi"),
+            inverseJoinColumns = @JoinColumn(name="amenity")
+    )
+    private Set<PointOfInterest> pointsOfInterest;
     private String amenity;
 
-    public Amenity(PointOfInterest pointOfInterest, String amenity) {
-        this.pointOfInterest = pointOfInterest;
+    public Amenity(Set<PointOfInterest> pointOfInterest, String amenity) {
+        this.pointsOfInterest = pointOfInterest;
         this.amenity = amenity;
     }
 
@@ -27,20 +27,20 @@ public class Amenity {
 
     }
 
-    public AmenityId getId() {
-        return id;
+    public Long getAmenityId() {
+        return amenityId;
     }
 
-    public void setId(AmenityId id) {
-        this.id = id;
+    public void setAmenityId(Long amenityId) {
+        this.amenityId = amenityId;
     }
 
-    public PointOfInterest getPointOfInterest() {
-        return pointOfInterest;
+    public Set<PointOfInterest> getPointsOfInterest() {
+        return pointsOfInterest;
     }
 
-    public void setPointOfInterest(PointOfInterest pointOfInterest) {
-        this.pointOfInterest = pointOfInterest;
+    public void setPointsOfInterest(Set<PointOfInterest> pointsOfInterest) {
+        this.pointsOfInterest = pointsOfInterest;
     }
 
     public String getAmenity() {
