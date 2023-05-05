@@ -6,18 +6,13 @@ import java.util.List;
 @Entity
 @Table(name = "station")
 public class Station {
-
     @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(name = "name")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long poiId;
     private String name;
-
-    @Column(name = "location")
     private String location;
-
-    @OneToMany(mappedBy = "station")
+    @OneToMany
+    @JoinColumn(name="station_id")
     private List<PointOfInterest> pointOfInterest;
 
     public Station(String name, String location, List<PointOfInterest> pointOfInterest) {
@@ -30,12 +25,12 @@ public class Station {
 
     }
 
-    public Long getId() {
-        return id;
+    public Long getPoiId() {
+        return poiId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPoiId(Long poiId) {
+        this.poiId = poiId;
     }
 
     public String getName() {
