@@ -1,19 +1,26 @@
 package com.dart.explore.entity;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Entity
 @Table(name = "station")
 public class Station {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long poiId;
+    private Integer stationId;
     private String name;
     private String location;
     @OneToMany
     @JoinColumn(name="station_id")
     private List<PointOfInterest> pointOfInterest;
+    @OneToMany
+    @JoinTable(name="station_connection")
+    @MapKeyJoinColumn(name="station2_id")
+    private Map<Station, Color> stationConnections = new HashMap<>();
 
     public Station(String name, String location, List<PointOfInterest> pointOfInterest) {
         this.name = name;
@@ -25,12 +32,12 @@ public class Station {
 
     }
 
-    public Long getPoiId() {
-        return poiId;
+    public Integer getPoiId() {
+        return stationId;
     }
 
-    public void setPoiId(Long poiId) {
-        this.poiId = poiId;
+    public void setPoiId(Integer stationId) {
+        this.stationId = stationId;
     }
 
     public String getName() {
@@ -55,6 +62,19 @@ public class Station {
 
     public void setPointOfInterest(List<PointOfInterest> pointOfInterest) {
         this.pointOfInterest = pointOfInterest;
+    }
+    
+    @Override
+    public int hashCode(){
+        return this.stationId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Station station = (Station) o;
+        return Objects.equals(stationId, station.stationId);
     }
 }
 
