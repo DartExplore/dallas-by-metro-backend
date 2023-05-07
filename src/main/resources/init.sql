@@ -41,8 +41,7 @@ CREATE TABLE amenity (
     amenity_id INTEGER,
     amenity VARCHAR(255),
     PRIMARY KEY (amenity_id, amenity),
-    FOREIGN KEY (amenity_id) REFERENCES points_of_interest (poi_id),
-    CONSTRAINT amenity_amenity_check CHECK (amenity IN ('amenity1', 'amenity2', 'amenity3'))
+    FOREIGN KEY (amenity_id) REFERENCES points_of_interest (poi_id)
 );
 
 INSERT INTO amenity (amenity_id, amenity) VALUES (1, 'A1');
