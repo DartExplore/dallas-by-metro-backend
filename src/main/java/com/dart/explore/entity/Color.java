@@ -7,8 +7,12 @@ public class Color {
     @Id
     @Enumerated(EnumType.STRING)
     private StationColor color;
-}
 
-enum StationColor{
-    BLUE, RED, ORANGE, GREEN
+	public StationColor getColor() {
+		return color;
+	}
+
+	public void setColor(StationColor color) {
+		this.color = color;
+	}
 }
