@@ -8,7 +8,7 @@ import com.dart.explore.entity.PointOfInterest;
 import com.dart.explore.entity.Station;
 
 /* this service will provide functions for the minimal viable product
- * using this service we can do things such as gettings stations by line,
+ * using this service we can do things such as getting stations by line,
  * getting POIs at a station, etc.
  */
 public interface StationService {

@@ -9,12 +9,12 @@ CREATE TABLE station (
     location VARCHAR(255)
 );
 
-INSERT INTO station (station_id, name) VALUES (1, "A");
-INSERT INTO station (station_id, name) VALUES (2, "B");
-INSERT INTO station (station_id, name) VALUES (3, "C");
-INSERT INTO station (station_id, name) VALUES (4, "D");
-INSERT INTO station (station_id, name) VALUES (5, "E");
-INSERT INTO station (station_id, name) VALUES (6, "F");
+INSERT INTO station (station_id, name) VALUES (1, 'A');
+INSERT INTO station (station_id, name) VALUES (2, 'B');
+INSERT INTO station (station_id, name) VALUES (3, 'C');
+INSERT INTO station (station_id, name) VALUES (4, 'D');
+INSERT INTO station (station_id, name) VALUES (5, 'E');
+INSERT INTO station (station_id, name) VALUES (6, 'F');
 
 DROP TABLE if EXISTS points_of_interest;
 CREATE TABLE points_of_interest (
@@ -28,13 +28,13 @@ CREATE TABLE points_of_interest (
     FOREIGN KEY (station_id) REFERENCES station (station_id)
 );
 
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (1, "PA1", 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (2, "PB1", 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (3, "PC1", 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (4, "PD1", 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (5, "PE1", 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (6, "PE1", 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (7, "PF1", 1);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (1, 'PA1', 1);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (2, 'PB1', 1);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (3, 'PC1', 1);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (4, 'PD1', 1);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (5, 'PE1', 1);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (6, 'PE1', 1);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (7, 'PF1', 1);
 
 DROP TABLE if EXISTS amenity;
 CREATE TABLE amenity (
