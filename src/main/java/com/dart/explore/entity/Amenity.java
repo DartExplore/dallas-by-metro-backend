@@ -1,4 +1,3 @@
-// Amenity.java
 package com.dart.explore.entity;
 
 import javax.persistence.*;
@@ -10,11 +9,6 @@ public class Amenity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long amenityId;
     @ManyToMany
-    @JoinTable(
-            name = "poi_amenity",
-            joinColumns = @JoinColumn(name = "poi"),
-            inverseJoinColumns = @JoinColumn(name="amenity")
-    )
     private Set<PointOfInterest> pointsOfInterest;
     private String amenity;
 

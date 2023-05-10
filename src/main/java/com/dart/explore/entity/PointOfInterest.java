@@ -17,7 +17,12 @@ public class PointOfInterest {
     @ManyToOne
     @JoinColumn(name = "station_id")
     private Station station;
-    @OneToMany(mappedBy = "pointOfInterest")
+    @ManyToMany
+    @JoinTable(
+            name = "poi_amenity",
+            joinColumns = @JoinColumn(name = "amenity"),
+            inverseJoinColumns = @JoinColumn(name="poi")
+    )
     private List<Amenity> amenities;
 
     public PointOfInterest(String name, String location, Integer walkingDistance, String picUrl, String type, Station station, List<Amenity> amenities) {
