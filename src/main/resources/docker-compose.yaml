@@ -5,10 +5,10 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: admin
+      POSTGRES_USER: root
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: DartApp
+      POSTGRES_DB: dart_explore
     ports:
       - "5432:5432"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./Postgres_init.sql:/docker-entrypoint-initdb.d/init.sql
