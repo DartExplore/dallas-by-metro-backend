@@ -8,7 +8,7 @@ import java.util.List;
 public class PointOfInterest {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long stationId;
+    private Long poiId;
     private String name;
     private String location;
     private Integer walkingDistance;
@@ -20,8 +20,8 @@ public class PointOfInterest {
     @ManyToMany
     @JoinTable(
             name = "poi_amenity",
-            joinColumns = @JoinColumn(name = "amenity"),
-            inverseJoinColumns = @JoinColumn(name="poi")
+            joinColumns = @JoinColumn(name = "amenity_id"),
+            inverseJoinColumns = @JoinColumn(name="poi_id")
     )
     private List<Amenity> amenities;
 
@@ -40,11 +40,11 @@ public class PointOfInterest {
     }
 
     public Long getStationId() {
-        return stationId;
+        return poiId;
     }
 
     public void setStationId(Long stationId) {
-        this.stationId = stationId;
+        this.poiId = stationId;
     }
 
     public String getName() {

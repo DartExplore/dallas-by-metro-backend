@@ -38,10 +38,8 @@ INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (7, 'PF1', 1);
 
 DROP TABLE IF EXISTS amenity;
 CREATE TABLE amenity (
-    amenity_id INTEGER,
-    amenity VARCHAR(255),
-    PRIMARY KEY (amenity_id, amenity),
-    FOREIGN KEY (amenity_id) REFERENCES points_of_interest (poi_id)
+    amenity_id INTEGER PRIMARY KEY,
+    amenity VARCHAR(255)
 );
 
 INSERT INTO amenity (amenity_id, amenity) VALUES (1, 'A1');
@@ -87,22 +85,22 @@ INSERT INTO station_connection (station1_id, station2_id, color) VALUES (6,4,'BL
 
 DROP TABLE IF EXISTS poi_amenity;
 CREATE TABLE poi_amenity (
-    poi INTEGER,
-    amenity INTEGER,
-    PRIMARY KEY (poi, amenity),
-    FOREIGN KEY (poi) REFERENCES points_of_interest (poi_id),
-    FOREIGN KEY (amenity) REFERENCES amenity (amenity_id)
+    poi_id INTEGER,
+    amenity_id INTEGER,
+    PRIMARY KEY (poi_id, amenity_id),
+    FOREIGN KEY (poi_id) REFERENCES points_of_interest (poi_id),
+    FOREIGN KEY (amenity_id) REFERENCES amenity (amenity_id)
 );
 
-INSERT INTO poi_amenity (poi, amenity) VALUES (1,1);
-INSERT INTO poi_amenity (poi, amenity) VALUES (2,2);
-INSERT INTO poi_amenity (poi, amenity) VALUES (3,1);
-INSERT INTO poi_amenity (poi, amenity) VALUES (4,1);
-INSERT INTO poi_amenity (poi, amenity) VALUES (4,3);
-INSERT INTO poi_amenity (poi, amenity) VALUES (5,1);
-INSERT INTO poi_amenity (poi, amenity) VALUES (5,2);
-INSERT INTO poi_amenity (poi, amenity) VALUES (6,2);
-INSERT INTO poi_amenity (poi, amenity) VALUES (7,3);
+INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (1,1);
+INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (2,2);
+INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (3,1);
+INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (4,1);
+INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (4,3);
+INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (5,1);
+INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (5,2);
+INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (6,2);
+INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (7,3);
 
 SELECT * FROM station;
 SELECT * FROM color;
