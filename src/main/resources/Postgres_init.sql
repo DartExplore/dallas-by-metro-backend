@@ -46,16 +46,16 @@ INSERT INTO amenity (amenity_id, amenity) VALUES (1, 'A1');
 INSERT INTO amenity (amenity_id, amenity) VALUES (2, 'A2');
 INSERT INTO amenity (amenity_id, amenity) VALUES (3, 'A3');
 
-DROP TABLE IF EXISTS color;
-CREATE TABLE color (
+DROP TABLE IF EXISTS station_color;
+CREATE TABLE station_color (
     color VARCHAR(16) PRIMARY KEY,
     CONSTRAINT color_check CHECK (color IN ('BLUE', 'RED', 'ORANGE', 'GREEN'))
 );
 
-INSERT INTO color VALUES ('BLUE');
-INSERT INTO color VALUES ('RED');
-INSERT INTO color VALUES ('ORANGE');
-INSERT INTO color VALUES ('GREEN');
+INSERT INTO station_color VALUES ('BLUE');
+INSERT INTO station_color VALUES ('RED');
+INSERT INTO station_color VALUES ('ORANGE');
+INSERT INTO station_color VALUES ('GREEN');
 
 DROP TABLE IF EXISTS station_connection;
 CREATE TABLE station_connection (
@@ -65,7 +65,7 @@ CREATE TABLE station_connection (
     PRIMARY KEY (station1_id, station2_id, color),
     FOREIGN KEY (station1_id) REFERENCES station (station_id),
     FOREIGN KEY (station2_id) REFERENCES station (station_id),
-    FOREIGN KEY (color) REFERENCES color (color)
+    FOREIGN KEY (color) REFERENCES station_color (color)
 );
 
 INSERT INTO station_connection (station1_id, station2_id, color) VALUES (1,2,'RED');
@@ -103,7 +103,7 @@ INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (6,2);
 INSERT INTO poi_amenity (poi_id, amenity_id) VALUES (7,3);
 
 SELECT * FROM station;
-SELECT * FROM color;
+SELECT * FROM station_color;
 SELECT * FROM station_connection;
 SELECT * FROM points_of_interest;
 SELECT * FROM amenity;
