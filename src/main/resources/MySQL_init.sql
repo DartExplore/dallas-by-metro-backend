@@ -29,12 +29,12 @@ CREATE TABLE points_of_interest (
 );
 
 INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (1, 'PA1', 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (2, 'PB1', 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (3, 'PC1', 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (4, 'PD1', 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (5, 'PE1', 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (6, 'PE1', 1);
-INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (7, 'PF1', 1);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (2, 'PB1', 2);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (3, 'PC1', 3);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (4, 'PD1', 4);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (5, 'PE1', 5);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (6, 'PE1', 5);
+INSERT INTO points_of_interest (poi_id, name, station_id) VALUES (7, 'PF1', 6);
 
 DROP TABLE if EXISTS amenity;
 CREATE TABLE amenity (
