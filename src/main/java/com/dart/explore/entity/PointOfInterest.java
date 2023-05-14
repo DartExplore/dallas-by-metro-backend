@@ -2,6 +2,7 @@ package com.dart.explore.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "points_of_interest")
@@ -101,5 +102,18 @@ public class PointOfInterest {
 
     public void setAmenities(List<Amenity> amenities) {
         this.amenities = amenities;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PointOfInterest that = (PointOfInterest) o;
+        return Objects.equals(poiId, that.poiId) && Objects.equals(name, that.name) && Objects.equals(location, that.location) && Objects.equals(walkingDistance, that.walkingDistance) && Objects.equals(picUrl, that.picUrl) && Objects.equals(type, that.type) && Objects.equals(station, that.station) && Objects.equals(amenities, that.amenities);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(poiId);
     }
 }

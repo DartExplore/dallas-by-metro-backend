@@ -1,6 +1,7 @@
 package com.dart.explore.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -43,5 +44,18 @@ public class Amenity {
 
     public void setAmenity(String amenity) {
         this.amenity = amenity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Amenity amenity1 = (Amenity) o;
+        return Objects.equals(amenityId, amenity1.amenityId) && Objects.equals(pointsOfInterest, amenity1.pointsOfInterest) && Objects.equals(amenity, amenity1.amenity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(amenityId);
     }
 }
