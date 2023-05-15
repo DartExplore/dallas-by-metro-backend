@@ -9,12 +9,7 @@ public class Amenity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long amenityId;
-    @ManyToMany
-    @JoinTable(
-            name = "amenity_point_of_interest",
-            joinColumns = @JoinColumn(name = "amenity_id"),
-            inverseJoinColumns = @JoinColumn(name = "point_of_interest_id")
-    )
+    @ManyToMany(mappedBy = "amenities")
     private Set<PointOfInterest> pointsOfInterest;
 
     private String amenity;
