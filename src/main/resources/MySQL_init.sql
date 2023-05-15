@@ -65,20 +65,20 @@ VALUES (2, 'A2');
 INSERT INTO amenity (amenity_id, amenity)
 VALUES (3, 'A3');
 
-DROP TABLE IF EXISTS station_color;
-CREATE TABLE station_color
+DROP TABLE IF EXISTS color;
+CREATE TABLE color
 (
     color VARCHAR(16) PRIMARY KEY,
     CONSTRAINT color_check CHECK (color IN ('BLUE', 'RED', 'ORANGE', 'GREEN'))
 );
 
-INSERT INTO station_color
+INSERT INTO color
 VALUES ('BLUE');
-INSERT INTO station_color
+INSERT INTO color
 VALUES ('RED');
-INSERT INTO station_color
+INSERT INTO color
 VALUES ('ORANGE');
-INSERT INTO station_color
+INSERT INTO color
 VALUES ('GREEN');
 
 DROP TABLE IF EXISTS station_connection;
@@ -90,7 +90,7 @@ CREATE TABLE station_connection
     PRIMARY KEY (station1_id, station2_id, color),
     FOREIGN KEY (station1_id) REFERENCES station (station_id),
     FOREIGN KEY (station2_id) REFERENCES station (station_id),
-    FOREIGN KEY (color) REFERENCES station_color (color)
+    FOREIGN KEY (color) REFERENCES color (color)
 );
 
 INSERT INTO station_connection (station1_id, station2_id, color)
@@ -154,7 +154,7 @@ VALUES (7, 3);
 SELECT *
 FROM station;
 SELECT *
-FROM station_color;
+FROM color;
 SELECT *
 FROM station_connection;
 SELECT *
