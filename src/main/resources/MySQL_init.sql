@@ -1,11 +1,11 @@
-DROP SCHEMA if EXISTS dart_explore;
+DROP SCHEMA IF EXISTS dart_explore;
 CREATE SCHEMA dart_explore;
-use dart_explore;
+USE dart_explore;
 
-DROP TABLE if EXISTS station;
+DROP TABLE IF EXISTS station;
 CREATE TABLE station
 (
-    station_id INTEGER PRIMARY KEY,
+    station_id INT PRIMARY KEY,
     name       VARCHAR(255),
     location   VARCHAR(255)
 );
@@ -23,16 +23,16 @@ VALUES (5, 'E');
 INSERT INTO station (station_id, name)
 VALUES (6, 'F');
 
-DROP TABLE if EXISTS points_of_interest;
+DROP TABLE IF EXISTS points_of_interest;
 CREATE TABLE points_of_interest
 (
-    poi_id           INTEGER PRIMARY KEY,
+    poi_id           INT PRIMARY KEY,
     name             VARCHAR(255),
     location         VARCHAR(255),
-    walking_distance INTEGER,
+    walking_distance INT,
     pic_url          VARCHAR(255),
     type             VARCHAR(255),
-    station_id       INTEGER,
+    station_id       INT,
     FOREIGN KEY (station_id) REFERENCES station (station_id)
 );
 
@@ -51,13 +51,11 @@ VALUES (6, 'PE1', 5);
 INSERT INTO points_of_interest (poi_id, name, station_id)
 VALUES (7, 'PF1', 6);
 
-DROP TABLE if EXISTS amenity;
+DROP TABLE IF EXISTS amenity;
 CREATE TABLE amenity
 (
-    amenity_id INTEGER,
-    amenity    VARCHAR(255),
-    PRIMARY KEY (amenity_id, amenity),
-    FOREIGN KEY (amenity_id) REFERENCES points_of_interest (poi_id)
+    amenity_id INT PRIMARY KEY,
+    amenity    VARCHAR(255)
 );
 
 INSERT INTO amenity (amenity_id, amenity)
@@ -67,32 +65,32 @@ VALUES (2, 'A2');
 INSERT INTO amenity (amenity_id, amenity)
 VALUES (3, 'A3');
 
-DROP TABLE if EXISTS color;
-CREATE TABLE color
+DROP TABLE IF EXISTS station_color;
+CREATE TABLE station_color
 (
     color VARCHAR(16) PRIMARY KEY,
     CONSTRAINT color_check CHECK (color IN ('BLUE', 'RED', 'ORANGE', 'GREEN'))
 );
 
-INSERT INTO color
+INSERT INTO station_color
 VALUES ('BLUE');
-INSERT INTO color
+INSERT INTO station_color
 VALUES ('RED');
-INSERT INTO color
+INSERT INTO station_color
 VALUES ('ORANGE');
-INSERT INTO color
+INSERT INTO station_color
 VALUES ('GREEN');
 
-DROP TABLE if EXISTS station_connection;
+DROP TABLE IF EXISTS station_connection;
 CREATE TABLE station_connection
 (
-    station1_id INTEGER,
-    station2_id INTEGER,
+    station1_id INT,
+    station2_id INT,
     color       VARCHAR(16),
     PRIMARY KEY (station1_id, station2_id, color),
     FOREIGN KEY (station1_id) REFERENCES station (station_id),
     FOREIGN KEY (station2_id) REFERENCES station (station_id),
-    FOREIGN KEY (color) REFERENCES color (color)
+    FOREIGN KEY (color) REFERENCES station_color (color)
 );
 
 INSERT INTO station_connection (station1_id, station2_id, color)
@@ -124,39 +122,39 @@ VALUES (4, 6, 'BLUE');
 INSERT INTO station_connection (station1_id, station2_id, color)
 VALUES (6, 4, 'BLUE');
 
-DROP TABLE if EXISTS poi_amenity;
+DROP TABLE IF EXISTS poi_amenity;
 CREATE TABLE poi_amenity
 (
-    poi     INTEGER,
-    amenity INTEGER,
-    PRIMARY KEY (poi, amenity),
-    FOREIGN KEY (poi) REFERENCES points_of_interest (poi_id),
-    FOREIGN KEY (amenity) REFERENCES amenity (amenity_id)
+    poi_id     INT,
+    amenity_id INT,
+    PRIMARY KEY (poi_id, amenity_id),
+    FOREIGN KEY (poi_id) REFERENCES points_of_interest (poi_id),
+    FOREIGN KEY (amenity_id) REFERENCES amenity (amenity_id)
 );
 
-INSERT INTO poi_amenity (poi, amenity)
+INSERT INTO poi_amenity (poi_id, amenity_id)
 VALUES (1, 1);
-INSERT INTO poi_amenity (poi, amenity)
+INSERT INTO poi_amenity (poi_id, amenity_id)
 VALUES (2, 2);
-INSERT INTO poi_amenity (poi, amenity)
+INSERT INTO poi_amenity (poi_id, amenity_id)
 VALUES (3, 1);
-INSERT INTO poi_amenity (poi, amenity)
+INSERT INTO poi_amenity (poi_id, amenity_id)
 VALUES (4, 1);
-INSERT INTO poi_amenity (poi, amenity)
+INSERT INTO poi_amenity (poi_id, amenity_id)
 VALUES (4, 3);
-INSERT INTO poi_amenity (poi, amenity)
+INSERT INTO poi_amenity (poi_id, amenity_id)
 VALUES (5, 1);
-INSERT INTO poi_amenity (poi, amenity)
+INSERT INTO poi_amenity (poi_id, amenity_id)
 VALUES (5, 2);
-INSERT INTO poi_amenity (poi, amenity)
+INSERT INTO poi_amenity (poi_id, amenity_id)
 VALUES (6, 2);
-INSERT INTO poi_amenity (poi, amenity)
+INSERT INTO poi_amenity (poi_id, amenity_id)
 VALUES (7, 3);
 
 SELECT *
 FROM station;
 SELECT *
-FROM color;
+FROM station_color;
 SELECT *
 FROM station_connection;
 SELECT *
