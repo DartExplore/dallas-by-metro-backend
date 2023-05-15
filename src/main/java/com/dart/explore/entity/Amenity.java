@@ -9,8 +9,9 @@ public class Amenity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long amenityId;
-    @ManyToMany
+    @ManyToMany(mappedBy = "amenities")
     private Set<PointOfInterest> pointsOfInterest;
+
     private String amenity;
 
     public Amenity(Set<PointOfInterest> pointOfInterest, String amenity) {

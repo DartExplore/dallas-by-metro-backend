@@ -8,7 +8,7 @@ import java.util.Objects;
 @Table(name = "points_of_interest")
 public class PointOfInterest {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long poiId;
     private String name;
     private String location;
@@ -21,8 +21,8 @@ public class PointOfInterest {
     @ManyToMany
     @JoinTable(
             name = "poi_amenity",
-            joinColumns = @JoinColumn(name = "amenity_id"),
-            inverseJoinColumns = @JoinColumn(name="poi_id")
+            joinColumns = @JoinColumn(name = "poi_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id")
     )
     private List<Amenity> amenities;
 
