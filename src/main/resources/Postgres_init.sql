@@ -61,7 +61,7 @@ VALUES ('BLUE'),
        ('ORANGE'),
        ('GREEN');
 
-CREATE TABLE IF NOT EXISTS connection
+CREATE TABLE IF NOT EXISTS station_connection
 (
     station1_id INTEGER,
     station2_id INTEGER,
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS connection
     FOREIGN KEY (station2_id) REFERENCES station (station_id)
 );
 
-INSERT INTO connection (station1_id, station2_id)
+INSERT INTO station_connection (station1_id, station2_id)
 VALUES (1, 2),
        (2, 3),
        (3, 4),
@@ -120,7 +120,7 @@ FROM station;
 SELECT *
 FROM color;
 SELECT *
-FROM connection;
+FROM station_connection;
 SELECT *
 FROM station_color;
 SELECT *
