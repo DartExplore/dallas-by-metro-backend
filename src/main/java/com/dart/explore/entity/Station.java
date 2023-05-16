@@ -11,7 +11,6 @@ public class Station {
     private Integer stationId;
     private String name;
     private Double latitude;
-
     private Double longitude;
     @OneToMany
     @JoinColumn(name = "station_id")
@@ -23,12 +22,10 @@ public class Station {
             inverseJoinColumns = @JoinColumn(name = "station2_id")
     )
     private Set<Station> connectedStations = new HashSet<>();
-
     @ElementCollection(targetClass = StationColor.class)
     @CollectionTable(name = "station_color", joinColumns = @JoinColumn(name = "station_id"))
     @Enumerated(EnumType.STRING)
     private Set<StationColor> colors = new HashSet<>();
-
 
     public Station(String name, Double latitude, Double longitude, List<PointOfInterest> pointOfInterest) {
         this.name = name;
@@ -94,4 +91,3 @@ public class Station {
         return Objects.equals(stationId, station.stationId);
     }
 }
-
