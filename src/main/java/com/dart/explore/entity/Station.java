@@ -10,21 +10,24 @@ import java.util.Objects;
 @Table(name = "station")
 public class Station {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer stationId;
     private String name;
-    private String location;
+    private Float latitude;
+
+    private Float longitude;
     @OneToMany
-    @JoinColumn(name="station_id")
+    @JoinColumn(name = "station_id")
     private List<PointOfInterest> pointOfInterest;
     @OneToMany
-    @JoinTable(name="station_connection")
-    @MapKeyJoinColumn(name="station2_id")
+    @JoinTable(name = "station_connection")
+    @MapKeyJoinColumn(name = "station2_id")
     private Map<Station, Color> stationConnections = new HashMap<>();
 
-    public Station(String name, String location, List<PointOfInterest> pointOfInterest) {
+    public Station(String name, Float latitude, Float longitude, List<PointOfInterest> pointOfInterest) {
         this.name = name;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.pointOfInterest = pointOfInterest;
     }
 
@@ -48,12 +51,20 @@ public class Station {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+    public Float getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
+    }
+
+    public Float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
     }
 
     public List<PointOfInterest> getPointOfInterest() {
@@ -63,9 +74,9 @@ public class Station {
     public void setPointOfInterest(List<PointOfInterest> pointOfInterest) {
         this.pointOfInterest = pointOfInterest;
     }
-    
+
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return this.stationId;
     }
 
