@@ -18,6 +18,7 @@ VALUES (1, 'A'),
        (4, 'D'),
        (5, 'E'),
        (6, 'F');
+
 DROP TABLE IF EXISTS points_of_interest;
 CREATE TABLE IF NOT EXISTS points_of_interest
 (
@@ -68,6 +69,7 @@ VALUES (1, 2),
        (3, 4),
        (4, 5),
        (4, 6);
+
 DROP TABLE IF EXISTS station_color;
 CREATE TABLE IF NOT EXISTS station_color
 (
