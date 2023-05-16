@@ -1,10 +1,7 @@
 package com.dart.explore.entity;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "station")
@@ -13,18 +10,24 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer stationId;
     private String name;
-    private Float latitude;
-
-    private Float longitude;
+    private Double latitude;
+    private Double longitude;
     @OneToMany
     @JoinColumn(name = "station_id")
     private List<PointOfInterest> pointOfInterest;
-    @OneToMany
-    @JoinTable(name = "station_connection")
-    @MapKeyJoinColumn(name = "station2_id")
-    private Map<Station, Color> stationConnections = new HashMap<>();
+    @ManyToMany
+    @JoinTable(
+            name = "station_connection",
+            joinColumns = @JoinColumn(name = "station1_id"),
+            inverseJoinColumns = @JoinColumn(name = "station2_id")
+    )
+    private Set<Station> connectedStations = new HashSet<>();
+    @ElementCollection(targetClass = StationColor.class)
+    @CollectionTable(name = "station_color", joinColumns = @JoinColumn(name = "station_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<StationColor> colors = new HashSet<>();
 
-    public Station(String name, Float latitude, Float longitude, List<PointOfInterest> pointOfInterest) {
+    public Station(String name, Double latitude, Double longitude, List<PointOfInterest> pointOfInterest) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -35,11 +38,11 @@ public class Station {
 
     }
 
-    public Integer getPoiId() {
+    public Integer getStationId() {
         return stationId;
     }
 
-    public void setPoiId(Integer stationId) {
+    public void setStationId(Integer stationId) {
         this.stationId = stationId;
     }
 
@@ -51,19 +54,19 @@ public class Station {
         this.name = name;
     }
 
-    public Float getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Float latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Float getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Float longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -88,4 +91,3 @@ public class Station {
         return Objects.equals(stationId, station.stationId);
     }
 }
-
