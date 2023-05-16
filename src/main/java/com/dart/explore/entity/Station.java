@@ -27,7 +27,6 @@ public class Station {
     @ElementCollection(targetClass = StationColor.class)
     @CollectionTable(name = "station_color", joinColumns = @JoinColumn(name = "station_id"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "color")
     private Set<StationColor> colors = new HashSet<>();
 
 
