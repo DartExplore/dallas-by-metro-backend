@@ -3,7 +3,7 @@ CREATE SCHEMA dart_explore;
 USE dart_explore;
 
 DROP TABLE IF EXISTS station;
-CREATE TABLE IF NOT EXISTS station
+CREATE TABLE station
 (
     station_id INT PRIMARY KEY,
     name       VARCHAR(255),
@@ -20,7 +20,7 @@ VALUES (1, 'A'),
        (6, 'F');
 
 DROP TABLE IF EXISTS points_of_interest;
-CREATE TABLE IF NOT EXISTS points_of_interest
+CREATE TABLE points_of_interest
 (
     poi_id           INT PRIMARY KEY,
     name             VARCHAR(255),
@@ -42,7 +42,7 @@ VALUES (1, 'PA1', 1),
        (7, 'PF1', 6);
 
 DROP TABLE IF EXISTS amenity;
-CREATE TABLE IF NOT EXISTS amenity
+CREATE TABLE amenity
 (
     amenity_id INT PRIMARY KEY,
     amenity    VARCHAR(255)
@@ -54,7 +54,7 @@ VALUES (1, 'A1'),
        (3, 'A3');
 
 DROP TABLE IF EXISTS station_connection;
-CREATE TABLE IF NOT EXISTS station_connection
+CREATE TABLE station_connection
 (
     station1_id INT,
     station2_id INT,
@@ -71,7 +71,7 @@ VALUES (1, 2),
        (4, 6);
 
 DROP TABLE IF EXISTS station_color;
-CREATE TABLE IF NOT EXISTS station_color
+CREATE TABLE station_color
 (
     station_id INT,
     color      VARCHAR(16),
@@ -89,7 +89,7 @@ VALUES (1, 'RED'),
        (5, 'BLUE');
 
 DROP TABLE IF EXISTS poi_amenity;
-CREATE TABLE IF NOT EXISTS poi_amenity
+CREATE TABLE poi_amenity
 (
     poi_id     INT,
     amenity_id INT,

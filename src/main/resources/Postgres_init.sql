@@ -1,7 +1,7 @@
-CREATE SCHEMA IF NOT EXISTS dart_explore;
+CREATE SCHEMA dart_explore;
 SET search_path TO dart_explore;
 
-CREATE TABLE IF NOT EXISTS station
+CREATE TABLE station
 (
     station_id INTEGER PRIMARY KEY,
     name       VARCHAR(255),
@@ -17,7 +17,7 @@ VALUES (1, 'A'),
        (5, 'E'),
        (6, 'F');
 
-CREATE TABLE IF NOT EXISTS points_of_interest
+CREATE TABLE points_of_interest
 (
     poi_id           INTEGER PRIMARY KEY,
     name             VARCHAR(255),
@@ -38,7 +38,7 @@ VALUES (1, 'PA1', 1),
        (6, 'PE1', 5),
        (7, 'PF1', 6);
 
-CREATE TABLE IF NOT EXISTS amenity
+CREATE TABLE amenity
 (
     amenity_id INTEGER PRIMARY KEY,
     amenity    VARCHAR(255)
@@ -49,7 +49,7 @@ VALUES (1, 'A1'),
        (2, 'A2'),
        (3, 'A3');
 
-CREATE TABLE IF NOT EXISTS station_connection
+CREATE TABLE station_connection
 (
     station1_id INTEGER,
     station2_id INTEGER,
@@ -65,7 +65,7 @@ VALUES (1, 2),
        (4, 5),
        (4, 6);
 
-CREATE TABLE IF NOT EXISTS station_color
+CREATE TABLE station_color
 (
     station_id INTEGER,
     color      VARCHAR(16),
@@ -82,7 +82,7 @@ VALUES (1, 'RED'),
        (4, 'RED'),
        (5, 'BLUE');
 
-CREATE TABLE IF NOT EXISTS poi_amenity
+CREATE TABLE poi_amenity
 (
     poi_id     INTEGER,
     amenity_id INTEGER,
