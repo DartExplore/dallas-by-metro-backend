@@ -49,18 +49,6 @@ VALUES (1, 'A1'),
        (2, 'A2'),
        (3, 'A3');
 
-CREATE TABLE IF NOT EXISTS color
-(
-    color VARCHAR(16) PRIMARY KEY,
-    CONSTRAINT color_check CHECK (color IN ('BLUE', 'RED', 'ORANGE', 'GREEN'))
-);
-
-INSERT INTO color
-VALUES ('BLUE'),
-       ('RED'),
-       ('ORANGE'),
-       ('GREEN');
-
 CREATE TABLE IF NOT EXISTS station_connection
 (
     station1_id INTEGER,
@@ -82,8 +70,7 @@ CREATE TABLE IF NOT EXISTS station_color
     station_id INTEGER,
     color      VARCHAR(16),
     PRIMARY KEY (station_id, color),
-    FOREIGN KEY (station_id) REFERENCES station (station_id),
-    FOREIGN KEY (color) REFERENCES color (color)
+    FOREIGN KEY (station_id) REFERENCES station (station_id)
 );
 
 INSERT INTO station_color (station_id, color)
@@ -117,8 +104,6 @@ VALUES (1, 1),
 
 SELECT *
 FROM station;
-SELECT *
-FROM color;
 SELECT *
 FROM station_connection;
 SELECT *
