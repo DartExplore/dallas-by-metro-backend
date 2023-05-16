@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS station
 (
     station_id INTEGER PRIMARY KEY,
     name       VARCHAR(255),
-    location   VARCHAR(255)
+    latitude   DOUBLE PRECISION,
+    longitude  DOUBLE PRECISION
 );
 
 INSERT INTO station (station_id, name)
