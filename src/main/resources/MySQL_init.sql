@@ -38,7 +38,7 @@ VALUES (1, 'PA1', 1),
        (3, 'PC1', 3),
        (4, 'PD1', 4),
        (5, 'PE1', 5),
-       (6, 'PE1', 5),
+       (6, 'PE2', 5),
        (7, 'PF1', 6);
 
 DROP TABLE IF EXISTS amenity;
