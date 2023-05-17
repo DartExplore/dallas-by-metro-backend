@@ -5,6 +5,7 @@ import java.util.List;
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.PointOfInterest;
 import com.dart.explore.entity.Station;
+import com.dart.explore.entity.StationColor;
 
 /* this service will provide functions for the minimal viable product
  * using this service we can do things such as getting stations by line,
@@ -13,7 +14,7 @@ import com.dart.explore.entity.Station;
 public interface StationService {
     List<PointOfInterest> getPOIs(List<Amenity> amenities);
 
-    // List<Station> getStationsByLine(Color color);
+    List<Station> getStationsByLine(StationColor color);
 
     List<PointOfInterest> getPOIsByStation(String stationName);
 
