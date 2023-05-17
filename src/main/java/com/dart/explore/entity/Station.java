@@ -25,7 +25,7 @@ public class Station {
     @ElementCollection(targetClass = StationColor.class)
     @CollectionTable(name = "station_color", joinColumns = @JoinColumn(name = "station_id"))
     @Enumerated(EnumType.STRING)
-    private Set<StationColor> colors = new HashSet<>();
+    private Set<StationColor> color = new HashSet<>();
 
     public Station(String name, Double latitude, Double longitude, List<PointOfInterest> pointOfInterest) {
         this.name = name;
