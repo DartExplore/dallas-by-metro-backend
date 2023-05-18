@@ -1,5 +1,7 @@
 package com.dart.explore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -13,6 +15,7 @@ public class Station {
     private Double latitude;
     private Double longitude;
     @OneToMany
+    @JsonIgnore
     @JoinColumn(name = "station_id")
     private List<PointOfInterest> pointOfInterest;
     @ManyToMany
