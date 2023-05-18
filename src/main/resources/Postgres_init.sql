@@ -1,6 +1,3 @@
-CREATE SCHEMA dart_explore;
-SET search_path TO dart_explore;
-
 CREATE TABLE station
 (
     station_id INTEGER PRIMARY KEY,

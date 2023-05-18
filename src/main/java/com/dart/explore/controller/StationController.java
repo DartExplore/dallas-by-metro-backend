@@ -13,31 +13,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/api")
+@RequestMapping(value = "/api")
 public class StationController {
     @Autowired
     StationServiceImpl stationService;
 
-    @GetMapping(value="/poi")
-    ResponseEntity<List<PointOfInterest>> getPOIs(@RequestBody List<Amenity> amenities){
+    @GetMapping(value = "/poi")
+    ResponseEntity<List<PointOfInterest>> getPOIs(@RequestBody List<Amenity> amenities) {
         List<PointOfInterest> pointOfInterestList = stationService.getPOIs(amenities);
         return new ResponseEntity<List<PointOfInterest>>(pointOfInterestList, HttpStatus.OK);
     }
 
-    @GetMapping(value="/station/{line}")
-    ResponseEntity<List<Station>> getStationsByLine(@PathVariable String line){
+    @GetMapping(value = "/station/{line}")
+    ResponseEntity<List<Station>> getStationsByLine(@PathVariable String line) {
         List<Station> stations = stationService.getStationsByLine(StationColor.valueOf(line));
         return new ResponseEntity<List<Station>>(stations, HttpStatus.OK);
     }
 
-    @GetMapping(value="/poi/{station}")
-    ResponseEntity<List<PointOfInterest>> getPOIsByStation(@PathVariable String station){
+    @GetMapping(value = "/poi/{station}")
+    ResponseEntity<List<PointOfInterest>> getPOIsByStation(@PathVariable String station) {
         List<PointOfInterest> pointOfInterestList = stationService.getPOIsByStation(station);
         return new ResponseEntity<List<PointOfInterest>>(pointOfInterestList, HttpStatus.OK);
     }
 
-    @GetMapping(value="/poi/{station}")
-    ResponseEntity<List<PointOfInterest>> getPOIsAtStation(@PathVariable String station, @RequestBody List<Amenity> amenities){
+    @GetMapping(value = "/poi/{station}/amenity")
+    ResponseEntity<List<PointOfInterest>> getPOIsAtStation(@PathVariable String station, @RequestBody List<Amenity> amenities) {
         List<PointOfInterest> pointOfInterestList = stationService.getPOIsAtStation(station, amenities);
         return new ResponseEntity<List<PointOfInterest>>(pointOfInterestList, HttpStatus.OK);
     }

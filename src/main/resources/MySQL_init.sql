@@ -1,7 +1,3 @@
-DROP SCHEMA IF EXISTS dart_explore;
-CREATE SCHEMA dart_explore;
-USE dart_explore;
-
 DROP TABLE IF EXISTS station;
 CREATE TABLE station
 (

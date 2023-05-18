@@ -8,8 +8,12 @@ import java.util.List;
 
 public interface PointOfInterestRepository extends CrudRepository<PointOfInterest, Long> {
     // TODO
-    List<PointOfInterest> getPOIs(List<Amenity> amenities);
+    default List<PointOfInterest> getPOIs(List<Amenity> amenities) {
+        return (List<PointOfInterest>) findAll();
+    }
 
     // TODO
-    List<PointOfInterest> getPOIsAtStation(String stationName, List<Amenity> amenities);
+    default List<PointOfInterest> getPOIsAtStation(String stationName, List<Amenity> amenities) {
+        return (List<PointOfInterest>) findAll();
+    }
 }
