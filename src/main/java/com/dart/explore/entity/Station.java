@@ -9,7 +9,7 @@ import java.util.*;
 @Table(name = "station")
 public class Station {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer stationId;
     private String name;
     private Double latitude;
@@ -92,5 +92,9 @@ public class Station {
         if (o == null || getClass() != o.getClass()) return false;
         Station station = (Station) o;
         return Objects.equals(stationId, station.stationId);
+    }
+
+    public Collection<StationColor> getColor() {
+        return color;
     }
 }

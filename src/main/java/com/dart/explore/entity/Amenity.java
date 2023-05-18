@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity
 public class Amenity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long amenityId;
     @ManyToMany(mappedBy = "amenities")
     private Set<PointOfInterest> pointsOfInterest;

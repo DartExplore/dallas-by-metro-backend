@@ -8,7 +8,7 @@ import java.util.Objects;
 @Table(name = "points_of_interest")
 public class PointOfInterest {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long poiId;
     private String name;
     private String location;
