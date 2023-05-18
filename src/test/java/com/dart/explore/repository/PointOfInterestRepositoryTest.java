@@ -28,9 +28,8 @@ class PointOfInterestRepositoryTest {
         // given
         PointOfInterest civilPour = new PointOfInterest();
         civilPour.setName("Civil Pour");
-        // civilPour.setStationId(1L);
         Amenity bikeParking = new Amenity();
-        bikeParking.setAmenity("A4");
+        bikeParking.setAmenity("The Best Vibes");
         List<Amenity> amenities = new ArrayList<>();
         amenities.add(bikeParking);
         civilPour.setAmenities(amenities);
@@ -42,7 +41,7 @@ class PointOfInterestRepositoryTest {
         List<PointOfInterest> foundPOIs = pointOfInterestRepository.getPOIs(amenities);
 
         // then
-        assertThat(foundPOIs).hasSizeLessThan(1);
+        assertThat(foundPOIs).hasSize(1);
         // assertThat(foundPOIs.get(0).getName()).isEqualTo(civilPour.getName());
     }
 
