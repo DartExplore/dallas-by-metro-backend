@@ -93,4 +93,8 @@ public class Station {
         Station station = (Station) o;
         return Objects.equals(stationId, station.stationId);
     }
+
+    public Collection<StationColor> getColor() {
+        return color;
+    }
 }
