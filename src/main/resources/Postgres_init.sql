@@ -1,3 +1,4 @@
+CREATE SEQUENCE hibernate_sequence START 1;
 CREATE TABLE station
 (
     station_id INTEGER PRIMARY KEY,
