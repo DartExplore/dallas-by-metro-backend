@@ -19,6 +19,7 @@ public class Station {
     @JoinColumn(name = "station_id")
     private List<PointOfInterest> pointOfInterest;
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "station_connection",
             joinColumns = @JoinColumn(name = "station1_id"),
