@@ -19,6 +19,7 @@ public class Station {
     @JoinColumn(name = "station_id")
     private List<PointOfInterest> pointOfInterest;
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "station_connection",
             joinColumns = @JoinColumn(name = "station1_id"),
@@ -83,7 +84,7 @@ public class Station {
 
     @Override
     public int hashCode() {
-        return this.stationId;
+        return Objects.hash(stationId, name);
     }
 
     @Override
@@ -91,10 +92,15 @@ public class Station {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Station station = (Station) o;
-        return Objects.equals(stationId, station.stationId);
+        return Objects.equals(name, station.name) &&
+                Objects.equals(stationId, station.stationId);
     }
 
     public Collection<StationColor> getColor() {
         return color;
+    }
+
+    public Set<Station> getConnectedStations() {
+        return connectedStations;
     }
 }

@@ -10,5 +10,3 @@ services:
       POSTGRES_DB: dart_explore
     ports:
       - "5432:5432"
-    volumes:
-      - ./Postgres_init.sql:/docker-entrypoint-initdb.d/init.sql
