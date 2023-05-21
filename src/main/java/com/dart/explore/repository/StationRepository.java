@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface StationRepository extends CrudRepository<Station, Integer> {
-    // TODO
     @Query("SELECT s FROM Station s JOIN s.color c WHERE c = :color")
     List<Station> findByColor(@Param("color") StationColor color);
 
