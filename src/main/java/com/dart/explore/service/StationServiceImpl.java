@@ -39,7 +39,7 @@ public class StationServiceImpl implements StationService {
     @Override
     public List<PointOfInterest> getPOIsAtStation(String stationName, List<Amenity> amenities) {
         // TODO Auto-generated method stub
-        return pointOfInterestRepository.getPOIsAtStation(stationName, amenities);
+        return pointOfInterestRepository.getPointOfInterestsByStationAndAmenities(stationName, amenities);
     }
 
 }
