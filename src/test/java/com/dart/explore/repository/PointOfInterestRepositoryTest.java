@@ -44,9 +44,15 @@ class PointOfInterestRepositoryTest {
         // when
         List<PointOfInterest> foundPOIs = pointOfInterestRepository.getPOIsByAmenities(amenities);
 
-        // then
+        /*
+        then
+        Unless/until we either create dummy POI or pull down a more mature database as of writing this, it's worth
+        assuming that the only POI will be what's created during test
+         */
+        // Confirms that the POI adding correctly
         assertThat(foundPOIs).hasSize(1);
-        // assertThat(foundPOIs.get(0).getName()).isEqualTo(testPOI.getName());
+        // Confirms that the data is being inserted correctly
+        assertThat(foundPOIs.get(0).getName()).isEqualTo(testPOI.getName());
     }
 
 }
