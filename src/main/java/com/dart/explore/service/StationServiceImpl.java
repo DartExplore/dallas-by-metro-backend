@@ -22,7 +22,7 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<PointOfInterest> getPOIs(List<Amenity> amenities) {
-        return pointOfInterestRepository.getPOIs(amenities);
+        return pointOfInterestRepository.getPOIsByAmenities(amenities);
     }
 
     @Override
