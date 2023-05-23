@@ -26,16 +26,6 @@ public class PointOfInterest {
     )
     private List<Amenity> amenities;
 
-    public PointOfInterest(String name, String location, Integer walkingDistance, String picUrl, String type, Station station, List<Amenity> amenities) {
-        this.name = name;
-        this.location = location;
-        this.walkingDistance = walkingDistance;
-        this.picUrl = picUrl;
-        this.type = type;
-        this.station = station;
-        this.amenities = amenities;
-    }
-
     public PointOfInterest() {
 
     }

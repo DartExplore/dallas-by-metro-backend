@@ -14,11 +14,6 @@ public class Amenity {
 
     private String amenity;
 
-    public Amenity(Set<PointOfInterest> pointOfInterest, String amenity) {
-        this.pointsOfInterest = pointOfInterest;
-        this.amenity = amenity;
-    }
-
     public Amenity() {
 
     }
