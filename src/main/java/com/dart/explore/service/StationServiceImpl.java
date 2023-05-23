@@ -27,7 +27,7 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<Station> getStationsByLine(StationColor color) {
-        return stationRepository.getStationsByLine(color);
+        return stationRepository.findStationByColor(color);
     }
 
     @Override
