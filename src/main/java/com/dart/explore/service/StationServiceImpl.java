@@ -33,7 +33,7 @@ public class StationServiceImpl implements StationService {
     @Override
     public List<PointOfInterest> getPOIsByStation(String stationName) {
         // TODO Auto-generated method stub
-        return stationRepository.getPOIsByStation(stationName);
+        return pointOfInterestRepository.getPOIsByStation(stationName);
     }
 
     @Override
