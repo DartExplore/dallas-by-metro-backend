@@ -83,4 +83,9 @@ public class ImportService {
         }
         return data;
     }
+
+    public boolean isDataLoaded() {
+        return stationRepository.findFirstBy() != null;
+    }
+
 }

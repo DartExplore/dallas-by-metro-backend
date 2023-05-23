@@ -26,11 +26,13 @@ public class ExploreApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         try {
-            List<String[]> colorData = importService.loadData("station_colors.txt");
-            List<String[]> connectionData = importService.loadData("station_connections.txt");
-            List<String[]> stationData = importService.loadData("stations.txt");
+            if (!importService.isDataLoaded()) {
+                List<String[]> colorData = importService.loadData("station_colors.txt");
+                List<String[]> connectionData = importService.loadData("station_connections.txt");
+                List<String[]> stationData = importService.loadData("stations.txt");
 
-            importService.addStations(colorData, connectionData, stationData);
+                importService.addStations(colorData, connectionData, stationData);
+            }
         } catch (IOException e) {
             log.error("Error while loading station data: ", e);
         }
