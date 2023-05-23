@@ -4,8 +4,12 @@ import com.dart.explore.entity.Station;
 import com.dart.explore.entity.StationColor;
 import com.dart.explore.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -58,5 +62,25 @@ public class ImportService {
         }
 
         stationRepository.saveAll(stations.values());
+    }
+
+    public List<String[]> loadData(String filename) throws IOException {
+        List<String[]> data = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(new ClassPathResource(filename).getFile()))) {
+            String line;
+            boolean skipHeader = true;
+            while ((line = reader.readLine()) != null) {
+                if (skipHeader) {
+                    skipHeader = false;
+                    continue;
+                }
+                String[] fields = line.split(",");
+                for (int i = 0; i < fields.length; i++) {
+                    fields[i] = fields[i].trim();
+                }
+                data.add(fields);
+            }
+        }
+        return data;
     }
 }
