@@ -28,15 +28,6 @@ public class StationRepositoryTest {
     @Autowired
     private ImportService importService;
 
-    @BeforeEach
-    public void setup() throws Exception {
-        if (!importService.isDataLoaded()) {
-            importService.loadData("station_colors.txt");
-            importService.loadData("station_connections.txt");
-            importService.loadData("stations.txt");
-        }
-    }
-
     @Test
     public void whenFindByColor_thenReturnStations() {
         // given

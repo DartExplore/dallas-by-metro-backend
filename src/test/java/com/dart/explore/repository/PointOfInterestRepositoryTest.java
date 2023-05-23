@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(ImportService.class)
+@Import({ImportService.class, TestConfig.class})
 class PointOfInterestRepositoryTest {
 
     @Autowired
@@ -38,12 +38,6 @@ class PointOfInterestRepositoryTest {
 
     @BeforeEach
     public void setup() throws Exception {
-        if (!importService.isDataLoaded()) {
-            importService.loadData("station_colors.txt");
-            importService.loadData("station_connections.txt");
-            importService.loadData("stations.txt");
-        }
-
         testPOI = new PointOfInterest();
         testPOI.setName("Test POI");
         testAmenity = new Amenity();
