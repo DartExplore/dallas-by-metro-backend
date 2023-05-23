@@ -26,26 +26,8 @@ public class PointOfInterest {
     )
     private List<Amenity> amenities;
 
-    public PointOfInterest(String name, String location, Integer walkingDistance, String picUrl, String type, Station station, List<Amenity> amenities) {
-        this.name = name;
-        this.location = location;
-        this.walkingDistance = walkingDistance;
-        this.picUrl = picUrl;
-        this.type = type;
-        this.station = station;
-        this.amenities = amenities;
-    }
-
     public PointOfInterest() {
 
-    }
-
-    public Long getStationId() {
-        return poiId;
-    }
-
-    public void setStationId(Long stationId) {
-        this.poiId = stationId;
     }
 
     public String getName() {
@@ -56,48 +38,8 @@ public class PointOfInterest {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Integer getWalkingDistance() {
-        return walkingDistance;
-    }
-
-    public void setWalkingDistance(Integer walkingDistance) {
-        this.walkingDistance = walkingDistance;
-    }
-
-    public String getPicUrl() {
-        return picUrl;
-    }
-
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Station getStation() {
-        return station;
-    }
-
     public void setStation(Station station) {
         this.station = station;
-    }
-
-    public List<Amenity> getAmenities() {
-        return amenities;
     }
 
     public void setAmenities(List<Amenity> amenities) {
