@@ -67,4 +67,10 @@ class PointOfInterestRepositoryTest {
         assertThat(foundPOIs.get(0).getName()).isEqualTo(testPOI.getName());
     }
 
+    @Test
+    public void whenGetPOIsByStation_thenReturnPointOfInterest() {
+        List<PointOfInterest> foundPOIs = pointOfInterestRepository.getPOIsByStation(testStation.getName());
+        assertThat(foundPOIs).hasSize(1);
+        assertThat(foundPOIs.get(0).getName()).isEqualTo(testPOI.getName());
+    }
 }
