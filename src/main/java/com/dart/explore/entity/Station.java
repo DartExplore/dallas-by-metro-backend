@@ -25,11 +25,11 @@ public class Station {
             joinColumns = @JoinColumn(name = "station1_id"),
             inverseJoinColumns = @JoinColumn(name = "station2_id")
     )
-    private Set<Station> connectedStations = new HashSet<>();
+    private final Set<Station> connectedStations = new HashSet<>();
     @ElementCollection(targetClass = StationColor.class)
     @CollectionTable(name = "station_color", joinColumns = @JoinColumn(name = "station_id"))
     @Enumerated(EnumType.STRING)
-    private Set<StationColor> color = new HashSet<>();
+    private final Set<StationColor> color = new HashSet<>();
 
     public Station() {
 

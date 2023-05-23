@@ -11,7 +11,7 @@ import java.util.*;
 @Service
 public class ImportService {
 
-    private StationRepository stationRepository;
+    private final StationRepository stationRepository;
 
     @Autowired
     public ImportService(StationRepository stationRepository) {
