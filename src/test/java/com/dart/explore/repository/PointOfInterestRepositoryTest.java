@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,23 +20,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import({ImportService.class, TestConfig.class})
 class PointOfInterestRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    PointOfInterestRepository pointOfInterestRepository;
+    private PointOfInterestRepository pointOfInterestRepository;
 
-    @MockBean
+    @Autowired
     private ImportService importService;
 
-    PointOfInterest testPOI;
-    Amenity testAmenity;
-    Station testStation;
+    private PointOfInterest testPOI;
+    private Amenity testAmenity;
+    private Station testStation;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws Exception {
         testPOI = new PointOfInterest();
         testPOI.setName("Test POI");
         testAmenity = new Amenity();
