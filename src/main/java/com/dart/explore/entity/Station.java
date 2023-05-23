@@ -31,23 +31,8 @@ public class Station {
     @Enumerated(EnumType.STRING)
     private Set<StationColor> color = new HashSet<>();
 
-    public Station(String name, Double latitude, Double longitude, List<PointOfInterest> pointOfInterest) {
-        this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.pointOfInterest = pointOfInterest;
-    }
-
     public Station() {
 
-    }
-
-    public Integer getStationId() {
-        return stationId;
-    }
-
-    public void setStationId(Integer stationId) {
-        this.stationId = stationId;
     }
 
     public String getName() {
@@ -58,28 +43,12 @@ public class Station {
         this.name = name;
     }
 
-    public Double getLatitude() {
-        return latitude;
-    }
-
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Double getLongitude() {
-        return longitude;
-    }
-
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
-    }
-
-    public List<PointOfInterest> getPointOfInterest() {
-        return pointOfInterest;
-    }
-
-    public void setPointOfInterest(List<PointOfInterest> pointOfInterest) {
-        this.pointOfInterest = pointOfInterest;
     }
 
     @Override

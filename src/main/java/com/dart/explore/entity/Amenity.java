@@ -23,26 +23,6 @@ public class Amenity {
 
     }
 
-    public Long getAmenityId() {
-        return amenityId;
-    }
-
-    public void setAmenityId(Long amenityId) {
-        this.amenityId = amenityId;
-    }
-
-    public Set<PointOfInterest> getPointsOfInterest() {
-        return pointsOfInterest;
-    }
-
-    public void setPointsOfInterest(Set<PointOfInterest> pointsOfInterest) {
-        this.pointsOfInterest = pointsOfInterest;
-    }
-
-    public String getAmenity() {
-        return amenity;
-    }
-
     public void setAmenity(String amenity) {
         this.amenity = amenity;
     }

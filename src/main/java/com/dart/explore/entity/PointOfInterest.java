@@ -40,14 +40,6 @@ public class PointOfInterest {
 
     }
 
-    public Long getStationId() {
-        return poiId;
-    }
-
-    public void setStationId(Long stationId) {
-        this.poiId = stationId;
-    }
-
     public String getName() {
         return name;
     }
@@ -56,48 +48,8 @@ public class PointOfInterest {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Integer getWalkingDistance() {
-        return walkingDistance;
-    }
-
-    public void setWalkingDistance(Integer walkingDistance) {
-        this.walkingDistance = walkingDistance;
-    }
-
-    public String getPicUrl() {
-        return picUrl;
-    }
-
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Station getStation() {
-        return station;
-    }
-
     public void setStation(Station station) {
         this.station = station;
-    }
-
-    public List<Amenity> getAmenities() {
-        return amenities;
     }
 
     public void setAmenities(List<Amenity> amenities) {
