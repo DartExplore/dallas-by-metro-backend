@@ -19,9 +19,4 @@ public interface StationRepository extends CrudRepository<Station, Integer> {
     default List<Station> getStationsByLine(final StationColor color) {
         return findByColor(color);
     }
-
-    // TODO
-    default List<PointOfInterest> getPOIsByStation(String stationName) {
-        return Collections.emptyList();
-    }
 }
