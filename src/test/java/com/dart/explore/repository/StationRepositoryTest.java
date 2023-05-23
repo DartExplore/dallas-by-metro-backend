@@ -36,7 +36,7 @@ public class StationRepositoryTest {
         entityManager.flush();
 
         // when
-        List<Station> found = stationRepository.getStationsByLine(StationColor.GREEN);
+        List<Station> found = stationRepository.findStationByColor(StationColor.GREEN);
 
         // then
         // tests that both the return and the add worked since the count is 18 + 1 we added

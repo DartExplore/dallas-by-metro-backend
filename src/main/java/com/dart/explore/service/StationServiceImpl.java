@@ -27,13 +27,13 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<Station> getStationsByLine(StationColor color) {
-        return stationRepository.getStationsByLine(color);
+        return stationRepository.findStationByColor(color);
     }
 
     @Override
     public List<PointOfInterest> getPOIsByStation(String stationName) {
         // TODO Auto-generated method stub
-        return stationRepository.getPOIsByStation(stationName);
+        return pointOfInterestRepository.getPOIsByStation(stationName);
     }
 
     @Override
