@@ -79,5 +79,5 @@ jobs:
           username: ${{ secrets.EC2USERNAME }}
           key: ${{ secrets.EC2SSH_KEY }}
           script: |
-            sudo systemctl stop my-service
-            sudo systemctl start my-service
+            sudo systemctl stop my-spring-boot-app.service
+            sudo systemctl start my-spring-boot-app.service
