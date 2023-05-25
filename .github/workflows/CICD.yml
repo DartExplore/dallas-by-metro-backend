@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.EC2USERNAME }}
           key: ${{ secrets.EC2SSH_KEY }}
           source: "target/*.jar"
-          target: "/path/to/deploy/directory"
+          target: "/home/ubuntu"
 
       - name: Restart service
         uses: appleboy/ssh-action@master
