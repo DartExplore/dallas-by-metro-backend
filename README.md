@@ -2,7 +2,9 @@
 
 ![Train going through Downtown.](https://texashighways.com/wp-content/uploads/2015/06/images_dart2.jpg)
 
-![IntegrationTests](https://github.com/DartExplore/dart-explore-backend/actions/workflows/integrationTests.yml/badge.svg)
+[![Integration Testing](https://github.com/DartExplore/dart-explore-backend/actions/workflows/integrationTests.yml/badge.svg)](https://github.com/DartExplore/dart-explore-backend/actions/workflows/integrationTests.yml)
+[![Build](https://github.com/DartExplore/dart-explore-backend/actions/workflows/build.yml/badge.svg)](https://github.com/DartExplore/dart-explore-backend/actions/workflows/build.yml)
+[![Deploy](https://github.com/DartExplore/dart-explore-backend/actions/workflows/deploy.yml/badge.svg)](https://github.com/DartExplore/dart-explore-backend/actions/workflows/deploy.yml)
 
 Backend for DART Explore using Spring Boot. Database implemented in Postgres. We expose the backend through a RESTful API.
 
