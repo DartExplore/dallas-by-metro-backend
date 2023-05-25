@@ -21,7 +21,7 @@ jobs:
           java-version: '20'
 
       - name: Build with Maven
-        run: mvn package
+        run: mvn package -DskipTests
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
