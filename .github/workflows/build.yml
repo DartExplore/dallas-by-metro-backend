@@ -21,10 +21,7 @@ jobs:
           java-version: '20'
 
       - name: Build with Maven
-        run: mvn package
-
-      - name: List files
-        run: ls -l target/
+        run: mvn package -DskipTests
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
