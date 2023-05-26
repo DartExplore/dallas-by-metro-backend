@@ -1,9 +1,9 @@
-package com.dart.explore.repository;
+package com.dart.explore.integration;
 
 import com.dart.explore.entity.Station;
 import com.dart.explore.entity.StationColor;
+import com.dart.explore.repository.StationRepository;
 import com.dart.explore.service.ImportService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(ImportService.class)
-public class StationRepositoryTest {
+public class StationRepositoryIT {
     @Autowired
     private TestEntityManager entityManager;
 
