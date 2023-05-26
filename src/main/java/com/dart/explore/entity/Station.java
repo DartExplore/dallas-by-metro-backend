@@ -2,6 +2,7 @@ package com.dart.explore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -31,11 +32,11 @@ public class Station {
     private String name;
     private Double latitude;
     private Double longitude;
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
     @JsonIgnore
     @JoinColumn(name = "station_id")
     private List<PointOfInterest> pointOfInterest;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     @JoinTable(
             name = "station_connection",
