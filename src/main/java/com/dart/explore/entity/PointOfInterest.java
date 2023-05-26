@@ -1,5 +1,6 @@
 package com.dart.explore.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +28,7 @@ public class PointOfInterest {
     @ManyToOne
     @JoinColumn(name = "station_id")
     private Station station;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "poi_amenity",
             joinColumns = @JoinColumn(name = "poi_id"),
