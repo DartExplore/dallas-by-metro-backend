@@ -1,8 +1,9 @@
-package com.dart.explore.repository;
+package com.dart.explore.integration;
 
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.PointOfInterest;
 import com.dart.explore.entity.Station;
+import com.dart.explore.repository.PointOfInterestRepository;
 import com.dart.explore.service.ImportService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import({ImportService.class, TestConfig.class})
-class PointOfInterestRepositoryTest {
+class PointOfInterestRepositoryIT {
 
     @Autowired
     private TestEntityManager entityManager;

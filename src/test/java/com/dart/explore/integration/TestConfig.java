@@ -1,4 +1,4 @@
-package com.dart.explore.repository;
+package com.dart.explore.integration;
 
 
 import jakarta.annotation.PostConstruct;
