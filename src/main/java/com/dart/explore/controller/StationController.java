@@ -22,7 +22,7 @@ public class StationController {
     @Autowired
     StationServiceImpl stationService;
 
-    @GetMapping(value = {"/poi/amenity/", "/poi/amenity/{amenitiesString}"})
+    @GetMapping(value = {"/poi/amenity", "/poi/amenity/{amenitiesString}"})
     ResponseEntity<List<PointOfInterestDTO>> getPOIs(@PathVariable Optional<String> amenitiesStringOpt) {
         /* probably move this first bit to a utility class later */
         List<Long> amenityIdList = new ArrayList<>();
