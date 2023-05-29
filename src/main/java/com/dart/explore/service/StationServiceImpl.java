@@ -1,11 +1,14 @@
 package com.dart.explore.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.dart.explore.dto.PointOfInterestDTO;
 import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.StationColor;
+import com.dart.explore.repository.AmenityRepository;
 import com.dart.explore.repository.PointOfInterestRepository;
 import com.dart.explore.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ public class StationServiceImpl implements StationService {
     PointOfInterestRepository pointOfInterestRepository;
     @Autowired
     StationRepository stationRepository;
+    @Autowired
+    AmenityRepository amenityRepository;
 
     @Override
     public List<PointOfInterestDTO> getPOIs(List<Amenity> amenities) {
@@ -42,4 +47,10 @@ public class StationServiceImpl implements StationService {
         return pointOfInterestRepository.getPointOfInterestsByStationAndAmenities(stationName, amenities).stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
     }
 
+    @Override
+    public List<Amenity> getAmenitiesById(List<Long> amenityIdList){
+        if(amenityIdList.isEmpty())
+            return amenityRepository.findAllAmenities();
+        return amenityRepository.findAllAmenitiesById(amenityIdList);
+    }
 }
