@@ -23,8 +23,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
                 .and()
                 .requiresChannel()
-                .anyRequest()
-                .requiresSecure();
+                .anyRequest();
 
         return http.build();
     }
