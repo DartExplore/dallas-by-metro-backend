@@ -22,14 +22,14 @@ public class StationController {
     @Autowired
     StationServiceImpl stationService;
 
-    @GetMapping(value = {"/poi/amenity", "/poi/amenity/{amenitiesString}"})
+    @GetMapping(value = {"/poi/amenity", "/poi/amenity/{amenitiesStringOpt}"})
     ResponseEntity<List<PointOfInterestDTO>> getPOIs(@PathVariable Optional<String> amenitiesStringOpt) {
-        /* probably move this first bit to a utility class later */
+        // probably move this first bit to a utility class later
         List<Long> amenityIdList = new ArrayList<>();
-        if(amenitiesStringOpt.isPresent()){
-            /* populate amenityIdList */
+        if (amenitiesStringOpt.isPresent()) {
+            // populate amenityIdList
             String amenitiesString = amenitiesStringOpt.get();
-            amenityIdList = Arrays.stream(amenitiesString.split(",")).map((s)->Long.parseLong(s)).collect(Collectors.toList());
+            amenityIdList = Arrays.stream(amenitiesString.split(",")).map(Long::parseLong).collect(Collectors.toList());
         }
         List<Amenity> amenities = stationService.getAmenitiesById(amenityIdList);
         List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIs(amenities);
@@ -48,14 +48,14 @@ public class StationController {
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/poi/{station}/amenity", "/poi/{station}/amenity/{amenitiesString}"})
+    @GetMapping(value = {"/poi/{station}/amenity", "/poi/{station}/amenity/{amenitiesStringOpt}"})
     ResponseEntity<List<PointOfInterestDTO>> getPOIsAtStation(@PathVariable String station, @PathVariable Optional<String> amenitiesStringOpt) {
-        /* probably move this first bit to a utility class later */
+        // probably move this first bit to a utility class later
         List<Long> amenityIdList = new ArrayList<>();
-        if(amenitiesStringOpt.isPresent()){
-            /* populate amenityIdList */
+        if (amenitiesStringOpt.isPresent()) {
+            // populate amenityIdList
             String amenitiesString = amenitiesStringOpt.get();
-            amenityIdList = Arrays.stream(amenitiesString.split(",")).map((s)->Long.parseLong(s)).collect(Collectors.toList());
+            amenityIdList = Arrays.stream(amenitiesString.split(",")).map(Long::parseLong).collect(Collectors.toList());
         }
         List<Amenity> amenities = stationService.getAmenitiesById(amenityIdList);
         List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsAtStation(station, amenities);
