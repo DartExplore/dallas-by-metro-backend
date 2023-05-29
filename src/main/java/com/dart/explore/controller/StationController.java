@@ -1,8 +1,8 @@
 package com.dart.explore.controller;
 
+import com.dart.explore.dto.PointOfInterestDTO;
+import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.Amenity;
-import com.dart.explore.entity.PointOfInterest;
-import com.dart.explore.entity.Station;
 import com.dart.explore.entity.StationColor;
 import com.dart.explore.service.StationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,26 +19,26 @@ public class StationController {
     StationServiceImpl stationService;
 
     @GetMapping(value = "/public/poi")
-    ResponseEntity<List<PointOfInterest>> getPOIs(@RequestBody List<Amenity> amenities) {
-        List<PointOfInterest> pointOfInterestList = stationService.getPOIs(amenities);
-        return new ResponseEntity<List<PointOfInterest>>(pointOfInterestList, HttpStatus.OK);
+    ResponseEntity<List<PointOfInterestDTO>> getPOIs(@RequestBody List<Amenity> amenities) {
+        List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIs(amenities);
+        return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 
     @GetMapping(value = "/public/station/{line}")
-    ResponseEntity<List<Station>> getStationsByLine(@PathVariable String line) {
-        List<Station> stations = stationService.getStationsByLine(StationColor.valueOf(line));
-        return new ResponseEntity<List<Station>>(stations, HttpStatus.OK);
+    ResponseEntity<List<StationDTO>> getStationsByLine(@PathVariable String line) {
+        List<StationDTO> stations = stationService.getStationsByLine(StationColor.valueOf(line));
+        return new ResponseEntity<List<StationDTO>>(stations, HttpStatus.OK);
     }
 
     @GetMapping(value = "/public/poi/{station}")
-    ResponseEntity<List<PointOfInterest>> getPOIsByStation(@PathVariable String station) {
-        List<PointOfInterest> pointOfInterestList = stationService.getPOIsByStation(station);
-        return new ResponseEntity<List<PointOfInterest>>(pointOfInterestList, HttpStatus.OK);
+    ResponseEntity<List<PointOfInterestDTO>> getPOIsByStation(@PathVariable String station) {
+        List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsByStation(station);
+        return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 
     @GetMapping(value = "/public/poi/{station}/amenity")
-    ResponseEntity<List<PointOfInterest>> getPOIsAtStation(@PathVariable String station, @RequestBody List<Amenity> amenities) {
-        List<PointOfInterest> pointOfInterestList = stationService.getPOIsAtStation(station, amenities);
-        return new ResponseEntity<List<PointOfInterest>>(pointOfInterestList, HttpStatus.OK);
+    ResponseEntity<List<PointOfInterestDTO>> getPOIsAtStation(@PathVariable String station, @RequestBody List<Amenity> amenities) {
+        List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsAtStation(station, amenities);
+        return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 }
