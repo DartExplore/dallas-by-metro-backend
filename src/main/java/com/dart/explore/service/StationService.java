@@ -2,9 +2,10 @@ package com.dart.explore.service;
 
 import java.util.List;
 
+import com.dart.explore.dto.PointOfInterestDTO;
+import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.PointOfInterest;
-import com.dart.explore.entity.Station;
 import com.dart.explore.entity.StationColor;
 
 /* this service will provide functions for the minimal viable product
@@ -12,11 +13,11 @@ import com.dart.explore.entity.StationColor;
  * getting POIs at a station, etc.
  */
 public interface StationService {
-    List<PointOfInterest> getPOIs(List<Amenity> amenities);
+    List<PointOfInterestDTO> getPOIs(List<Amenity> amenities);
 
-    List<Station> getStationsByLine(StationColor color);
+    List<StationDTO> getStationsByLine(StationColor color);
 
-    List<PointOfInterest> getPOIsByStation(String stationName);
+    List<PointOfInterestDTO> getPOIsByStation(String stationName);
 
-    List<PointOfInterest> getPOIsAtStation(String stationName, List<Amenity> amenities);
+    List<PointOfInterestDTO> getPOIsAtStation(String stationName, List<Amenity> amenities);
 }

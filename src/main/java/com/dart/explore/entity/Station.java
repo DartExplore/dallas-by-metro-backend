@@ -47,10 +47,34 @@ public class Station {
     @ElementCollection(targetClass = StationColor.class)
     @CollectionTable(name = "station_color", joinColumns = @JoinColumn(name = "station_id"))
     @Enumerated(EnumType.STRING)
-    private final Set<StationColor> color = new HashSet<>();
+    private Set<StationColor> color = new HashSet<>();
 
     public Station() {
 
+    }
+
+    public Integer getStationId() {
+        return stationId;
+    }
+
+    public void setStationId(Integer stationId) {
+        this.stationId = stationId;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public List<PointOfInterest> getPointOfInterest() {
+        return pointOfInterest;
+    }
+
+    public void setPointOfInterest(List<PointOfInterest> pointOfInterest) {
+        this.pointOfInterest = pointOfInterest;
     }
 
     public String getName() {
@@ -69,6 +93,14 @@ public class Station {
         this.longitude = longitude;
     }
 
+    public Set<StationColor> getColor() {
+        return color;
+    }
+
+    public void setColor(Set<StationColor> color) {
+        this.color = color;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(stationId, name);
@@ -81,10 +113,6 @@ public class Station {
         Station station = (Station) o;
         return Objects.equals(name, station.name) &&
                 Objects.equals(stationId, station.stationId);
-    }
-
-    public Collection<StationColor> getColor() {
-        return color;
     }
 
     public Set<Station> getConnectedStations() {

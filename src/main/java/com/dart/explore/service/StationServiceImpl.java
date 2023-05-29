@@ -1,7 +1,10 @@
 package com.dart.explore.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.dart.explore.dto.PointOfInterestDTO;
+import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.StationColor;
 import com.dart.explore.repository.PointOfInterestRepository;
 import com.dart.explore.repository.StationRepository;
@@ -10,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.PointOfInterest;
-import com.dart.explore.entity.Station;
 
 
 @Service(value = "stationService")
@@ -21,25 +23,23 @@ public class StationServiceImpl implements StationService {
     StationRepository stationRepository;
 
     @Override
-    public List<PointOfInterest> getPOIs(List<Amenity> amenities) {
-        return pointOfInterestRepository.getPOIsByAmenities(amenities);
+    public List<PointOfInterestDTO> getPOIs(List<Amenity> amenities) {
+        return pointOfInterestRepository.getPOIsByAmenities(amenities).stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<Station> getStationsByLine(StationColor color) {
-        return stationRepository.findStationByColor(color);
+    public List<StationDTO> getStationsByLine(StationColor color) {
+        return stationRepository.findStationByColor(color).stream().map(StationDTO::prepareDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<PointOfInterest> getPOIsByStation(String stationName) {
-        // TODO Auto-generated method stub
-        return pointOfInterestRepository.getPOIsByStation(stationName);
+    public List<PointOfInterestDTO> getPOIsByStation(String stationName) {
+        return pointOfInterestRepository.getPOIsByStation(stationName).stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<PointOfInterest> getPOIsAtStation(String stationName, List<Amenity> amenities) {
-        // TODO Auto-generated method stub
-        return pointOfInterestRepository.getPointOfInterestsByStationAndAmenities(stationName, amenities);
+    public List<PointOfInterestDTO> getPOIsAtStation(String stationName, List<Amenity> amenities) {
+        return pointOfInterestRepository.getPointOfInterestsByStationAndAmenities(stationName, amenities).stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
     }
 
 }
