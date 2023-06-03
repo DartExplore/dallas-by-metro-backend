@@ -2,6 +2,8 @@ package com.dart.explore.utility;
 
 import com.dart.explore.exception.DartExploreException;
 import jakarta.validation.ConstraintViolationException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,8 +13,10 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
+    private static Log logger = LogFactory.getLog(ExceptionControllerAdvice.class);
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorInfo> generalExceptionHandler(Exception exception){
+        logger.error(exception.getMessage(), exception);
         ErrorInfo error = new ErrorInfo();
         error.setErrorMessage("Something went wrong, please check the log.");
         error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -22,6 +26,7 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(DartExploreException.class)
     public ResponseEntity<ErrorInfo> dartExploreExceptionHandler(DartExploreException exception){
+        logger.error(exception.getMessage(), exception);
         ErrorInfo error = new ErrorInfo();
         error.setErrorMessage(exception.getMessage());
         error.setErrorCode(HttpStatus.BAD_REQUEST.value());
