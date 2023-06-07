@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public class StationDTO {
-    @NotNull
+    @NotNull(message = "{property.idNotNull}")
     private Integer stationId;
     private String name;
     private Set<StationColor> color = new HashSet<>();

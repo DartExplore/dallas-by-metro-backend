@@ -4,7 +4,7 @@ import com.dart.explore.entity.Amenity;
 import jakarta.validation.constraints.NotNull;
 
 public class AmenityDTO {
-    @NotNull
+    @NotNull(message = "{property.idNotNull}")
     private Long amenityId;
     private String amenity;
 

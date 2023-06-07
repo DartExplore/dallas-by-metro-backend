@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PointOfInterestDTO {
-    @NotNull
+    @NotNull(message = "{property.idNotNull}")
     private Long poiId;
     private String name;
     private String location;
