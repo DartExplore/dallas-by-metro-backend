@@ -1,8 +1,10 @@
 package com.dart.explore.dto;
 
 import com.dart.explore.entity.Amenity;
+import jakarta.validation.constraints.NotNull;
 
 public class AmenityDTO {
+    @NotNull(message = "{property.idNotNull}")
     private Long amenityId;
     private String amenity;
 
