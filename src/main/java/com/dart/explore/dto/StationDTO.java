@@ -2,12 +2,14 @@ package com.dart.explore.dto;
 
 import com.dart.explore.entity.StationColor;
 import com.dart.explore.entity.Station;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class StationDTO {
+    @NotNull
     private Integer stationId;
     private String name;
     private Set<StationColor> color = new HashSet<>();
