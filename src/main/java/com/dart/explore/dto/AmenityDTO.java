@@ -27,11 +27,11 @@ public class AmenityDTO {
         this.amenity = amenity;
     }
 
-    public static AmenityDTO prepareDTO(Amenity amenity) {
+    public static AmenityDTO prepareAmenityDTO(Amenity amenity) {
         return new AmenityDTO(amenity.getAmenityId(), amenity.getAmenity());
     }
 
-    public static Amenity prepareEntity(AmenityDTO amenityDTO) {
+    public static Amenity prepareAmenityEntity(AmenityDTO amenityDTO) {
         Amenity amenity = new Amenity();
         amenity.setAmenityId(amenityDTO.getAmenityId());
         amenity.setAmenity(amenityDTO.getAmenity());

@@ -31,7 +31,7 @@ public class StationDTO {
         return color;
     }
 
-    public static StationDTO prepareDTO(Station station) {
+    public static StationDTO prepareStationDTO(Station station) {
         StationDTO stationDTO = new StationDTO();
         stationDTO.stationId = station.getStationId();
         stationDTO.name = station.getName();

@@ -80,7 +80,7 @@ public class PointOfInterestDTO {
         this.stationId = stationId;
     }
 
-    public static PointOfInterestDTO prepareDTO(PointOfInterest pointOfInterest) {
+    public static PointOfInterestDTO preparePOIDTO(PointOfInterest pointOfInterest) {
         PointOfInterestDTO pointOfInterestDTO = new PointOfInterestDTO();
         pointOfInterestDTO.poiId = pointOfInterest.getPoiId();
         pointOfInterestDTO.name = pointOfInterest.getName();
@@ -89,11 +89,11 @@ public class PointOfInterestDTO {
         pointOfInterestDTO.walkingDistance = pointOfInterest.getWalkingDistance();
         pointOfInterestDTO.picUrl = pointOfInterest.getPicUrl();
         pointOfInterestDTO.stationId = pointOfInterest.getStation().getStationId();
-        pointOfInterestDTO.amenities = pointOfInterest.getAmenities().stream().map(AmenityDTO::prepareDTO).collect(Collectors.toList());
+        pointOfInterestDTO.amenities = pointOfInterest.getAmenities().stream().map(AmenityDTO::prepareAmenityDTO).collect(Collectors.toList());
         return pointOfInterestDTO;
     }
 
-    public static PointOfInterest prepareEntity(PointOfInterestDTO pointOfInterestDTO) {
+    public static PointOfInterest preparePOIEntity(PointOfInterestDTO pointOfInterestDTO) {
         PointOfInterest pointOfInterest = new PointOfInterest();
         pointOfInterest.setPoiId(pointOfInterestDTO.getPoiId());
         pointOfInterest.setName(pointOfInterestDTO.getName());
@@ -106,7 +106,7 @@ public class PointOfInterestDTO {
         station.setStationId(pointOfInterestDTO.getStationId());
         pointOfInterest.setStation(station);
 
-        pointOfInterest.setAmenities(pointOfInterestDTO.getAmenities().stream().map(AmenityDTO::prepareEntity).collect(Collectors.toList()));
+        pointOfInterest.setAmenities(pointOfInterestDTO.getAmenities().stream().map(AmenityDTO::prepareAmenityEntity).collect(Collectors.toList()));
         return pointOfInterest;
     }
 }
