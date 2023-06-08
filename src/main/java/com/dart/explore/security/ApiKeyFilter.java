@@ -40,7 +40,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         return request.getServletPath().startsWith("/api/public");
     }
 }
