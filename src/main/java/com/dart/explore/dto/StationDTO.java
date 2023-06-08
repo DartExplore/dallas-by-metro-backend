@@ -2,23 +2,20 @@ package com.dart.explore.dto;
 
 import com.dart.explore.entity.StationColor;
 import com.dart.explore.entity.Station;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class StationDTO {
-    @NotNull(message = "{property.idNotNull}")
-    private Integer stationId;
+    private Long stationId;
     private String name;
     private Set<StationColor> color = new HashSet<>();
 
-    public Integer getStationId() {
+    public Long getStationId() {
         return stationId;
     }
 
-    public void setStationId(Integer stationId) {
+    public void setStationId(Long stationId) {
         this.stationId = stationId;
     }
 
@@ -34,7 +31,7 @@ public class StationDTO {
         return color;
     }
 
-    public static StationDTO prepareDTO(Station station){
+    public static StationDTO prepareDTO(Station station) {
         StationDTO stationDTO = new StationDTO();
         stationDTO.stationId = station.getStationId();
         stationDTO.name = station.getName();
