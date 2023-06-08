@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class ApiKeyFilter extends OncePerRequestFilter {
 
-    private static final String API_KEY_HEADER = "X-Api-Key";
+    private static final String API_KEY_HEADER = "x-api-key";
 
     private final String apiKey;
 
@@ -40,7 +40,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         return request.getServletPath().startsWith("/api/public");
     }
 }
