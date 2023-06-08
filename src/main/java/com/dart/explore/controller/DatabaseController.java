@@ -1,5 +1,7 @@
 package com.dart.explore.controller;
 
+import com.dart.explore.dto.AmenityDTO;
+import com.dart.explore.service.AmenityService;
 import com.dart.explore.service.PointOfInterestService;
 import com.dart.explore.dto.PointOfInterestDTO;
 import jakarta.validation.Valid;
@@ -18,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class DatabaseController {
 
     private final PointOfInterestService pointOfInterestService;
+    private final AmenityService amenityService;
 
     @Autowired
-    public DatabaseController(PointOfInterestService pointOfInterestService) {
+    public DatabaseController(PointOfInterestService pointOfInterestService, AmenityService amenityService) {
         this.pointOfInterestService = pointOfInterestService;
+        this.amenityService = amenityService;
     }
 
     @PostMapping(value = "/poi")
@@ -39,6 +43,21 @@ public class DatabaseController {
             throw new IllegalArgumentException("poiId is required");
         }
         String message = pointOfInterestService.deletePointOfInterest(pointOfInterestDTO);
+        return ResponseEntity.ok(message);
+    }
+
+    @PostMapping(value = "/amenity")
+    public ResponseEntity<AmenityDTO> createAmenity(@Valid @RequestBody AmenityDTO amenityDTO) {
+        AmenityDTO poi = amenityService.addAmenity(amenityDTO);
+        return ResponseEntity.ok(poi);
+    }
+
+    @DeleteMapping(value = "/amenity")
+    public ResponseEntity<String> deleteAmenity(@Valid @RequestBody AmenityDTO amenityDTO) {
+        if (amenityDTO.getAmenityId() == null) {
+            throw new IllegalArgumentException("amenityId is required");
+        }
+        String message = amenityService.deleteAmenity(amenityDTO);
         return ResponseEntity.ok(message);
     }
 }
