@@ -27,6 +27,28 @@ public class AmenityService {
         return AmenityDTO.prepareAmenityDTO(savedAmenity);
     }
 
+    public AmenityDTO updateAmenity(AmenityDTO amenityDTO) {
+        // Check if the Amenity exists in the database
+        Optional<Amenity> optionalAmenity = amenityRepository.findById(amenityDTO.getAmenityId());
+
+        if (optionalAmenity.isEmpty()) {
+            throw new IllegalArgumentException("Amenity with id: " + amenityDTO.getAmenityId() + " does not exist");
+        }
+
+        // Update the entity from DTO
+        Amenity amenityEntity = optionalAmenity.get();
+
+        if (amenityDTO.getAmenity() != null) {
+            amenityEntity.setAmenity(amenityDTO.getAmenity());
+        }
+
+        // Save updated entity to the database
+        Amenity updatedAmenity = amenityRepository.save(amenityEntity);
+
+        // Convert updated entity back to DTO and return
+        return AmenityDTO.prepareAmenityDTO(updatedAmenity);
+    }
+
     public String deleteAmenity(AmenityDTO amenityDTO) {
         // Fetch the amenity from the database
         Optional<Amenity> optionalAmenity = amenityRepository.findById(amenityDTO.getAmenityId());

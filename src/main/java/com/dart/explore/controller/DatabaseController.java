@@ -8,11 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/private")
@@ -37,6 +33,12 @@ public class DatabaseController {
         return ResponseEntity.ok(poi);
     }
 
+    @PutMapping(value = "/poi")
+    public ResponseEntity<PointOfInterestDTO> updatePOI(@Valid @RequestBody PointOfInterestDTO pointOfInterestDTO) {
+        PointOfInterestDTO poi = pointOfInterestService.updatePointOfInterest(pointOfInterestDTO);
+        return ResponseEntity.ok(poi);
+    }
+
     @DeleteMapping(value = "/poi")
     public ResponseEntity<String> deletePOI(@Valid @RequestBody PointOfInterestDTO pointOfInterestDTO) {
         if (pointOfInterestDTO.getPoiId() == null) {
@@ -50,6 +52,12 @@ public class DatabaseController {
     public ResponseEntity<AmenityDTO> createAmenity(@Valid @RequestBody AmenityDTO amenityDTO) {
         AmenityDTO poi = amenityService.addAmenity(amenityDTO);
         return ResponseEntity.ok(poi);
+    }
+
+    @PutMapping(value = "/amenity")
+    public ResponseEntity<AmenityDTO> updateAmenity(@Valid @RequestBody AmenityDTO amenityDTO) {
+        AmenityDTO amenity = amenityService.updateAmenity(amenityDTO);
+        return ResponseEntity.ok(amenity);
     }
 
     @DeleteMapping(value = "/amenity")
