@@ -1,7 +1,5 @@
 package com.dart.explore.service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dart.explore.entity.Amenity;
-import com.dart.explore.entity.PointOfInterest;
 
 
 @Service(value = "stationService")
@@ -29,27 +26,27 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<PointOfInterestDTO> getPOIs(List<Amenity> amenities) {
-        return pointOfInterestRepository.getPOIsByAmenities(amenities).stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
+        return pointOfInterestRepository.getPOIsByAmenities(amenities).stream().map(PointOfInterestDTO::preparePOIDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<StationDTO> getStationsByLine(StationColor color) {
-        return stationRepository.findStationByColor(color).stream().map(StationDTO::prepareDTO).collect(Collectors.toList());
+        return stationRepository.findStationByColor(color).stream().map(StationDTO::prepareStationDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<PointOfInterestDTO> getPOIsByStation(String stationName) {
-        return pointOfInterestRepository.getPOIsByStation(stationName).stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
+        return pointOfInterestRepository.getPOIsByStation(stationName).stream().map(PointOfInterestDTO::preparePOIDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<PointOfInterestDTO> getPOIsAtStation(String stationName, List<Amenity> amenities) {
-        return pointOfInterestRepository.getPointOfInterestsByStationAndAmenities(stationName, amenities).stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
+        return pointOfInterestRepository.getPointOfInterestsByStationAndAmenities(stationName, amenities).stream().map(PointOfInterestDTO::preparePOIDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<Amenity> getAmenitiesById(List<Long> amenityIdList){
-        if(amenityIdList.isEmpty())
+    public List<Amenity> getAmenitiesById(List<Long> amenityIdList) {
+        if (amenityIdList.isEmpty())
             return amenityRepository.findAllAmenities();
         return amenityRepository.findAllAmenitiesById(amenityIdList);
     }

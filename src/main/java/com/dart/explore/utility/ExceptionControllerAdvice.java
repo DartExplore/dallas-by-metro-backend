@@ -9,37 +9,40 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
-    private static Log logger = LogFactory.getLog(ExceptionControllerAdvice.class);
+    private static final Log logger = LogFactory.getLog(ExceptionControllerAdvice.class);
+
+    private ResponseEntity<ErrorInfo> createErrorResponse(HttpStatus status, String message, Exception exception) {
+        logger.error(message, exception);
+        ErrorInfo errorInfo = new ErrorInfo();
+        errorInfo.setErrorMessage(message);
+        errorInfo.setErrorCode(status.value());
+        errorInfo.setTimestamp(LocalDateTime.now());
+        return new ResponseEntity<>(errorInfo, status);
+    }
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorInfo> generalExceptionHandler(Exception exception){
-        logger.error(exception.getMessage(), exception);
-        ErrorInfo error = new ErrorInfo();
-        error.setErrorMessage("Something went wrong, please check the log.");
-        error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        error.setTimestamp(LocalDateTime.now());
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ErrorInfo> generalExceptionHandler(Exception exception) {
+        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong, please check the log.", exception);
     }
 
     @ExceptionHandler(DartExploreException.class)
-    public ResponseEntity<ErrorInfo> dartExploreExceptionHandler(DartExploreException exception){
-        logger.error(exception.getMessage(), exception);
-        ErrorInfo error = new ErrorInfo();
-        error.setErrorMessage(exception.getMessage());
-        error.setErrorCode(HttpStatus.BAD_REQUEST.value());
-        error.setTimestamp(LocalDateTime.now());
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorInfo> dartExploreExceptionHandler(DartExploreException exception) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), exception);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
-    public ResponseEntity<ErrorInfo> validationHandler(Exception exception){
-        ErrorInfo errorInfo = new ErrorInfo();
-        errorInfo.setErrorMessage("Error validating your input. Make sure your request is valid.");
-        errorInfo.setErrorCode(HttpStatus.BAD_REQUEST.value());
-        errorInfo.setTimestamp(LocalDateTime.now());
-        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorInfo> validationHandler(Exception exception) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, "Error validating your input. Make sure your request is valid.", exception);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorInfo> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, "Error: " + ex.getMessage(), ex);
     }
 }

@@ -1,13 +1,12 @@
 package com.dart.explore.dto;
 
 import com.dart.explore.entity.PointOfInterest;
-import jakarta.validation.constraints.NotNull;
+import com.dart.explore.entity.Station;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PointOfInterestDTO {
-    @NotNull(message = "{property.idNotNull}")
     private Long poiId;
     private String name;
     private String location;
@@ -15,6 +14,7 @@ public class PointOfInterestDTO {
     private String picUrl;
     private String type;
     private List<AmenityDTO> amenities;
+    private Long stationId;
 
     public Long getPoiId() {
         return poiId;
@@ -72,7 +72,15 @@ public class PointOfInterestDTO {
         this.amenities = amenities;
     }
 
-    public static PointOfInterestDTO prepareDTO(PointOfInterest pointOfInterest){
+    public Long getStationId() {
+        return stationId;
+    }
+
+    public void setStationId(Long stationId) {
+        this.stationId = stationId;
+    }
+
+    public static PointOfInterestDTO preparePOIDTO(PointOfInterest pointOfInterest) {
         PointOfInterestDTO pointOfInterestDTO = new PointOfInterestDTO();
         pointOfInterestDTO.poiId = pointOfInterest.getPoiId();
         pointOfInterestDTO.name = pointOfInterest.getName();
@@ -80,7 +88,25 @@ public class PointOfInterestDTO {
         pointOfInterestDTO.type = pointOfInterest.getType();
         pointOfInterestDTO.walkingDistance = pointOfInterest.getWalkingDistance();
         pointOfInterestDTO.picUrl = pointOfInterest.getPicUrl();
-        pointOfInterestDTO.amenities = pointOfInterest.getAmenities().stream().map(AmenityDTO::prepareDTO).collect(Collectors.toList());
+        pointOfInterestDTO.stationId = pointOfInterest.getStation().getStationId();
+        pointOfInterestDTO.amenities = pointOfInterest.getAmenities().stream().map(AmenityDTO::prepareAmenityDTO).collect(Collectors.toList());
         return pointOfInterestDTO;
+    }
+
+    public static PointOfInterest preparePOIEntity(PointOfInterestDTO pointOfInterestDTO) {
+        PointOfInterest pointOfInterest = new PointOfInterest();
+        pointOfInterest.setPoiId(pointOfInterestDTO.getPoiId());
+        pointOfInterest.setName(pointOfInterestDTO.getName());
+        pointOfInterest.setLocation(pointOfInterestDTO.getLocation());
+        pointOfInterest.setType(pointOfInterestDTO.getType());
+        pointOfInterest.setWalkingDistance(pointOfInterestDTO.getWalkingDistance());
+        pointOfInterest.setPicUrl(pointOfInterestDTO.getPicUrl());
+
+        Station station = new Station();
+        station.setStationId(pointOfInterestDTO.getStationId());
+        pointOfInterest.setStation(station);
+
+        pointOfInterest.setAmenities(pointOfInterestDTO.getAmenities().stream().map(AmenityDTO::prepareAmenityEntity).collect(Collectors.toList()));
+        return pointOfInterest;
     }
 }

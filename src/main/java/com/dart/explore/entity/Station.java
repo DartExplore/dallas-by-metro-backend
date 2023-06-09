@@ -17,7 +17,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +27,7 @@ import java.util.Set;
 public class Station {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer stationId;
+    private Long stationId;
     private String name;
     private Double latitude;
     private Double longitude;
@@ -53,11 +52,11 @@ public class Station {
 
     }
 
-    public Integer getStationId() {
+    public Long getStationId() {
         return stationId;
     }
 
-    public void setStationId(Integer stationId) {
+    public void setStationId(Long stationId) {
         this.stationId = stationId;
     }
 
