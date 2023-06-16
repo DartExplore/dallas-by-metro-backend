@@ -24,11 +24,11 @@ public class PointOfInterestService {
 
     public PointOfInterestDTO addPointOfInterest(PointOfInterestDTO pointOfInterestDTO) {
         // Convert DTO to Entity using prepareEntity method
-        PointOfInterest poi = PointOfInterestDTO.preparePOIEntity(pointOfInterestDTO);
+        PointOfInterest poi = PointOfInterestDTO.prepareEntity(pointOfInterestDTO);
         // Save to the database
         PointOfInterest savedPoi = pointOfInterestRepository.save(poi);
         // Convert back to DTO and return
-        return PointOfInterestDTO.preparePOIDTO(savedPoi);
+        return PointOfInterestDTO.prepareDTO(savedPoi);
     }
 
     public PointOfInterestDTO updatePointOfInterest(PointOfInterestDTO pointOfInterestDTO) {
@@ -74,7 +74,7 @@ public class PointOfInterestService {
         PointOfInterest updatedPoi = pointOfInterestRepository.save(poiEntity);
 
         // Convert updated entity back to DTO and return
-        return PointOfInterestDTO.preparePOIDTO(updatedPoi);
+        return PointOfInterestDTO.prepareDTO(updatedPoi);
     }
 
 
