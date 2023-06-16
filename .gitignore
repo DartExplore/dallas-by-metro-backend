@@ -74,3 +74,4 @@ local.properties
 ##############################
 .env
 logs/log.log
+logs/*
