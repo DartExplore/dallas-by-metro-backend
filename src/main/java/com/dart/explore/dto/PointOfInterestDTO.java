@@ -1,10 +1,13 @@
 package com.dart.explore.dto;
 
+import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.PointOfInterest;
 import com.dart.explore.entity.Station;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PointOfInterestDTO {
@@ -109,7 +112,8 @@ public class PointOfInterestDTO {
         station.setStationId(pointOfInterestDTO.getStationId());
         pointOfInterest.setStation(station);
 
-        pointOfInterest.setAmenities(pointOfInterestDTO.getAmenities().stream().map(AmenityDTO::prepareAmenityEntity).collect(Collectors.toList()));
+        pointOfInterest.setAmenities((Optional.ofNullable(pointOfInterestDTO.getAmenities()).isEmpty()) ? new ArrayList<Amenity>() :
+                pointOfInterestDTO.getAmenities().stream().map(AmenityDTO::prepareAmenityEntity).collect(Collectors.toList()));
         return pointOfInterest;
     }
 }
