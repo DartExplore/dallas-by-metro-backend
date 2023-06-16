@@ -2,11 +2,13 @@ package com.dart.explore.dto;
 
 import com.dart.explore.entity.PointOfInterest;
 import com.dart.explore.entity.Station;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PointOfInterestDTO {
+    @NotNull(message="POI_ID must not be null.")
     private Long poiId;
     private String name;
     private String location;
@@ -14,6 +16,7 @@ public class PointOfInterestDTO {
     private String picUrl;
     private String type;
     private List<AmenityDTO> amenities;
+    @NotNull(message="STATION_ID must not be null.")
     private Long stationId;
 
     public Long getPoiId() {
@@ -80,7 +83,7 @@ public class PointOfInterestDTO {
         this.stationId = stationId;
     }
 
-    public static PointOfInterestDTO preparePOIDTO(PointOfInterest pointOfInterest) {
+    public static PointOfInterestDTO prepareDTO(PointOfInterest pointOfInterest) {
         PointOfInterestDTO pointOfInterestDTO = new PointOfInterestDTO();
         pointOfInterestDTO.poiId = pointOfInterest.getPoiId();
         pointOfInterestDTO.name = pointOfInterest.getName();
@@ -93,7 +96,7 @@ public class PointOfInterestDTO {
         return pointOfInterestDTO;
     }
 
-    public static PointOfInterest preparePOIEntity(PointOfInterestDTO pointOfInterestDTO) {
+    public static PointOfInterest prepareEntity(PointOfInterestDTO pointOfInterestDTO) {
         PointOfInterest pointOfInterest = new PointOfInterest();
         pointOfInterest.setPoiId(pointOfInterestDTO.getPoiId());
         pointOfInterest.setName(pointOfInterestDTO.getName());
