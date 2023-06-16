@@ -42,9 +42,9 @@ public class StationController {
         return new ResponseEntity<List<StationDTO>>(stations, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/poi/{station}")
-    ResponseEntity<List<PointOfInterestDTO>> getPOIsByStation(@PathVariable String station) {
-        List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsByStation(station);
+    @GetMapping(value = "/poi/{stationId}")
+    ResponseEntity<List<PointOfInterestDTO>> getPOIsByStation(@PathVariable Long stationId) {
+        List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsByStation(stationId);
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 

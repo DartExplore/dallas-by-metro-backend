@@ -17,7 +17,7 @@ public interface StationService {
 
     List<StationDTO> getStationsByLine(StationColor color);
 
-    List<PointOfInterestDTO> getPOIsByStation(String stationName);
+    List<PointOfInterestDTO> getPOIsByStation(Long stationId);
 
     List<PointOfInterestDTO> getPOIsAtStation(String stationName, List<Amenity> amenities);
 
