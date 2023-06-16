@@ -64,7 +64,7 @@ class PointOfInterestRepositoryIT {
 
     @Test
     public void whenGetPointOfInterestsByStationAndAmenities_thenReturnPointOfInterests() {
-        List<PointOfInterest> foundPOIs = pointOfInterestRepository.getPointOfInterestsByStationAndAmenities(testStation.getName(), Collections.singletonList(testAmenity));
+        List<PointOfInterest> foundPOIs = pointOfInterestRepository.getPointOfInterestsByStationAndAmenities(testStation.getStationId(), Collections.singletonList(testAmenity));
         assertThat(foundPOIs).hasSize(1);
         assertThat(foundPOIs.get(0).getName()).isEqualTo(testPOI.getName());
     }

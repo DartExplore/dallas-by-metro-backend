@@ -12,8 +12,8 @@ public interface PointOfInterestRepository extends CrudRepository<PointOfInteres
     @Query("SELECT p FROM PointOfInterest p JOIN p.amenities a WHERE a IN :amenities")
     List<PointOfInterest> getPOIsByAmenities(@Param("amenities") List<Amenity> amenities);
 
-    @Query("SELECT p FROM PointOfInterest p JOIN p.station s JOIN p.amenities a WHERE s.name = :stationName AND a IN :amenities")
-    List<PointOfInterest> getPointOfInterestsByStationAndAmenities(@Param("stationName") String stationName, @Param("amenities") List<Amenity> amenities);
+    @Query("SELECT p FROM PointOfInterest p JOIN p.station s JOIN p.amenities a WHERE s.stationId = :stationId AND a IN :amenities")
+    List<PointOfInterest> getPointOfInterestsByStationAndAmenities(@Param("stationId") Long stationId, @Param("amenities") List<Amenity> amenities);
 
     @Query("SELECT p FROM PointOfInterest p WHERE p.station.stationId = :stationId")
     List<PointOfInterest> getPOIsByStation(@Param("stationId") Long stationId);

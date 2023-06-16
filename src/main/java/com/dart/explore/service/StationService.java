@@ -19,7 +19,7 @@ public interface StationService {
 
     List<PointOfInterestDTO> getPOIsByStation(Long stationId);
 
-    List<PointOfInterestDTO> getPOIsAtStation(String stationName, List<Amenity> amenities);
+    List<PointOfInterestDTO> getPOIsAtStation(Long stationId, List<Amenity> amenities);
 
     List<Amenity> getAmenitiesById(List<Long> amenityIdList);
 }

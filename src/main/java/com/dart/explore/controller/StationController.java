@@ -48,8 +48,8 @@ public class StationController {
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/poi/{station}/amenity", "/poi/{station}/amenity/{amenitiesStringOpt}"})
-    ResponseEntity<List<PointOfInterestDTO>> getPOIsAtStation(@PathVariable String station, @PathVariable Optional<String> amenitiesStringOpt) {
+    @GetMapping(value = {"/poi/{stationId}/amenity", "/poi/{stationId}/amenity/{amenitiesStringOpt}"})
+    ResponseEntity<List<PointOfInterestDTO>> getPOIsAtStation(@PathVariable Long stationId, @PathVariable Optional<String> amenitiesStringOpt) {
         // probably move this first bit to a utility class later
         List<Long> amenityIdList = new ArrayList<>();
         if (amenitiesStringOpt.isPresent()) {
@@ -58,7 +58,7 @@ public class StationController {
             amenityIdList = Arrays.stream(amenitiesString.split(",")).map(Long::parseLong).collect(Collectors.toList());
         }
         List<Amenity> amenities = stationService.getAmenitiesById(amenityIdList);
-        List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsAtStation(station, amenities);
+        List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsAtStation(stationId, amenities);
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 }
