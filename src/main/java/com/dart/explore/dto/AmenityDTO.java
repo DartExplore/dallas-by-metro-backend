@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public class AmenityDTO {
     @NotNull(message="AMENITY_ID must not be null.")
     private Long amenityId;
+    @NotNull(message="AMENITY name must not be null.")
     private String amenity;
 
     public AmenityDTO(Long amenityId, String amenity) {

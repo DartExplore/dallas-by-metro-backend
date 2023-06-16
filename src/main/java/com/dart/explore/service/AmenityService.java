@@ -2,6 +2,7 @@ package com.dart.explore.service;
 
 import com.dart.explore.dto.AmenityDTO;
 import com.dart.explore.entity.Amenity;
+import com.dart.explore.exception.DartExploreException;
 import com.dart.explore.repository.AmenityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,54 +22,33 @@ public class AmenityService {
     public AmenityDTO addAmenity(AmenityDTO amenityDTO) {
         // Convert DTO to Entity using prepareEntity method
         Amenity amenity = AmenityDTO.prepareAmenityEntity(amenityDTO);
-        // Save to the database
         Amenity savedAmenity = amenityRepository.save(amenity);
-        // Convert back to DTO and return
         return AmenityDTO.prepareAmenityDTO(savedAmenity);
     }
 
-    public AmenityDTO updateAmenity(AmenityDTO amenityDTO) {
+    public AmenityDTO updateAmenity(AmenityDTO amenityDTO) throws DartExploreException {
         // Check if the Amenity exists in the database
         Optional<Amenity> optionalAmenity = amenityRepository.findById(amenityDTO.getAmenityId());
 
         if (optionalAmenity.isEmpty()) {
-            throw new IllegalArgumentException("Amenity with id: " + amenityDTO.getAmenityId() + " does not exist");
+            throw new DartExploreException("Amenity with id: " + amenityDTO.getAmenityId() + " does not exist");
         }
 
-        // Update the entity from DTO
         Amenity amenityEntity = optionalAmenity.get();
-
-        if (amenityDTO.getAmenity() != null) {
-            amenityEntity.setAmenity(amenityDTO.getAmenity());
-        }
-
-        // Save updated entity to the database
+        amenityEntity.setAmenity(amenityDTO.getAmenity());
         Amenity updatedAmenity = amenityRepository.save(amenityEntity);
-
-        // Convert updated entity back to DTO and return
         return AmenityDTO.prepareAmenityDTO(updatedAmenity);
     }
 
-    public String deleteAmenity(AmenityDTO amenityDTO) {
+    public void deleteAmenity(AmenityDTO amenityDTO) throws DartExploreException {
         // Fetch the amenity from the database
         Optional<Amenity> optionalAmenity = amenityRepository.findById(amenityDTO.getAmenityId());
 
         if (optionalAmenity.isEmpty()) {
-            return "Amenity with id: " + amenityDTO.getAmenityId() + " does not exist";
+            throw new DartExploreException("Amenity with id: " + amenityDTO.getAmenityId() + " does not exist");
         }
 
-        // Store the amenity name before deletion
-        String amenityName = optionalAmenity.get().getAmenity();
-
-        // Delete the entity from the database
         amenityRepository.deleteById(amenityDTO.getAmenityId());
-
-        // Check if the entity still exists in the database
-        if (amenityRepository.existsById(amenityDTO.getAmenityId())) {
-            return "Failed to delete amenity: " + amenityName;
-        } else {
-            return "Amenity: " + amenityName + " successfully deleted";
-        }
     }
 
 
