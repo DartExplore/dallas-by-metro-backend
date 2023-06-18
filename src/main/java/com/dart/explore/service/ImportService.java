@@ -85,7 +85,7 @@ public class ImportService {
     }
 
     public boolean isDataLoaded() {
-        return stationRepository.findFirstBy() != null;
+        return stationRepository.findFirstBy() == null;
     }
 
 }

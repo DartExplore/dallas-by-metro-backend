@@ -9,7 +9,6 @@ import com.dart.explore.entity.StationColor;
 import com.dart.explore.repository.AmenityRepository;
 import com.dart.explore.repository.PointOfInterestRepository;
 import com.dart.explore.repository.StationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dart.explore.entity.Amenity;
@@ -17,12 +16,15 @@ import com.dart.explore.entity.Amenity;
 
 @Service(value = "stationService")
 public class StationServiceImpl implements StationService {
-    @Autowired
-    PointOfInterestRepository pointOfInterestRepository;
-    @Autowired
-    StationRepository stationRepository;
-    @Autowired
-    AmenityRepository amenityRepository;
+    final PointOfInterestRepository pointOfInterestRepository;
+    final StationRepository stationRepository;
+    final AmenityRepository amenityRepository;
+
+    public StationServiceImpl(PointOfInterestRepository pointOfInterestRepository, StationRepository stationRepository, AmenityRepository amenityRepository) {
+        this.pointOfInterestRepository = pointOfInterestRepository;
+        this.stationRepository = stationRepository;
+        this.amenityRepository = amenityRepository;
+    }
 
     @Override
     public List<PointOfInterestDTO> getPOIs(List<Amenity> amenities) {

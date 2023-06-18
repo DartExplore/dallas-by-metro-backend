@@ -5,7 +5,6 @@ import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.StationColor;
 import com.dart.explore.service.StationServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/public")
 public class StationController {
-    @Autowired
-    StationServiceImpl stationService;
+    final StationServiceImpl stationService;
+
+    public StationController(StationServiceImpl stationService) {
+        this.stationService = stationService;
+    }
 
     @GetMapping(value = {"/poi/amenity", "/poi/amenity/{amenitiesStringOpt}"})
     ResponseEntity<List<PointOfInterestDTO>> getPOIs(@PathVariable Optional<String> amenitiesStringOpt) {

@@ -38,7 +38,7 @@ class PointOfInterestRepositoryIT {
     private Station testStation;
 
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() {
         testPOI = new PointOfInterest();
         testPOI.setName("Test POI");
         testAmenity = new Amenity();

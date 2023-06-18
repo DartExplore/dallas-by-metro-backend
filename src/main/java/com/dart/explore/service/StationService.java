@@ -5,7 +5,6 @@ import java.util.List;
 import com.dart.explore.dto.PointOfInterestDTO;
 import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.Amenity;
-import com.dart.explore.entity.PointOfInterest;
 import com.dart.explore.entity.StationColor;
 
 /* this service will provide functions for the minimal viable product
