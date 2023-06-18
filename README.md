@@ -48,4 +48,4 @@ The current private API layout is as follows:
 
 This project was started to help residents of Dallas learn to use the DART train system but this code can be easily
 extended to other transit systems.
-We encourage forking to make your own version or contacting us directly.
+We encourage forking and making your own version or contacting us directly.
