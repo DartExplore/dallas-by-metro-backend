@@ -99,7 +99,7 @@ public class PointOfInterestDTO {
         return pointOfInterestDTO;
     }
 
-    public static PointOfInterest prepareEntity(PointOfInterestDTO pointOfInterestDTO) {
+    public static PointOfInterest prepareEntity(PointOfInterestDTO pointOfInterestDTO, Station station) {
         PointOfInterest pointOfInterest = new PointOfInterest();
         pointOfInterest.setPoiId(pointOfInterestDTO.getPoiId());
         pointOfInterest.setName(pointOfInterestDTO.getName());
@@ -107,9 +107,6 @@ public class PointOfInterestDTO {
         pointOfInterest.setType(pointOfInterestDTO.getType());
         pointOfInterest.setWalkingDistance(pointOfInterestDTO.getWalkingDistance());
         pointOfInterest.setPicUrl(pointOfInterestDTO.getPicUrl());
-
-        Station station = new Station();
-        station.setStationId(pointOfInterestDTO.getStationId());
         pointOfInterest.setStation(station);
 
         pointOfInterest.setAmenities((Optional.ofNullable(pointOfInterestDTO.getAmenities()).isEmpty()) ? new ArrayList<Amenity>() :

@@ -4,8 +4,10 @@ import com.dart.explore.dto.AmenityDTO;
 import com.dart.explore.dto.PointOfInterestDTO;
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.PointOfInterest;
+import com.dart.explore.entity.Station;
 import com.dart.explore.exception.DartExploreException;
 import com.dart.explore.repository.PointOfInterestRepository;
+import com.dart.explore.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +19,23 @@ import java.util.stream.Collectors;
 public class PointOfInterestService {
 
     private final PointOfInterestRepository pointOfInterestRepository;
+    private final StationRepository stationRepository;
 
     @Autowired
-    public PointOfInterestService(PointOfInterestRepository pointOfInterestRepository) {
+    public PointOfInterestService(PointOfInterestRepository pointOfInterestRepository, StationRepository stationRepository) {
         this.pointOfInterestRepository = pointOfInterestRepository;
+        this.stationRepository = stationRepository;
     }
 
-    public PointOfInterestDTO addPointOfInterest(PointOfInterestDTO pointOfInterestDTO) {
+    public PointOfInterestDTO addPointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
+        Optional<Station> optionalStation = stationRepository.findByStationIdIs(pointOfInterestDTO.getStationId());
+
+        if (optionalStation.isEmpty()) {
+            throw new DartExploreException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
+        }
+
         // Convert DTO to Entity using prepareEntity method
-        PointOfInterest poi = PointOfInterestDTO.prepareEntity(pointOfInterestDTO);
+        PointOfInterest poi = PointOfInterestDTO.prepareEntity(pointOfInterestDTO, optionalStation.get());
         // Save to the database
         PointOfInterest savedPoi = pointOfInterestRepository.save(poi);
         // Convert back to DTO and return
@@ -33,6 +43,12 @@ public class PointOfInterestService {
     }
 
     public PointOfInterestDTO updatePointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
+        Optional<Station> optionalStation = stationRepository.findByStationIdIs(pointOfInterestDTO.getStationId());
+
+        if (optionalStation.isEmpty()) {
+            throw new DartExploreException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
+        }
+
         // Check if the Point of Interest exists in the database
         Optional<PointOfInterest> optionalPoi = pointOfInterestRepository.findById(pointOfInterestDTO.getPoiId());
 

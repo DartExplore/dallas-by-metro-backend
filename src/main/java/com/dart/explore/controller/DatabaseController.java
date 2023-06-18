@@ -26,7 +26,7 @@ public class DatabaseController {
     }
 
     @PostMapping(value = "/poi")
-    public ResponseEntity<PointOfInterestDTO> createPOI(@Valid @RequestBody PointOfInterestDTO pointOfInterestDTO) {
+    public ResponseEntity<PointOfInterestDTO> createPOI(@Valid @RequestBody PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
         PointOfInterestDTO poi = pointOfInterestService.addPointOfInterest(pointOfInterestDTO);
         return ResponseEntity.ok(poi);
     }
