@@ -63,4 +63,11 @@ public class ReadController {
         List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsAtStation(stationId, amenities);
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/all")
+    ResponseEntity<List<StationDTO>> getAllStationsWithPOIs() {
+        List<StationDTO> stationsWithPOIs = stationService.getAllStationsWithPOIs();
+        return new ResponseEntity<List<StationDTO>>(stationsWithPOIs, HttpStatus.OK);
+    }
+
 }

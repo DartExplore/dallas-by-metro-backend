@@ -2,6 +2,7 @@ package com.dart.explore.repository;
 
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.PointOfInterest;
+import com.dart.explore.entity.Station;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +19,5 @@ public interface PointOfInterestRepository extends CrudRepository<PointOfInteres
     @Query("SELECT p FROM PointOfInterest p WHERE p.station.stationId = :stationId")
     List<PointOfInterest> getPOIsByStation(@Param("stationId") Long stationId);
 
+    List<PointOfInterest> findByStation(Station station);
 }
