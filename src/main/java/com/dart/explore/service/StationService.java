@@ -6,6 +6,7 @@ import com.dart.explore.dto.PointOfInterestDTO;
 import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.StationColor;
+import com.dart.explore.exception.DartExploreException;
 
 /* this service will provide functions for the minimal viable product
  * using this service we can do things such as getting stations by line,
@@ -21,4 +22,8 @@ public interface StationService {
     List<PointOfInterestDTO> getPOIsAtStation(Long stationId, List<Amenity> amenities);
 
     List<Amenity> getAmenitiesById(List<Long> amenityIdList);
+
+    List<StationDTO> getAllStationsWithPOIs();
+
+    List<PointOfInterestDTO> getPOIsById(List<Long> poiIds) throws DartExploreException;
 }
