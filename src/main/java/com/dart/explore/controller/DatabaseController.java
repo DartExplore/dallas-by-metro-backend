@@ -5,6 +5,7 @@ import com.dart.explore.exception.DartExploreException;
 import com.dart.explore.service.AmenityService;
 import com.dart.explore.service.PointOfInterestService;
 import com.dart.explore.dto.PointOfInterestDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/private")
 @Validated
+@SecurityRequirement(name = "API Key")
 public class DatabaseController {
 
     private final PointOfInterestService pointOfInterestService;
