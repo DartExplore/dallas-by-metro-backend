@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/public")
-public class StationController {
+public class ReadController {
     final StationServiceImpl stationService;
 
-    public StationController(StationServiceImpl stationService) {
+    public ReadController(StationServiceImpl stationService) {
         this.stationService = stationService;
     }
 
