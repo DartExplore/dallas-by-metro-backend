@@ -3,13 +3,20 @@ package com.dart.explore.dto;
 import com.dart.explore.entity.StationColor;
 import com.dart.explore.entity.Station;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class StationDTO {
     private Long stationId;
     private String name;
-    private Set<StationColor> color = new HashSet<>();
+    private Set<StationColor> color;
+    private List<PointOfInterestDTO> pointsOfInterest;
+
+    public StationDTO(Station station) {
+        this.stationId = station.getStationId();
+        this.name = station.getName();
+        this.color = station.getColor();
+    }
 
     public Long getStationId() {
         return stationId;
@@ -31,11 +38,19 @@ public class StationDTO {
         return color;
     }
 
+    public void setColor(Set<StationColor> color) {
+        this.color = color;
+    }
+
+    public List<PointOfInterestDTO> getPointsOfInterest() {
+        return pointsOfInterest;
+    }
+
+    public void setPointsOfInterest(List<PointOfInterestDTO> pointsOfInterest) {
+        this.pointsOfInterest = pointsOfInterest;
+    }
+
     public static StationDTO prepareStationDTO(Station station) {
-        StationDTO stationDTO = new StationDTO();
-        stationDTO.stationId = station.getStationId();
-        stationDTO.name = station.getName();
-        stationDTO.color = station.getColor();
-        return stationDTO;
+        return new StationDTO(station);
     }
 }
