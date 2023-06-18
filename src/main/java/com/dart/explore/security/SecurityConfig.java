@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -20,11 +22,10 @@ public abstract class SecurityConfig {
         String apiKey = env.getProperty("API_KEY");
         http
                 .addFilterBefore(new ApiKeyFilter(apiKey), AuthorizationFilter.class)
-                .authorizeHttpRequests()
-                .anyRequest().permitAll()
-                .and()
-                .requiresChannel()
-                .anyRequest();
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().permitAll()
+                )
+                .requiresChannel(AbstractRequestMatcherRegistry::anyRequest);
     }
 }
 
@@ -35,7 +36,7 @@ class DevSecurityConfig extends SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         configure(http);
-        http.csrf().disable();
+        http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 }
@@ -47,8 +48,7 @@ class ProdSecurityConfig extends SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         configure(http);
-        http.csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+        http.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
         return http.build();
     }
 }

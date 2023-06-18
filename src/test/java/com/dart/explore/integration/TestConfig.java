@@ -14,7 +14,7 @@ public class TestConfig {
 
     @PostConstruct
     public void setup() throws Exception {
-        if (!importService.isDataLoaded()) {
+        if (importService.isDataLoaded()) {
             importService.loadData("station_colors.txt");
             importService.loadData("station_connections.txt");
             importService.loadData("stations.txt");
