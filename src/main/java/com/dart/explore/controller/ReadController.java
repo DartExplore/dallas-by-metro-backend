@@ -4,6 +4,8 @@ import com.dart.explore.dto.PointOfInterestDTO;
 import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.exception.DartExploreException;
+import com.dart.explore.repository.AmenityRepository;
+import com.dart.explore.service.AmenityService;
 import com.dart.explore.service.PointOfInterestService;
 import com.dart.explore.service.StationServiceImpl;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,12 +27,13 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/public")
 public class ReadController {
     final StationServiceImpl stationService;
-
     private final PointOfInterestService pointOfInterestService;
+    private final AmenityService amenityService;
 
-    public ReadController(StationServiceImpl stationService, PointOfInterestService pointOfInterestService) {
+    public ReadController(StationServiceImpl stationService, PointOfInterestService pointOfInterestService, AmenityRepository amenityRepository, AmenityService amenityService) {
         this.stationService = stationService;
         this.pointOfInterestService = pointOfInterestService;
+        this.amenityService = amenityService;
     }
 
     @GetMapping(value = "/all")
@@ -86,4 +89,11 @@ public class ReadController {
         List<StationDTO> stations = stationService.getStationsByLines(Arrays.asList(linesStrings));
         return new ResponseEntity<List<StationDTO>>(stations, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/amenities")
+    public ResponseEntity<List<Amenity>> getAllAmenities() {
+        List<Amenity> amenities = amenityService.getAllAmenities();
+        return new ResponseEntity<>(amenities, HttpStatus.OK);
+    }
+
 }
