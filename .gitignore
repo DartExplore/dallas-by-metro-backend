@@ -75,3 +75,4 @@ local.properties
 .env
 logs/log.log
 logs/*
+package-lock.json
