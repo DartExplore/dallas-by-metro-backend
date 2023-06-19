@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class ApiKeyFilter extends OncePerRequestFilter {
 
@@ -41,6 +43,12 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().startsWith("/api/public");
+        List<String> excludedRoutes = Arrays.asList(
+                "/api/public",
+                "/swagger-ui",
+                "/v3/api-docs"
+        );
+        String servletPath = request.getServletPath();
+        return excludedRoutes.stream().anyMatch(servletPath::startsWith);
     }
 }

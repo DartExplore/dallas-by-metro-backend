@@ -5,10 +5,16 @@ import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.StationColor;
 import com.dart.explore.exception.DartExploreException;
+import com.dart.explore.service.PointOfInterestService;
 import com.dart.explore.service.StationServiceImpl;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +27,11 @@ import java.util.stream.Collectors;
 public class ReadController {
     final StationServiceImpl stationService;
 
-    public ReadController(StationServiceImpl stationService) {
+    private final PointOfInterestService pointOfInterestService;
+
+    public ReadController(StationServiceImpl stationService, PointOfInterestService pointOfInterestService) {
         this.stationService = stationService;
+        this.pointOfInterestService = pointOfInterestService;
     }
 
     @GetMapping(value = "/all")
@@ -31,42 +40,14 @@ public class ReadController {
         return new ResponseEntity<List<StationDTO>>(stationsWithPOIs, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/pois")
-    ResponseEntity<Object> getPOIsById(@RequestParam("ID") String poiIdsString) {
-        List<Long> poiIds = new ArrayList<>();
+    @GetMapping(value = "/poi")
+    ResponseEntity<List<PointOfInterestDTO>> getPOIsById(
+            @RequestParam("ID")
+            @Parameter(example = "1,2,3") String poiIdsString)
+            throws DartExploreException {
         String[] poiIdsStrings = poiIdsString.split(",");
-        String invalidNumberString = null;
-
-        try {
-            for (String poiIdString : poiIdsStrings) {
-                // Try to parse each string to a Long
-                try {
-                    Long poiId = Long.parseLong(poiIdString);
-                    poiIds.add(poiId);
-                } catch (NumberFormatException e) {
-                    // If parsing fails, store the invalid string and break the loop
-                    invalidNumberString = poiIdString;
-                    break;
-                }
-            }
-
-            if (invalidNumberString != null) {
-                // If there was an invalid string, throw a NumberFormatException manually
-                throw new NumberFormatException();
-            }
-
-            // Retrieve the POIs with the given IDs from service layer
-            List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsById(poiIds);
-
-            // Return the POIs in the response
-            return new ResponseEntity<>(pointOfInterestList, HttpStatus.OK);
-        } catch (NumberFormatException e) {
-            // Return an error response if any of the IDs could not be parsed to a Long
-            return new ResponseEntity<>("'" + invalidNumberString + "' is not a valid number.", HttpStatus.BAD_REQUEST);
-        } catch (DartExploreException e) {
-            // Return an error response if any of the POIs could not be found
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        List<PointOfInterestDTO> pointOfInterestList = pointOfInterestService.getPOIsByIds(Arrays.asList(poiIdsStrings));
+        return new ResponseEntity<>(pointOfInterestList, HttpStatus.OK);
     }
 
     @GetMapping(value = {"/poi/amenity", "/poi/amenity/{amenitiesStringOpt}"})

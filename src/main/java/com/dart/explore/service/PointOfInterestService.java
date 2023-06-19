@@ -11,6 +11,7 @@ import com.dart.explore.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -104,5 +105,34 @@ public class PointOfInterestService {
         }
 
         pointOfInterestRepository.deleteById(pointOfInterestDTO.getPoiId());
+    }
+
+    public List<PointOfInterestDTO> getPOIsByIds(List<String> poiIdsStrings) throws DartExploreException {
+        List<Long> poiIds = new ArrayList<>();
+        String invalidNumberString = null;
+        try {
+            for (String poiIdString : poiIdsStrings) {
+                try {
+                    Long poiId = Long.parseLong(poiIdString);
+                    poiIds.add(poiId);
+                } catch (NumberFormatException e) {
+                    invalidNumberString = poiIdString;
+                    break;
+                }
+            }
+            if (invalidNumberString != null) {
+                throw new DartExploreException("'" + invalidNumberString + "' is not a valid number.");
+            }
+
+            List<PointOfInterest> poiList = new ArrayList<>();
+            pointOfInterestRepository.findAllById(poiIds).forEach(poiList::add);
+
+            return poiList.stream()
+                    .map(PointOfInterestDTO::prepareDTO)
+                    .collect(Collectors.toList());
+
+        } catch (NumberFormatException e) {
+            throw new DartExploreException("'" + invalidNumberString + "' is not a valid number.");
+        }
     }
 }
