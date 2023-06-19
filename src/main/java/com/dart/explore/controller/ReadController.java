@@ -3,7 +3,6 @@ package com.dart.explore.controller;
 import com.dart.explore.dto.PointOfInterestDTO;
 import com.dart.explore.dto.StationDTO;
 import com.dart.explore.entity.Amenity;
-import com.dart.explore.entity.StationColor;
 import com.dart.explore.exception.DartExploreException;
 import com.dart.explore.service.PointOfInterestService;
 import com.dart.explore.service.StationServiceImpl;
@@ -64,12 +63,6 @@ public class ReadController {
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/poi/{stationId}")
-    ResponseEntity<List<PointOfInterestDTO>> getPOIsByStation(@PathVariable Long stationId) {
-        List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsByStation(stationId);
-        return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
-    }
-
     @GetMapping(value = {"/poi/{stationId}/amenity", "/poi/{stationId}/amenity/{amenitiesStringOpt}"})
     ResponseEntity<List<PointOfInterestDTO>> getPOIsAtStation(@PathVariable Long stationId, @PathVariable Optional<String> amenitiesStringOpt) {
         // probably move this first bit to a utility class later
@@ -84,10 +77,13 @@ public class ReadController {
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/station/{line}")
-    ResponseEntity<List<StationDTO>> getStationsByLine(@PathVariable String line) {
-        List<StationDTO> stations = stationService.getStationsByLine(StationColor.valueOf(line));
+    @GetMapping(value = "/station")
+    ResponseEntity<List<StationDTO>> getStationsByLines(
+            @RequestParam("line")
+            @Parameter(example = "RED,BLUE,GREEN") String linesString)
+            throws DartExploreException {
+        String[] linesStrings = linesString.split(",");
+        List<StationDTO> stations = stationService.getStationsByLines(Arrays.asList(linesStrings));
         return new ResponseEntity<List<StationDTO>>(stations, HttpStatus.OK);
     }
-
 }

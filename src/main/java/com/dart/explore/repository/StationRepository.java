@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StationRepository extends CrudRepository<Station, Integer> {
-    @Query("SELECT s FROM Station s JOIN s.color c WHERE c = :color")
-    List<Station> findStationByColor(@Param("color") StationColor color);
+    @Query("SELECT s FROM Station s JOIN s.color c WHERE c IN :colors")
+    List<Station> findStationsByColors(@Param("colors") List<StationColor> colors);
 
     Station findFirstBy();
 

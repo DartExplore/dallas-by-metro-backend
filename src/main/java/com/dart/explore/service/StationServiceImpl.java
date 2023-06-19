@@ -37,13 +37,28 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<StationDTO> getStationsByLine(StationColor color) {
-        return stationRepository.findStationByColor(color).stream().map(StationDTO::prepareStationDTO).collect(Collectors.toList());
-    }
+    public List<StationDTO> getStationsByLines(List<String> lines) throws DartExploreException {
+        List<StationColor> colors = new ArrayList<>();
+        String invalidColorString = null;
 
-    @Override
-    public List<PointOfInterestDTO> getPOIsByStation(Long stationId) {
-        return pointOfInterestRepository.getPOIsByStation(stationId).stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
+        for (String line : lines) {
+            try {
+                StationColor color = StationColor.valueOf(line);
+                colors.add(color);
+            } catch (IllegalArgumentException e) {
+                invalidColorString = line;
+                break;
+            }
+        }
+
+        if (invalidColorString != null) {
+            throw new DartExploreException("'" + invalidColorString + "' is not a valid StationColor.");
+        }
+
+        return stationRepository.findStationsByColors(colors)
+                .stream()
+                .map(StationDTO::prepareStationDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -87,5 +102,4 @@ public class StationServiceImpl implements StationService {
         }
         return poiList;
     }
-
 }
