@@ -39,10 +39,10 @@ public class DatabaseController {
         return ResponseEntity.ok(poi);
     }
 
-    @DeleteMapping(value = "/poi")
-    public ResponseEntity<String> deletePOI(@Valid @RequestBody PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
-        pointOfInterestService.deletePointOfInterest(pointOfInterestDTO);
-        return ResponseEntity.ok("Point of interest with ID: " + pointOfInterestDTO.getPoiId() + " successfully deleted");
+    @DeleteMapping(value = "/poi/{poiId}")
+    public ResponseEntity<String> deletePOI(@PathVariable Long poiId) throws DartExploreException {
+        pointOfInterestService.deletePointOfInterest(poiId);
+        return ResponseEntity.ok("Point of interest with ID: " + poiId + " successfully deleted");
     }
 
     @PostMapping(value = "/amenity")
@@ -57,9 +57,9 @@ public class DatabaseController {
         return ResponseEntity.ok(amenity);
     }
 
-    @DeleteMapping(value = "/amenity")
-    public ResponseEntity<String> deleteAmenity(@Valid @RequestBody AmenityDTO amenityDTO) throws DartExploreException {
-        amenityService.deleteAmenity(amenityDTO);
-        return ResponseEntity.ok("Amenity: " + amenityDTO.getAmenity() + " successfully deleted");
+    @DeleteMapping(value = "/amenity/{amenityId}")
+    public ResponseEntity<String> deleteAmenity(@PathVariable Long amenityId) throws DartExploreException {
+        amenityService.deleteAmenity(amenityId);
+        return ResponseEntity.ok("Amenity: " + amenityId + " successfully deleted");
     }
 }

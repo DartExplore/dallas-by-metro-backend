@@ -41,15 +41,15 @@ public class AmenityService {
         return AmenityDTO.prepareAmenityDTO(updatedAmenity);
     }
 
-    public void deleteAmenity(AmenityDTO amenityDTO) throws DartExploreException {
+    public void deleteAmenity(Long amenityId) throws DartExploreException {
         // Fetch the amenity from the database
-        Optional<Amenity> optionalAmenity = amenityRepository.findById(amenityDTO.getAmenityId());
+        Optional<Amenity> optionalAmenity = amenityRepository.findById(amenityId);
 
         if (optionalAmenity.isEmpty()) {
-            throw new DartExploreException("Amenity with id: " + amenityDTO.getAmenityId() + " does not exist");
+            throw new DartExploreException("Amenity with id: " + amenityId + " does not exist");
         }
 
-        amenityRepository.deleteById(amenityDTO.getAmenityId());
+        amenityRepository.deleteById(amenityId);
     }
 
     public List<Amenity> getAllAmenities() {

@@ -96,15 +96,15 @@ public class PointOfInterestService {
     }
 
 
-    public void deletePointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
+    public void deletePointOfInterest(Long poiId) throws DartExploreException {
         // Fetch the point of interest from the database
-        Optional<PointOfInterest> optionalPoi = pointOfInterestRepository.findById(pointOfInterestDTO.getPoiId());
+        Optional<PointOfInterest> optionalPoi = pointOfInterestRepository.findById(poiId);
 
         if (optionalPoi.isEmpty()) {
-            throw new DartExploreException("Point of Interest with id: " + pointOfInterestDTO.getPoiId() + " does not exist");
+            throw new DartExploreException("Point of Interest with id: " + poiId + " does not exist");
         }
 
-        pointOfInterestRepository.deleteById(pointOfInterestDTO.getPoiId());
+        pointOfInterestRepository.deleteById(poiId);
     }
 
     public List<PointOfInterestDTO> getPOIsByIds(List<String> poiIdsStrings) throws DartExploreException {
