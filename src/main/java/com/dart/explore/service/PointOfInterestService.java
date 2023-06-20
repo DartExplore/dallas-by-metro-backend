@@ -6,6 +6,7 @@ import com.dart.explore.entity.Amenity;
 import com.dart.explore.entity.PointOfInterest;
 import com.dart.explore.entity.Station;
 import com.dart.explore.exception.DartExploreException;
+import com.dart.explore.repository.AmenityRepository;
 import com.dart.explore.repository.PointOfInterestRepository;
 import com.dart.explore.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,13 @@ public class PointOfInterestService {
 
     private final PointOfInterestRepository pointOfInterestRepository;
     private final StationRepository stationRepository;
+    private final AmenityRepository amenityRepository;
 
     @Autowired
-    public PointOfInterestService(PointOfInterestRepository pointOfInterestRepository, StationRepository stationRepository) {
+    public PointOfInterestService(PointOfInterestRepository pointOfInterestRepository, StationRepository stationRepository, AmenityRepository amenityRepository) {
         this.pointOfInterestRepository = pointOfInterestRepository;
         this.stationRepository = stationRepository;
+        this.amenityRepository = amenityRepository;
     }
 
     public PointOfInterestDTO addPointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
@@ -35,8 +38,16 @@ public class PointOfInterestService {
             throw new DartExploreException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
         }
 
+        // getting amenities; if not every one is present we fail
+        List<Amenity> amenityList = amenityRepository.findAllAmenitiesById(pointOfInterestDTO.getAmenities()
+                .stream().map((amenity)->amenity.getAmenityId()).collect(Collectors.toList()));
+
+        if(amenityList.size() != pointOfInterestDTO.getAmenities().size()) {
+            throw new DartExploreException("At least one invalid amenityId present. Check your input.");
+        }
+
         // Convert DTO to Entity using prepareEntity method
-        PointOfInterest poi = PointOfInterestDTO.prepareEntity(pointOfInterestDTO, optionalStation.get());
+        PointOfInterest poi = PointOfInterestDTO.prepareEntity(pointOfInterestDTO, optionalStation.get(), amenityList);
         // Save to the database
         PointOfInterest savedPoi = pointOfInterestRepository.save(poi);
         // Convert back to DTO and return
@@ -80,12 +91,17 @@ public class PointOfInterestService {
             poiEntity.setPicUrl(pointOfInterestDTO.getPicUrl());
         }
 
+
         if (pointOfInterestDTO.getAmenities() != null) {
-            List<Amenity> amenities = pointOfInterestDTO.getAmenities()
-                    .stream()
-                    .map(AmenityDTO::prepareAmenityEntity)
-                    .collect(Collectors.toList());
-            poiEntity.setAmenities(amenities);
+            // getting amenities; if not every one is present we fail
+            List<Amenity> amenityList = amenityRepository.findAllAmenitiesById(pointOfInterestDTO.getAmenities()
+                    .stream().map((amenity)->amenity.getAmenityId()).collect(Collectors.toList()));
+
+            if(amenityList.size() != pointOfInterestDTO.getAmenities().size()) {
+                throw new DartExploreException("At least one invalid amenityId present. Check your input.");
+            }
+
+            poiEntity.setAmenities(amenityList);
         }
 
         // Save updated entity to the database
