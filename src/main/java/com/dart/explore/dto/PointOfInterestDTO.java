@@ -99,7 +99,7 @@ public class PointOfInterestDTO {
         return pointOfInterestDTO;
     }
 
-    public static PointOfInterest prepareEntity(PointOfInterestDTO pointOfInterestDTO, Station station) {
+    public static PointOfInterest prepareEntity(PointOfInterestDTO pointOfInterestDTO, Station station, List<Amenity> amenityList) {
         PointOfInterest pointOfInterest = new PointOfInterest();
         pointOfInterest.setPoiId(pointOfInterestDTO.getPoiId());
         pointOfInterest.setName(pointOfInterestDTO.getName());
@@ -110,7 +110,7 @@ public class PointOfInterestDTO {
         pointOfInterest.setStation(station);
 
         pointOfInterest.setAmenities((Optional.ofNullable(pointOfInterestDTO.getAmenities()).isEmpty()) ? new ArrayList<Amenity>() :
-                pointOfInterestDTO.getAmenities().stream().map(AmenityDTO::prepareAmenityEntity).collect(Collectors.toList()));
+                amenityList);
         return pointOfInterest;
     }
 }
