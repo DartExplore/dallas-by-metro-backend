@@ -1,7 +1,9 @@
 const axios = require('axios');
 
+const x_api_key = process.env.X_API_KEY;
+
 const headers = {
-  'x-api-key': 'u&9pzmT9cF@bRro8w$eEfd%5iaR2f6'
+  'x-api-key': x_api_key
 };
 
 const AMENITIES = [
