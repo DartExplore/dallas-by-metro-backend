@@ -51,28 +51,22 @@ public class ReadController {
     }
 
     @GetMapping(value="/poi/amenity")
-    ResponseEntity<List<PointOfInterestDTO>> getPOIs(@RequestParam("amenityIdList") Optional<String> amenitiesStringOpt) {
+    ResponseEntity<List<PointOfInterestDTO>> getPOIs(@RequestParam("amenityIdList") String amenitiesString) {
         // probably move this first bit to a utility class later
-        List<Long> amenityIdList = new ArrayList<>();
-        if (amenitiesStringOpt.isPresent()) {
-            // populate amenityIdList
-            String amenitiesString = amenitiesStringOpt.get();
-            amenityIdList = Arrays.stream(amenitiesString.split(",")).map(Long::parseLong).collect(Collectors.toList());
-        }
+        List<Long> amenityIdList = (amenitiesString.isEmpty()) ? new ArrayList<>() :
+                Arrays.stream(amenitiesString.split(",")).map(Long::parseLong).collect(Collectors.toList());
+
         List<Amenity> amenities = stationService.getAmenitiesById(amenityIdList);
         List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIs(amenities);
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 
     @GetMapping(value ="/poi/{stationId}/amenity")
-    ResponseEntity<List<PointOfInterestDTO>> getPOIsAtStation(@PathVariable Long stationId, @RequestParam("amenityIdList") Optional<String> amenitiesStringOpt) {
+    ResponseEntity<List<PointOfInterestDTO>> getPOIsAtStation(@PathVariable Long stationId, @RequestParam("amenityIdList") String amenitiesString) {
         // probably move this first bit to a utility class later
-        List<Long> amenityIdList = new ArrayList<>();
-        if (amenitiesStringOpt.isPresent()) {
-            // populate amenityIdList
-            String amenitiesString = amenitiesStringOpt.get();
-            amenityIdList = Arrays.stream(amenitiesString.split(",")).map(Long::parseLong).collect(Collectors.toList());
-        }
+        List<Long> amenityIdList = (amenitiesString.isEmpty()) ? new ArrayList<>() :
+                Arrays.stream(amenitiesString.split(",")).map(Long::parseLong).collect(Collectors.toList());
+
         List<Amenity> amenities = stationService.getAmenitiesById(amenityIdList);
         List<PointOfInterestDTO> pointOfInterestList = stationService.getPOIsAtStation(stationId, amenities);
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
