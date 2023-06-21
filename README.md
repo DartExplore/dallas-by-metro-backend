@@ -13,7 +13,8 @@ API.
 
 Simply clone the repository and open the project in your IDE of choice. If application cannot run, ensure you have a
 recent version of Java and run a Maven update. A test database can be spun up in Docker by navigating to the resources
-folder and executing *sudo docker compose up* and deleted by *sudo docker compose down -v*.
+folder and executing *sudo docker compose up* and deleted by *sudo docker compose down -v*. Some test data can be generated
+by running the NodeJS script under the scripts folder within resources.
 
 ## Database
 
@@ -26,23 +27,9 @@ deleting point of interest and amenity data.
 
 The current public API layout is as follows:
 
-| Route                                           | Request Type | Description                                      | Return                  |
-|-------------------------------------------------|--------------|--------------------------------------------------|-------------------------|
-| /api/public/poi/amenity/{amenities}             | GET          | Gets POIs with given amenities.                  | List\<PointOfInterest\> |
-| /api/public/station/{line}                      | GET          | Gets all stations on a given line.               | List\<Station\>         |
-| /api/public/poi/{stationId}                     | GET          | Gets all POIs at a station.                      | List\<PointOfInterest\> |
-| /api/public/poi/{stationId}/amenity/{amenities} | GET          | Gets all POIs at a station with given amenities. | List\<PointOfInterest\> |
+![image](https://github.com/DartExplore/dallas-by-metro-backend/assets/18405628/9fc479d5-8ac1-40e2-ae44-3bc1e9159f2f)
 
-The current private API layout is as follows:
-
-| Route                 | Request Type | Description                                                   | Return          |
-|-----------------------|--------------|---------------------------------------------------------------|-----------------|
-| /api/private/poi/     | POST         | Creates new POI and returns POI with DB generated ID.         | PointOfInterest | 
-| /api/private/poi/     | PUT          | Updates POI.                                                  | PointOfInterest |
-| /api/private/poi/     | DELETE       | Deletes POI with status message.                              | String          |
-| /api/private/amenity/ | POST         | Creates new Amenity and returns Amenity with DB generated ID. | Amenity         |
-| /api/private/amenity/ | PUT          | Updates Amenity.                                              | Amenity         |
-| /api/private/amenity/ | DELETE       | Deletes Amenity with status message.                          | String          |
+This changes frequently at the moment so we suggest going to the following [link](https://dallasbymetro.com/swagger-ui/index.html).
 
 ## Getting Involved
 
