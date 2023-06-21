@@ -22,6 +22,8 @@ public class PointOfInterestDTO {
     @NotNull(message="STATION_ID must not be null.")
     private Long stationId;
 
+    private String stationName;
+
     public Long getPoiId() {
         return poiId;
     }
@@ -86,6 +88,10 @@ public class PointOfInterestDTO {
         this.stationId = stationId;
     }
 
+    public String getStationName() { return stationName; }
+
+    public void setStationName(String stationName) { this.stationName = stationName; }
+
     public static PointOfInterestDTO prepareDTO(PointOfInterest pointOfInterest) {
         PointOfInterestDTO pointOfInterestDTO = new PointOfInterestDTO();
         pointOfInterestDTO.poiId = pointOfInterest.getPoiId();
@@ -95,6 +101,7 @@ public class PointOfInterestDTO {
         pointOfInterestDTO.walkingDistance = pointOfInterest.getWalkingDistance();
         pointOfInterestDTO.picUrl = pointOfInterest.getPicUrl();
         pointOfInterestDTO.stationId = pointOfInterest.getStation().getStationId();
+        pointOfInterestDTO.stationName = pointOfInterest.getStation().getName();
         pointOfInterestDTO.amenities = pointOfInterest.getAmenities().stream().map(AmenityDTO::prepareAmenityDTO).collect(Collectors.toList());
         return pointOfInterestDTO;
     }
