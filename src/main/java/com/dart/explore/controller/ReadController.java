@@ -9,7 +9,6 @@ import com.dart.explore.service.AmenityService;
 import com.dart.explore.service.PointOfInterestService;
 import com.dart.explore.service.StationServiceImpl;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,7 +48,7 @@ public class ReadController {
         return new ResponseEntity<>(pointOfInterestList, HttpStatus.OK);
     }
 
-    @GetMapping(value="/poi/amenity")
+    @GetMapping(value = "/poi/amenity")
     ResponseEntity<List<PointOfInterestDTO>> getPOIs(@RequestParam("amenityIdList") String amenitiesString) {
         // probably move this first bit to a utility class later
         List<Long> amenityIdList = (amenitiesString.isEmpty()) ? new ArrayList<>() :
@@ -61,7 +59,7 @@ public class ReadController {
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 
-    @GetMapping(value ="/poi/{stationId}/amenity")
+    @GetMapping(value = "/poi/{stationId}/amenity")
     ResponseEntity<List<PointOfInterestDTO>> getPOIsAtStation(@PathVariable Long stationId, @RequestParam("amenityIdList") String amenitiesString) {
         // probably move this first bit to a utility class later
         List<Long> amenityIdList = (amenitiesString.isEmpty()) ? new ArrayList<>() :
