@@ -33,7 +33,10 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<PointOfInterestDTO> getPOIs(List<Amenity> amenities) {
-        return pointOfInterestRepository.getPOIsByAmenities(amenities).stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
+        Long amenityCount = (long) amenities.size();
+        return pointOfInterestRepository.getPOIsByAmenities(amenities, amenityCount).stream()
+                .map(PointOfInterestDTO::prepareDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
