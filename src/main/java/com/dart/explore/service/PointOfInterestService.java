@@ -151,4 +151,8 @@ public class PointOfInterestService {
             throw new DartExploreException("'" + invalidNumberString + "' is not a valid number.");
         }
     }
+
+    public List<String> getAllTypes() {
+        return pointOfInterestRepository.getAllTypes();
+    }
 }
