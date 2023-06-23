@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         description = "Local ENV"
                 ),
                 @Server(
-                        url = "https://dallasbymetro.com",
+                        url = "https://api.dallasbymetro.com",
                         description = "PROD ENV"
                 )
         }

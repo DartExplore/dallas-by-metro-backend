@@ -40,9 +40,9 @@ public class PointOfInterestService {
 
         // getting amenities; if not every one is present we fail
         List<Amenity> amenityList = amenityRepository.findAllAmenitiesById(pointOfInterestDTO.getAmenities()
-                .stream().map((amenity)->amenity.getAmenityId()).collect(Collectors.toList()));
+                .stream().map(AmenityDTO::getAmenityId).collect(Collectors.toList()));
 
-        if(amenityList.size() != pointOfInterestDTO.getAmenities().size()) {
+        if (amenityList.size() != pointOfInterestDTO.getAmenities().size()) {
             throw new DartExploreException("At least one invalid amenityId present. Check your input.");
         }
 
@@ -95,9 +95,9 @@ public class PointOfInterestService {
         if (pointOfInterestDTO.getAmenities() != null) {
             // getting amenities; if not every one is present we fail
             List<Amenity> amenityList = amenityRepository.findAllAmenitiesById(pointOfInterestDTO.getAmenities()
-                    .stream().map((amenity)->amenity.getAmenityId()).collect(Collectors.toList()));
+                    .stream().map(AmenityDTO::getAmenityId).collect(Collectors.toList()));
 
-            if(amenityList.size() != pointOfInterestDTO.getAmenities().size()) {
+            if (amenityList.size() != pointOfInterestDTO.getAmenities().size()) {
                 throw new DartExploreException("At least one invalid amenityId present. Check your input.");
             }
 
