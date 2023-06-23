@@ -18,4 +18,7 @@ public interface PointOfInterestRepository extends CrudRepository<PointOfInteres
     List<PointOfInterest> getPointOfInterestsByStationAndAmenities(@Param("stationId") Long stationId, @Param("amenities") List<Amenity> amenities);
 
     List<PointOfInterest> findByStation(Station station);
+
+    @Query("SELECT DISTINCT p.type FROM PointOfInterest p")
+    List<String> getAllTypes();
 }
