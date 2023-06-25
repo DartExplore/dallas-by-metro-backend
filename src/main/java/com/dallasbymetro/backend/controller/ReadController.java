@@ -86,4 +86,9 @@ public class ReadController {
         return new ResponseEntity<>(amenities, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/type")
+    public ResponseEntity<List<String>> getAllTypes() {
+        List<String> types = pointOfInterestService.getAllTypes();
+        return new ResponseEntity<>(types, HttpStatus.OK);
+    }
 }
