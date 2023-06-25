@@ -8,10 +8,10 @@
         <version>3.0.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.dart</groupId>
-    <artifactId>explore</artifactId>
+    <groupId>com.dallasbymetro</groupId>
+    <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>explore</name>
+    <name>dallasByMetro</name>
     <description>Dart new rider app.</description>
     <properties>
         <java.version>20</java.version>
