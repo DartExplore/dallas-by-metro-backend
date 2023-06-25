@@ -7,6 +7,6 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: dart_explore
+      POSTGRES_DB: dallasbymetro
     ports:
       - "5432:5432"

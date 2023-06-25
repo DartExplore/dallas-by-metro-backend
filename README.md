@@ -25,7 +25,7 @@ Follow the steps below to clone and run this project on your local machine:
     - If you're using intellij IDEA you can copy this into your environment variables. Otherwise, look into how to set
       env variables for your IDE.
    ```
-   SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/dart_explore;SPRING_DATASOURCE_USERNAME=root;SPRING_DATASOURCE_PASSWORD=password;API_KEY=password;PROFILE=dev
+   SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/dallasbymetro;SPRING_DATASOURCE_USERNAME=root;SPRING_DATASOURCE_PASSWORD=password;API_KEY=password;PROFILE=dev
    ```
 
 4. **Set up the Local Development Database:**
