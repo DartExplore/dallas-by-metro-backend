@@ -2,11 +2,13 @@ package com.dallasbymetro.backend.dto;
 
 import com.dallasbymetro.backend.entity.Amenity;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 public class AmenityDTO {
     @NotNull(message = "AMENITY_ID must not be null.")
     private Long amenityId;
     @NotNull(message = "AMENITY name must not be null.")
+    @Pattern(regexp = "^[A-Z][A-Z_]*(?<!_)$", message = "AMENITY name is in invalid format. Must be uppercase snake case.")
     private String amenity;
 
     public AmenityDTO(Long amenityId, String amenity) {
