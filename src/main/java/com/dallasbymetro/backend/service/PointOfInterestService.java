@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class PointOfInterestService {
@@ -123,33 +124,14 @@ public class PointOfInterestService {
         pointOfInterestRepository.deleteById(poiId);
     }
 
-    public List<PointOfInterestDTO> getPOIsByIds(List<String> poiIdsStrings) throws DartExploreException {
-        List<Long> poiIds = new ArrayList<>();
-        String invalidNumberString = null;
-        try {
-            for (String poiIdString : poiIdsStrings) {
-                try {
-                    Long poiId = Long.parseLong(poiIdString);
-                    poiIds.add(poiId);
-                } catch (NumberFormatException e) {
-                    invalidNumberString = poiIdString;
-                    break;
-                }
-            }
-            if (invalidNumberString != null) {
-                throw new DartExploreException("'" + invalidNumberString + "' is not a valid number.");
-            }
+    public List<PointOfInterestDTO> getPOIsByIds(List<Long> poiIdList) throws DartExploreException {
+        List<PointOfInterest> poiList = (!poiIdList.isEmpty()) ? StreamSupport.stream(pointOfInterestRepository.findAllById(poiIdList).spliterator(), false).collect(Collectors.toList())
+                : new ArrayList<>();
 
-            List<PointOfInterest> poiList = new ArrayList<>();
-            pointOfInterestRepository.findAllById(poiIds).forEach(poiList::add);
+        if(poiIdList.size() != poiList.size()) // at least one invalid POI
+            throw new DartExploreException("At least one POI in the list was invalid. Please correct and try again.");
 
-            return poiList.stream()
-                    .map(PointOfInterestDTO::prepareDTO)
-                    .collect(Collectors.toList());
-
-        } catch (NumberFormatException e) {
-            throw new DartExploreException("'" + invalidNumberString + "' is not a valid number.");
-        }
+        return poiList.stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
     }
 
     public List<String> getAllTypes() {
