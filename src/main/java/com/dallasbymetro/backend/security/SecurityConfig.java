@@ -36,7 +36,6 @@ public abstract class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://dallasbymetro.com");
         config.addAllowedOrigin("https://dallasbymetro.com");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
