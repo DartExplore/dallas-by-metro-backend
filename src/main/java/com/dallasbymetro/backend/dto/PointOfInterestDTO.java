@@ -4,6 +4,7 @@ import com.dallasbymetro.backend.entity.Amenity;
 import com.dallasbymetro.backend.entity.PointOfInterest;
 import com.dallasbymetro.backend.entity.Station;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class PointOfInterestDTO {
     private String location;
     private Integer walkingDistance;
     private String picUrl;
+    @Pattern(regexp = "^[A-Z][A-Z_]*(?<!_)$", message = "POI type is in invalid format. Must be uppercase snake case.")
     private String type;
     private List<AmenityDTO> amenities;
     @NotNull(message = "STATION_ID must not be null.")
