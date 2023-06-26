@@ -14,18 +14,6 @@ const AMENITIES = [
     {amenityId: 5, amenity: "ALCOHOL"}
 ];
 
-AMENITIES.map(
-    (amenity) => (
-        axios.post('http://localhost:8080/api/private/amenity', amenity, {headers})
-            .then(response =>
-                console.log("Amenity " + amenity.amenityId + " inserted successfully.")
-            )
-            .catch(error =>
-                console.log('Error:', error.message)
-            )
-    )
-);
-
 const POIS = [
     {
         poiId: 1,
