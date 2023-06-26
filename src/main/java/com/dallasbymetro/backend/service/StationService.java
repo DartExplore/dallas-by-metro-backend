@@ -12,7 +12,7 @@ import java.util.List;
  * getting POIs at a station, etc.
  */
 public interface StationService {
-    List<PointOfInterestDTO> getPOIs(List<Amenity> amenities);
+    List<PointOfInterestDTO> getPOIs(List<Long> amenityIdList) throws DartExploreException;
 
     List<StationDTO> getStationsByLines(List<String> lines) throws DartExploreException;
 

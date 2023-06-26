@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 @Service(value = "stationService")
@@ -31,10 +32,16 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<PointOfInterestDTO> getPOIs(List<Amenity> amenities) {
-        Long amenityCount = (long) amenities.size();
-        return pointOfInterestRepository.getPOIsByAmenities(amenities, amenityCount).stream()
-                .map(PointOfInterestDTO::prepareDTO)
+    public List<PointOfInterestDTO> getPOIs(List<Long> amenityIdList) throws DartExploreException {
+        Integer amenityCount = Integer.valueOf(amenityIdList.size());
+        List<Amenity> amenities = (amenityCount > 0) ? amenityRepository.findAllAmenitiesById(amenityIdList) : new ArrayList<>();
+
+        if(amenities.size() != amenityCount) // at least one invalid amenity
+            throw new DartExploreException("At least one amenity in the list was invalid. Please correct and try again.");
+
+        return ((amenityCount > 0) ? pointOfInterestRepository.getPOIsByAmenities(amenities, amenityCount).stream() : // gets POI by amenities
+                StreamSupport.stream(pointOfInterestRepository.findAll().spliterator(), false)) // gets all POIs if no amenities
+                .map(PointOfInterestDTO::prepareDTO) // prepare DTO
                 .collect(Collectors.toList());
     }
 
