@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface PointOfInterestRepository extends CrudRepository<PointOfInterest, Long> {
     @Query("SELECT p FROM PointOfInterest p JOIN p.amenities a WHERE a IN :amenities GROUP BY p HAVING COUNT(DISTINCT a) >= :amenityCount")
-    List<PointOfInterest> getPOIsByAmenities(@Param("amenities") List<Amenity> amenities, @Param("amenityCount") Long amenityCount);
+    List<PointOfInterest> getPOIsByAmenities(@Param("amenities") List<Amenity> amenities, @Param("amenityCount") Integer amenityCount);
 
 
     @Query("SELECT p FROM PointOfInterest p JOIN p.station s JOIN p.amenities a WHERE s.stationId = :stationId AND a IN :amenities")
