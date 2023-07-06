@@ -5,6 +5,7 @@ import com.dallasbymetro.backend.entity.StationColor;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class StationDTO {
     private Long stationId;
@@ -16,6 +17,9 @@ public class StationDTO {
         this.stationId = station.getStationId();
         this.name = station.getName();
         this.color = station.getColor();
+        this.pointsOfInterest = station.getPointOfInterest().stream()
+                .map(PointOfInterestDTO::prepareDTO)
+                .collect(Collectors.toList());
     }
 
     public Long getStationId() {

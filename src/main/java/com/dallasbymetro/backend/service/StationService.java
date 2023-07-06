@@ -23,4 +23,6 @@ public interface StationService {
     List<StationDTO> getAllStationsWithPOIs();
 
     List<PointOfInterestDTO> getPOIsById(List<Long> poiIds) throws DartExploreException;
+
+    List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime) throws DartExploreException;
 }

@@ -21,4 +21,5 @@ public interface PointOfInterestRepository extends CrudRepository<PointOfInteres
 
     @Query("SELECT DISTINCT p.type FROM PointOfInterest p")
     List<String> getAllTypes();
+    
 }
