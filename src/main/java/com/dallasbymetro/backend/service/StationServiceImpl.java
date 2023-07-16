@@ -113,7 +113,7 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime) throws DartExploreException {
-        Optional<Station> stationOptional = stationRepository.findByStationIdIs(currentStation);
+        Optional<Station> stationOptional = stationRepository.findByStationId(currentStation);
 
         if (stationOptional.isEmpty()) {
             throw new DartExploreException("Current Station with id: " + currentStation + " does not exist");
