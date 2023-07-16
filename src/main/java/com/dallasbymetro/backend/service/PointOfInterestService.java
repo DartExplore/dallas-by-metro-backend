@@ -33,7 +33,7 @@ public class PointOfInterestService {
     }
 
     public PointOfInterestDTO addPointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
-        Optional<Station> optionalStation = stationRepository.findByStationIdIs(pointOfInterestDTO.getStationId());
+        Optional<Station> optionalStation = stationRepository.findByStationId(pointOfInterestDTO.getStationId());
 
         if (optionalStation.isEmpty()) {
             throw new DartExploreException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
@@ -56,7 +56,7 @@ public class PointOfInterestService {
     }
 
     public PointOfInterestDTO updatePointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
-        Optional<Station> optionalStation = stationRepository.findByStationIdIs(pointOfInterestDTO.getStationId());
+        Optional<Station> optionalStation = stationRepository.findByStationId(pointOfInterestDTO.getStationId());
 
         if (optionalStation.isEmpty()) {
             throw new DartExploreException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");

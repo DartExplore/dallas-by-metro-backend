@@ -15,7 +15,7 @@ public interface StationRepository extends CrudRepository<Station, Integer> {
 
     Station findFirstBy();
 
-    Optional<Station> findByStationIdIs(Long stationId);
+    Optional<Station> findByStationId(Long stationId);
 
     @Query("SELECT s FROM Station s JOIN s.connectedStations c WHERE c.stationId = :stationId")
     List<Station> findConnectedStations(@Param("stationId") Long stationId);
