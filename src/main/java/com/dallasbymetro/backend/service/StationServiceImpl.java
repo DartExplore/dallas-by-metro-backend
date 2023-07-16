@@ -124,21 +124,13 @@ public class StationServiceImpl implements StationService {
         // Perform BFS traversal in the service layer
         List<Station> stationsWithinConnection = findStationsWithinConnection(station, stationConnections);
 
-        if (!amenityIdList.isEmpty()) {
-            // Filter stations by checking if the associated POIs have all the amenities specified.
-            stationsWithinConnection = stationsWithinConnection.stream()
-                    .filter(s -> PointOfInterestService.doAllPOIsHaveAmenities(s.getPointOfInterest(), amenityIdList))
-                    .collect(Collectors.toList());
-        }
-
-        if (maxWalkTime != null) {
-            stationsWithinConnection = stationsWithinConnection.stream()
-                    .filter(s -> PointOfInterestService.doAllPOIsWithinWalkTime(s.getPointOfInterest(), maxWalkTime))
-                    .collect(Collectors.toList());
-        }
+        // Filter stations by checking if the associated POIs have all the amenities specified and are within walk time.
+        stationsWithinConnection = stationsWithinConnection.stream()
+                .filter(s -> (!amenityIdList.isEmpty() && PointOfInterestService.doAllPOIsHaveAmenities(s.getPointOfInterest(), amenityIdList))
+                        && (maxWalkTime != null && PointOfInterestService.doAllPOIsWithinWalkTime(s.getPointOfInterest(), maxWalkTime)))
+                .collect(Collectors.toList());
 
         // Transform stations to StationDTOs
-
         return stationsWithinConnection.stream()
                 .map(s -> prepareStationDTOWithFilteredPOIs(s, maxWalkTime))
                 .collect(Collectors.toList());
