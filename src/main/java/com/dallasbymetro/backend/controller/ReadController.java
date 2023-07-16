@@ -111,8 +111,8 @@ public class ReadController {
 
     @GetMapping(value = "/stations")
     public ResponseEntity<List<StationDTO>> getStationsByConnection(
-            @RequestParam(value = "currentStation", required = false) Long currentStation,
-            @RequestParam(value = "maxStationConnections", required = false) Integer maxStationConnections,
+            @RequestParam(value = "currentStation") Long currentStation,
+            @RequestParam(value = "maxStationConnections") Integer maxStationConnections,
             @RequestParam(value = "amenityIds", required = false) String amenityIdsString,
             @RequestParam(value = "maxWalkTime", required = false) Integer maxWalkTime) throws DartExploreException {
 
