@@ -114,7 +114,8 @@ public class ReadController {
             @RequestParam(value = "currentStation") Long currentStation,
             @RequestParam(value = "maxStationConnections") Integer maxStationConnections,
             @RequestParam(value = "amenityIds", required = false) String amenityIdsString,
-            @RequestParam(value = "maxWalkTime", required = false) Integer maxWalkTime) throws DartExploreException {
+            @RequestParam(value = "maxWalkTime", required = false) Integer maxWalkTime,
+            @RequestParam(value = "returnStationsWithNoPOIs", defaultValue = "false") Boolean returnEmpty) throws DartExploreException {
 
         // Validate input parameters
         if ((currentStation == null && maxStationConnections != null) || (currentStation != null && maxStationConnections == null)) {
@@ -132,7 +133,9 @@ public class ReadController {
             }
         }
 
-        List<StationDTO> stations = stationService.getStationsByConnection(currentStation, maxStationConnections, amenityIdList, maxWalkTime);
-        return new ResponseEntity<>(stations, HttpStatus.OK);
+        // Call the service with the new returnEmpty parameter
+        List<StationDTO> stations = stationService.getStationsByConnection(currentStation, maxStationConnections, amenityIdList, maxWalkTime, returnEmpty);
+
+        return ResponseEntity.ok(stations);
     }
 }

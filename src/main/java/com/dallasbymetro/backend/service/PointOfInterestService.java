@@ -138,20 +138,12 @@ public class PointOfInterestService {
         return pointOfInterestRepository.getAllTypes();
     }
 
-    public static boolean doAllPOIsHaveAmenities(List<PointOfInterest> pois, List<Long> amenityIds) {
-        if (pois.isEmpty()) {
-            return false;
+    public static boolean doPOIHaveAmenities(PointOfInterest poi, List<Long> amenityIds) {
+        if (amenityIds == null || amenityIds.isEmpty()) {
+            return true;  // If no amenities are specified, all POIs are allowed
+        } else {
+            return poi.getAmenities().stream().map(Amenity::getAmenityId).collect(Collectors.toSet()).containsAll(amenityIds);
         }
-
-        for (PointOfInterest poi : pois) {
-            if (!poi.getAmenities().stream().map(Amenity::getAmenityId).collect(Collectors.toSet()).containsAll(amenityIds)) {
-                return false;
-            }
-        }
-        return true;
     }
 
-    public static boolean doAllPOIsWithinWalkTime(List<PointOfInterest> pois, Integer maxWalkTime) {
-        return pois.stream().allMatch(poi -> poi.getWalkingDistance() <= maxWalkTime);
-    }
 }
