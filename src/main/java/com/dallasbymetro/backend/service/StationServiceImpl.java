@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 
@@ -112,7 +113,7 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime) throws DartExploreException {
+    public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime, Boolean returnEmpty) throws DartExploreException {
         Optional<Station> stationOptional = stationRepository.findByStationId(currentStation);
 
         if (stationOptional.isEmpty()) {
@@ -124,27 +125,32 @@ public class StationServiceImpl implements StationService {
         // Perform BFS traversal in the service layer
         List<Station> stationsWithinConnection = findStationsWithinConnection(station, stationConnections);
 
-        // Filter stations by checking if the associated POIs have all the amenities specified and are within walk time.
-        stationsWithinConnection = stationsWithinConnection.stream()
-                .filter(s -> (!amenityIdList.isEmpty() && PointOfInterestService.doAllPOIsHaveAmenities(s.getPointOfInterest(), amenityIdList))
-                        && (maxWalkTime != null && PointOfInterestService.doAllPOIsWithinWalkTime(s.getPointOfInterest(), maxWalkTime)))
-                .collect(Collectors.toList());
+        // Transform stations to StationDTOs, check that POI have required amenities, and are within walk time
+        Stream<StationDTO> stream = stationsWithinConnection.stream()
+                .map(s -> prepareStationDTOWithFilteredPOIs(s, amenityIdList, maxWalkTime));
 
-        // Transform stations to StationDTOs
-        return stationsWithinConnection.stream()
-                .map(s -> prepareStationDTOWithFilteredPOIs(s, maxWalkTime))
-                .collect(Collectors.toList());
-    }
-
-    private StationDTO prepareStationDTOWithFilteredPOIs(Station station, Integer maxWalkTime) {
-        if (maxWalkTime != null) {
-            // Filter the POIs based on the max walk time
-            List<PointOfInterest> filteredPOIs = station.getPointOfInterest().stream()
-                    .filter(poi -> poi.getWalkingDistance() <= maxWalkTime)
-                    .collect(Collectors.toList());
-            station.setPointOfInterest(filteredPOIs);
+        // Apply the filtering based on the returnEmpty flag
+        if (!returnEmpty) {
+            stream = stream.filter(s -> !s.getPointsOfInterest().isEmpty());
         }
 
+        return stream.collect(Collectors.toList());
+    }
+
+    private StationDTO prepareStationDTOWithFilteredPOIs(Station station, List<Long> amenityIdList, Integer maxWalkTime) {
+        List<PointOfInterest> filteredPOIs;
+
+        // If amenityIdList is empty and maxWalkTime is null, don't filter the POIs
+        if ((amenityIdList == null || amenityIdList.isEmpty()) && maxWalkTime == null) {
+            filteredPOIs = station.getPointOfInterest();
+        } else {
+            filteredPOIs = station.getPointOfInterest().stream()
+                    .filter(poi -> PointOfInterestService.doPOIHaveAmenities(poi, amenityIdList))
+                    .filter(poi -> maxWalkTime == null || poi.getWalkingDistance() != null && poi.getWalkingDistance() <= maxWalkTime)
+                    .collect(Collectors.toList());
+        }
+
+        station.setPointOfInterest(filteredPOIs);
         return StationDTO.prepareStationDTO(station);
     }
 

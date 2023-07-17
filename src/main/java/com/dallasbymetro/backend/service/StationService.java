@@ -24,5 +24,5 @@ public interface StationService {
 
     List<PointOfInterestDTO> getPOIsById(List<Long> poiIds) throws DartExploreException;
 
-    List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime) throws DartExploreException;
+    List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime, Boolean returnEmpty) throws DartExploreException;
 }
