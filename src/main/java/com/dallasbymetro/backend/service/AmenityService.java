@@ -2,7 +2,7 @@ package com.dallasbymetro.backend.service;
 
 import com.dallasbymetro.backend.dto.AmenityDTO;
 import com.dallasbymetro.backend.entity.Amenity;
-import com.dallasbymetro.backend.exception.DartExploreException;
+import com.dallasbymetro.backend.exception.ElementNotFoundException;
 import com.dallasbymetro.backend.repository.AmenityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +27,12 @@ public class AmenityService {
         return AmenityDTO.prepareAmenityDTO(savedAmenity);
     }
 
-    public AmenityDTO updateAmenity(AmenityDTO amenityDTO) throws DartExploreException {
+    public AmenityDTO updateAmenity(AmenityDTO amenityDTO) throws ElementNotFoundException {
         // Check if the Amenity exists in the database
         Optional<Amenity> optionalAmenity = amenityRepository.findById(amenityDTO.getAmenityId());
 
         if (optionalAmenity.isEmpty()) {
-            throw new DartExploreException("Amenity with id: " + amenityDTO.getAmenityId() + " does not exist");
+            throw new ElementNotFoundException("Amenity with id: " + amenityDTO.getAmenityId() + " does not exist");
         }
 
         Amenity amenityEntity = optionalAmenity.get();
@@ -41,12 +41,12 @@ public class AmenityService {
         return AmenityDTO.prepareAmenityDTO(updatedAmenity);
     }
 
-    public void deleteAmenity(Long amenityId) throws DartExploreException {
+    public void deleteAmenity(Long amenityId) throws ElementNotFoundException {
         // Fetch the amenity from the database
         Optional<Amenity> optionalAmenity = amenityRepository.findById(amenityId);
 
         if (optionalAmenity.isEmpty()) {
-            throw new DartExploreException("Amenity with id: " + amenityId + " does not exist");
+            throw new ElementNotFoundException("Amenity with id: " + amenityId + " does not exist");
         }
 
         amenityRepository.deleteById(amenityId);

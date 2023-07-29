@@ -4,6 +4,7 @@ import com.dallasbymetro.backend.dto.PointOfInterestDTO;
 import com.dallasbymetro.backend.dto.StationDTO;
 import com.dallasbymetro.backend.entity.Amenity;
 import com.dallasbymetro.backend.exception.DartExploreException;
+import com.dallasbymetro.backend.exception.ElementNotFoundException;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ import java.util.List;
  * getting POIs at a station, etc.
  */
 public interface StationService {
-    List<PointOfInterestDTO> getPOIs(List<Long> amenityIdList) throws DartExploreException;
+    List<PointOfInterestDTO> getPOIs(List<Long> amenityIdList) throws DartExploreException, ElementNotFoundException;
 
-    List<StationDTO> getStationsByLines(List<String> lines) throws DartExploreException;
+    List<StationDTO> getStationsByLines(List<String> lines) throws DartExploreException, ElementNotFoundException;
 
     List<PointOfInterestDTO> getPOIsAtStation(Long stationId, List<Amenity> amenities);
 
@@ -22,7 +23,7 @@ public interface StationService {
 
     List<StationDTO> getAllStationsWithPOIs();
 
-    List<PointOfInterestDTO> getPOIsById(List<Long> poiIds) throws DartExploreException;
+    List<PointOfInterestDTO> getPOIsById(List<Long> poiIds) throws DartExploreException, ElementNotFoundException;
 
-    List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime, Boolean returnEmpty) throws DartExploreException;
+    List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime, Boolean returnEmpty) throws DartExploreException, ElementNotFoundException;
 }
