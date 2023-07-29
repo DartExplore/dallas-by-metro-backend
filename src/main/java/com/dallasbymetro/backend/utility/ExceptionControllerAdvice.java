@@ -1,6 +1,7 @@
 package com.dallasbymetro.backend.utility;
 
 import com.dallasbymetro.backend.exception.DartExploreException;
+import com.dallasbymetro.backend.exception.ElementNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.logging.Log;
@@ -68,5 +69,10 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorInfo> missingRequestParameterHandler(MissingServletRequestParameterException exception) {
         return createErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), exception, false);
+    }
+
+    @ExceptionHandler(ElementNotFoundException.class)
+    public ResponseEntity<ErrorInfo> elementNotFoundHandler(ElementNotFoundException exception) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage(), exception, false);
     }
 }

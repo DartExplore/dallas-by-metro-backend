@@ -2,7 +2,7 @@ package com.dallasbymetro.backend.controller;
 
 import com.dallasbymetro.backend.dto.AmenityDTO;
 import com.dallasbymetro.backend.dto.PointOfInterestDTO;
-import com.dallasbymetro.backend.exception.DartExploreException;
+import com.dallasbymetro.backend.exception.ElementNotFoundException;
 import com.dallasbymetro.backend.service.AmenityService;
 import com.dallasbymetro.backend.service.PointOfInterestService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -28,19 +28,19 @@ public class DatabaseController {
     }
 
     @PostMapping(value = "/poi")
-    public ResponseEntity<PointOfInterestDTO> createPOI(@Valid @RequestBody PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
+    public ResponseEntity<PointOfInterestDTO> createPOI(@Valid @RequestBody PointOfInterestDTO pointOfInterestDTO) throws ElementNotFoundException {
         PointOfInterestDTO poi = pointOfInterestService.addPointOfInterest(pointOfInterestDTO);
         return ResponseEntity.ok(poi);
     }
 
     @PutMapping(value = "/poi")
-    public ResponseEntity<PointOfInterestDTO> updatePOI(@Valid @RequestBody PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
+    public ResponseEntity<PointOfInterestDTO> updatePOI(@Valid @RequestBody PointOfInterestDTO pointOfInterestDTO) throws ElementNotFoundException {
         PointOfInterestDTO poi = pointOfInterestService.updatePointOfInterest(pointOfInterestDTO);
         return ResponseEntity.ok(poi);
     }
 
     @DeleteMapping(value = "/poi/{poiId}")
-    public ResponseEntity<String> deletePOI(@PathVariable Long poiId) throws DartExploreException {
+    public ResponseEntity<String> deletePOI(@PathVariable Long poiId) throws ElementNotFoundException {
         pointOfInterestService.deletePointOfInterest(poiId);
         return ResponseEntity.ok("Point of interest with ID: " + poiId + " successfully deleted");
     }
@@ -52,13 +52,13 @@ public class DatabaseController {
     }
 
     @PutMapping(value = "/amenity")
-    public ResponseEntity<AmenityDTO> updateAmenity(@Valid @RequestBody AmenityDTO amenityDTO) throws DartExploreException {
+    public ResponseEntity<AmenityDTO> updateAmenity(@Valid @RequestBody AmenityDTO amenityDTO) throws ElementNotFoundException {
         AmenityDTO amenity = amenityService.updateAmenity(amenityDTO);
         return ResponseEntity.ok(amenity);
     }
 
     @DeleteMapping(value = "/amenity/{amenityId}")
-    public ResponseEntity<String> deleteAmenity(@PathVariable Long amenityId) throws DartExploreException {
+    public ResponseEntity<String> deleteAmenity(@PathVariable Long amenityId) throws ElementNotFoundException {
         amenityService.deleteAmenity(amenityId);
         return ResponseEntity.ok("Amenity: " + amenityId + " successfully deleted");
     }
