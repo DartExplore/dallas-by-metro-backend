@@ -10,12 +10,12 @@ import com.dallasbymetro.backend.exception.DartExploreException;
 import com.dallasbymetro.backend.repository.AmenityRepository;
 import com.dallasbymetro.backend.repository.PointOfInterestRepository;
 import com.dallasbymetro.backend.repository.StationRepository;
+import com.dallasbymetro.backend.utility.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 
@@ -33,10 +33,10 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<PointOfInterestDTO> getPOIs(List<Long> amenityIdList) throws DartExploreException {
-        Integer amenityCount = Integer.valueOf(amenityIdList.size());
+        int amenityCount = amenityIdList.size();
         List<Amenity> amenities = (amenityCount > 0) ? amenityRepository.findAllAmenitiesById(amenityIdList) : new ArrayList<>();
 
-        if(amenities.size() != amenityCount) // at least one invalid amenity
+        if (amenities.size() != amenityCount) // at least one invalid amenity
             throw new DartExploreException("At least one amenity in the list was invalid. Please correct and try again.");
 
         return ((amenityCount > 0) ? pointOfInterestRepository.getPOIsByAmenities(amenities, amenityCount).stream() : // gets POI by amenities
@@ -110,5 +110,91 @@ public class StationServiceImpl implements StationService {
             }
         }
         return poiList;
+    }
+
+    @Override
+    public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime, Boolean returnEmpty) throws DartExploreException {
+        Optional<Station> stationOptional = stationRepository.findByStationId(currentStation);
+
+        if (stationOptional.isEmpty()) {
+            throw new DartExploreException("Current Station with id: " + currentStation + " does not exist");
+        }
+
+        Station station = stationOptional.get();
+
+        // Perform BFS traversal in the service layer
+        List<Station> stationsWithinConnection = findStationsWithinConnection(station, stationConnections);
+
+        // Transform stations to StationDTOs, check that POI have required amenities, and are within walk time
+        Stream<StationDTO> stream = stationsWithinConnection.stream()
+                .map(s -> prepareStationDTOWithFilteredPOIs(s, amenityIdList, maxWalkTime));
+
+        // Apply the filtering based on the returnEmpty flag
+        if (!returnEmpty) {
+            stream = stream.filter(s -> !s.getPointsOfInterest().isEmpty());
+        }
+
+        return stream.collect(Collectors.toList());
+    }
+
+    private StationDTO prepareStationDTOWithFilteredPOIs(Station station, List<Long> amenityIdList, Integer maxWalkTime) {
+        List<PointOfInterest> filteredPOIs;
+
+        // If amenityIdList is empty and maxWalkTime is null, don't filter the POIs
+        if ((amenityIdList == null || amenityIdList.isEmpty()) && maxWalkTime == null) {
+            filteredPOIs = station.getPointOfInterest();
+        } else {
+            filteredPOIs = station.getPointOfInterest().stream()
+                    .filter(poi -> PointOfInterestService.doPOIHaveAmenities(poi, amenityIdList))
+                    .filter(poi -> maxWalkTime == null || poi.getWalkingDistance() != null && poi.getWalkingDistance() <= maxWalkTime)
+                    .collect(Collectors.toList());
+        }
+
+        station.setPointOfInterest(filteredPOIs);
+        return StationDTO.prepareStationDTO(station);
+    }
+
+    private List<Station> findStationsWithinConnection(Station currentStation, Integer stationConnections) {
+        Queue<Pair<Station, Integer>> queue = new LinkedList<>();
+        Map<Station, Integer> visitedMap = new HashMap<>();
+
+        // Create a comparator to sort the pairs by their level and station name
+        Comparator<Pair<Station, Integer>> pairComparator = Comparator
+                .<Pair<Station, Integer>>comparingInt(Pair::getSecond)
+                .thenComparing(pair -> pair.getFirst().getName());
+
+
+        // Use a TreeSet to keep the pairs sorted
+        Set<Pair<Station, Integer>> sortedVisitedPairs = new TreeSet<>(pairComparator);
+
+        Pair<Station, Integer> firstPair = new Pair<>(currentStation, 0);
+        queue.add(firstPair);
+        visitedMap.put(currentStation, 0);
+        sortedVisitedPairs.add(firstPair);
+
+        while (!queue.isEmpty()) {
+            Pair<Station, Integer> stationPair = queue.poll();
+            Station station = stationPair.first;
+            Integer level = stationPair.second;
+
+            if (level < stationConnections) {
+                List<Station> connectedStations = stationRepository.findConnectedStations(station.getStationId());
+
+                for (Station connectedStation : connectedStations) {
+                    if (!visitedMap.containsKey(connectedStation)) {
+                        Pair<Station, Integer> nextPair = new Pair<>(connectedStation, level + 1);
+                        visitedMap.put(connectedStation, level + 1);
+                        queue.add(nextPair);
+                        sortedVisitedPairs.add(nextPair);
+                    }
+                }
+            }
+        }
+
+        // Transform the sorted set of pairs to a list of stations
+
+        return sortedVisitedPairs.stream()
+                .map(pair -> pair.first)
+                .collect(Collectors.toList());
     }
 }

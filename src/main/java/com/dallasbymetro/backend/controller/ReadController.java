@@ -9,7 +9,6 @@ import com.dallasbymetro.backend.service.AmenityService;
 import com.dallasbymetro.backend.service.PointOfInterestService;
 import com.dallasbymetro.backend.service.StationServiceImpl;
 import io.swagger.v3.oas.annotations.Parameter;
-import jakarta.validation.constraints.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,10 +44,10 @@ public class ReadController {
             @Parameter(example = "1,2,3") String poiIdsString)
             throws DartExploreException {
         List<Long> poiIdList;
-        try{
+        try {
             poiIdList = (poiIdsString.isEmpty()) ? new ArrayList<>() :
                     Arrays.stream(poiIdsString.split(",")).map(Long::parseLong).collect(Collectors.toList());
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new DartExploreException("POI input must be CSV numbers.");
         }
 
@@ -60,10 +59,10 @@ public class ReadController {
     ResponseEntity<List<PointOfInterestDTO>> getPOIs(@RequestParam("amenityIdList") String amenitiesString) throws DartExploreException {
         // probably move this first bit to a utility class later
         List<Long> amenityIdList;
-        try{
+        try {
             amenityIdList = (amenitiesString.isEmpty()) ? new ArrayList<>() :
                     Arrays.stream(amenitiesString.split(",")).map(Long::parseLong).collect(Collectors.toList());
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new DartExploreException("Amenities input must be CSV numbers.");
         }
 
@@ -76,10 +75,10 @@ public class ReadController {
     ResponseEntity<List<PointOfInterestDTO>> getPOIsAtStation(@PathVariable Long stationId, @RequestParam("amenityIdList") String amenitiesString) throws DartExploreException {
         // probably move this first bit to a utility class later
         List<Long> amenityIdList;
-        try{
+        try {
             amenityIdList = (amenitiesString.isEmpty()) ? new ArrayList<>() :
                     Arrays.stream(amenitiesString.split(",")).map(Long::parseLong).collect(Collectors.toList());
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new DartExploreException("Amenities input must be CSV numbers.");
         }
 
@@ -88,7 +87,7 @@ public class ReadController {
         return new ResponseEntity<List<PointOfInterestDTO>>(pointOfInterestList, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/station")
+    @GetMapping(value = "/line")
     ResponseEntity<List<StationDTO>> getStationsByLines(
             @RequestParam("line")
             @Parameter(example = "RED,BLUE,GREEN") String linesString)
@@ -108,5 +107,35 @@ public class ReadController {
     public ResponseEntity<List<String>> getAllTypes() {
         List<String> types = pointOfInterestService.getAllTypes();
         return new ResponseEntity<>(types, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/stations")
+    public ResponseEntity<List<StationDTO>> getStationsByConnection(
+            @RequestParam(value = "currentStation") Long currentStation,
+            @RequestParam(value = "maxStationConnections") Integer maxStationConnections,
+            @RequestParam(value = "amenityIds", required = false) String amenityIdsString,
+            @RequestParam(value = "maxWalkTime", required = false) Integer maxWalkTime,
+            @RequestParam(value = "returnStationsWithNoPOIs", defaultValue = "false") Boolean returnEmpty) throws DartExploreException {
+
+        // Validate input parameters
+        if ((currentStation == null && maxStationConnections != null) || (currentStation != null && maxStationConnections == null)) {
+            throw new DartExploreException("Both currentStation and stationConnections must be provided together.");
+        }
+
+        List<Long> amenityIdList = new ArrayList<>();
+        if (amenityIdsString != null && !amenityIdsString.isEmpty()) {
+            try {
+                amenityIdList = Arrays.stream(amenityIdsString.split(","))
+                        .map(Long::parseLong)
+                        .collect(Collectors.toList());
+            } catch (Exception e) {
+                throw new DartExploreException("Amenities input must be CSV numbers.");
+            }
+        }
+
+        // Call the service with the new returnEmpty parameter
+        List<StationDTO> stations = stationService.getStationsByConnection(currentStation, maxStationConnections, amenityIdList, maxWalkTime, returnEmpty);
+
+        return ResponseEntity.ok(stations);
     }
 }

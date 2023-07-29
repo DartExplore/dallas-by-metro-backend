@@ -33,7 +33,7 @@ public class PointOfInterestService {
     }
 
     public PointOfInterestDTO addPointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
-        Optional<Station> optionalStation = stationRepository.findByStationIdIs(pointOfInterestDTO.getStationId());
+        Optional<Station> optionalStation = stationRepository.findByStationId(pointOfInterestDTO.getStationId());
 
         if (optionalStation.isEmpty()) {
             throw new DartExploreException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
@@ -56,7 +56,7 @@ public class PointOfInterestService {
     }
 
     public PointOfInterestDTO updatePointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
-        Optional<Station> optionalStation = stationRepository.findByStationIdIs(pointOfInterestDTO.getStationId());
+        Optional<Station> optionalStation = stationRepository.findByStationId(pointOfInterestDTO.getStationId());
 
         if (optionalStation.isEmpty()) {
             throw new DartExploreException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
@@ -125,10 +125,10 @@ public class PointOfInterestService {
     }
 
     public List<PointOfInterestDTO> getPOIsByIds(List<Long> poiIdList) throws DartExploreException {
-        List<PointOfInterest> poiList = (!poiIdList.isEmpty()) ? StreamSupport.stream(pointOfInterestRepository.findAllById(poiIdList).spliterator(), false).collect(Collectors.toList())
+        List<PointOfInterest> poiList = (!poiIdList.isEmpty()) ? StreamSupport.stream(pointOfInterestRepository.findAllById(poiIdList).spliterator(), false).toList()
                 : new ArrayList<>();
 
-        if(poiIdList.size() != poiList.size()) // at least one invalid POI
+        if (poiIdList.size() != poiList.size()) // at least one invalid POI
             throw new DartExploreException("At least one POI in the list was invalid. Please correct and try again.");
 
         return poiList.stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
@@ -137,4 +137,13 @@ public class PointOfInterestService {
     public List<String> getAllTypes() {
         return pointOfInterestRepository.getAllTypes();
     }
+
+    public static boolean doPOIHaveAmenities(PointOfInterest poi, List<Long> amenityIds) {
+        if (amenityIds == null || amenityIds.isEmpty()) {
+            return true;  // If no amenities are specified, all POIs are allowed
+        } else {
+            return poi.getAmenities().stream().map(Amenity::getAmenityId).collect(Collectors.toSet()).containsAll(amenityIds);
+        }
+    }
+
 }
