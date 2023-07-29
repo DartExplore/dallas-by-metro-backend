@@ -6,6 +6,7 @@ import com.dallasbymetro.backend.entity.Amenity;
 import com.dallasbymetro.backend.entity.PointOfInterest;
 import com.dallasbymetro.backend.entity.Station;
 import com.dallasbymetro.backend.exception.DartExploreException;
+import com.dallasbymetro.backend.exception.ElementNotFoundException;
 import com.dallasbymetro.backend.repository.AmenityRepository;
 import com.dallasbymetro.backend.repository.PointOfInterestRepository;
 import com.dallasbymetro.backend.repository.StationRepository;
@@ -32,11 +33,11 @@ public class PointOfInterestService {
         this.amenityRepository = amenityRepository;
     }
 
-    public PointOfInterestDTO addPointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
+    public PointOfInterestDTO addPointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws ElementNotFoundException {
         Optional<Station> optionalStation = stationRepository.findByStationId(pointOfInterestDTO.getStationId());
 
         if (optionalStation.isEmpty()) {
-            throw new DartExploreException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
+            throw new ElementNotFoundException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
         }
 
         // getting amenities; if not every one is present we fail
@@ -44,7 +45,7 @@ public class PointOfInterestService {
                 .stream().map(AmenityDTO::getAmenityId).collect(Collectors.toList()));
 
         if (amenityList.size() != pointOfInterestDTO.getAmenities().size()) {
-            throw new DartExploreException("At least one invalid amenityId present. Check your input.");
+            throw new ElementNotFoundException("At least one invalid amenityId present. Check your input.");
         }
 
         // Convert DTO to Entity using prepareEntity method
@@ -55,18 +56,18 @@ public class PointOfInterestService {
         return PointOfInterestDTO.prepareDTO(savedPoi);
     }
 
-    public PointOfInterestDTO updatePointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws DartExploreException {
+    public PointOfInterestDTO updatePointOfInterest(PointOfInterestDTO pointOfInterestDTO) throws ElementNotFoundException {
         Optional<Station> optionalStation = stationRepository.findByStationId(pointOfInterestDTO.getStationId());
 
         if (optionalStation.isEmpty()) {
-            throw new DartExploreException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
+            throw new ElementNotFoundException("Station with id: " + pointOfInterestDTO.getStationId() + " does not exist");
         }
 
         // Check if the Point of Interest exists in the database
         Optional<PointOfInterest> optionalPoi = pointOfInterestRepository.findById(pointOfInterestDTO.getPoiId());
 
         if (optionalPoi.isEmpty()) {
-            throw new DartExploreException("Point of Interest with id: " + pointOfInterestDTO.getPoiId() + " does not exist");
+            throw new ElementNotFoundException("Point of Interest with id: " + pointOfInterestDTO.getPoiId() + " does not exist");
         }
 
         // Update the entity from DTO
@@ -99,7 +100,7 @@ public class PointOfInterestService {
                     .stream().map(AmenityDTO::getAmenityId).collect(Collectors.toList()));
 
             if (amenityList.size() != pointOfInterestDTO.getAmenities().size()) {
-                throw new DartExploreException("At least one invalid amenityId present. Check your input.");
+                throw new ElementNotFoundException("At least one invalid amenityId present. Check your input.");
             }
 
             poiEntity.setAmenities(amenityList);
@@ -113,23 +114,23 @@ public class PointOfInterestService {
     }
 
 
-    public void deletePointOfInterest(Long poiId) throws DartExploreException {
+    public void deletePointOfInterest(Long poiId) throws ElementNotFoundException {
         // Fetch the point of interest from the database
         Optional<PointOfInterest> optionalPoi = pointOfInterestRepository.findById(poiId);
 
         if (optionalPoi.isEmpty()) {
-            throw new DartExploreException("Point of Interest with id: " + poiId + " does not exist");
+            throw new ElementNotFoundException("Point of Interest with id: " + poiId + " does not exist");
         }
 
         pointOfInterestRepository.deleteById(poiId);
     }
 
-    public List<PointOfInterestDTO> getPOIsByIds(List<Long> poiIdList) throws DartExploreException {
+    public List<PointOfInterestDTO> getPOIsByIds(List<Long> poiIdList) throws ElementNotFoundException {
         List<PointOfInterest> poiList = (!poiIdList.isEmpty()) ? StreamSupport.stream(pointOfInterestRepository.findAllById(poiIdList).spliterator(), false).toList()
                 : new ArrayList<>();
 
         if (poiIdList.size() != poiList.size()) // at least one invalid POI
-            throw new DartExploreException("At least one POI in the list was invalid. Please correct and try again.");
+            throw new ElementNotFoundException("At least one POI in the list was invalid. Please correct and try again.");
 
         return poiList.stream().map(PointOfInterestDTO::prepareDTO).collect(Collectors.toList());
     }

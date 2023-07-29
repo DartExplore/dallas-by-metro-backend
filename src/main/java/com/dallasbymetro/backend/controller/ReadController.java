@@ -4,6 +4,7 @@ import com.dallasbymetro.backend.dto.PointOfInterestDTO;
 import com.dallasbymetro.backend.dto.StationDTO;
 import com.dallasbymetro.backend.entity.Amenity;
 import com.dallasbymetro.backend.exception.DartExploreException;
+import com.dallasbymetro.backend.exception.ElementNotFoundException;
 import com.dallasbymetro.backend.repository.AmenityRepository;
 import com.dallasbymetro.backend.service.AmenityService;
 import com.dallasbymetro.backend.service.PointOfInterestService;
@@ -42,7 +43,7 @@ public class ReadController {
     ResponseEntity<List<PointOfInterestDTO>> getPOIsById(
             @RequestParam("ID")
             @Parameter(example = "1,2,3") String poiIdsString)
-            throws DartExploreException {
+            throws DartExploreException, ElementNotFoundException {
         List<Long> poiIdList;
         try {
             poiIdList = (poiIdsString.isEmpty()) ? new ArrayList<>() :
@@ -56,7 +57,7 @@ public class ReadController {
     }
 
     @GetMapping(value = "/poi/amenity")
-    ResponseEntity<List<PointOfInterestDTO>> getPOIs(@RequestParam("amenityIdList") String amenitiesString) throws DartExploreException {
+    ResponseEntity<List<PointOfInterestDTO>> getPOIs(@RequestParam("amenityIdList") String amenitiesString) throws DartExploreException, ElementNotFoundException {
         // probably move this first bit to a utility class later
         List<Long> amenityIdList;
         try {
@@ -91,7 +92,7 @@ public class ReadController {
     ResponseEntity<List<StationDTO>> getStationsByLines(
             @RequestParam("line")
             @Parameter(example = "RED,BLUE,GREEN") String linesString)
-            throws DartExploreException {
+            throws ElementNotFoundException {
         String[] linesStrings = linesString.split(",");
         List<StationDTO> stations = stationService.getStationsByLines(Arrays.asList(linesStrings));
         return new ResponseEntity<List<StationDTO>>(stations, HttpStatus.OK);
@@ -115,7 +116,7 @@ public class ReadController {
             @RequestParam(value = "maxStationConnections") Integer maxStationConnections,
             @RequestParam(value = "amenityIds", required = false) String amenityIdsString,
             @RequestParam(value = "maxWalkTime", required = false) Integer maxWalkTime,
-            @RequestParam(value = "returnStationsWithNoPOIs", defaultValue = "false") Boolean returnEmpty) throws DartExploreException {
+            @RequestParam(value = "returnStationsWithNoPOIs", defaultValue = "false") Boolean returnEmpty) throws DartExploreException, ElementNotFoundException {
 
         // Validate input parameters
         if ((currentStation == null && maxStationConnections != null) || (currentStation != null && maxStationConnections == null)) {
