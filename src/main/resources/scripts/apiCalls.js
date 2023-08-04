@@ -29,8 +29,12 @@ const POIS = [
     },
     {
         poiId: 3,
-        name: "The Dallas World Aquarium", location: "The Dallas World Aquarium, 1801 N Griffin St, Dallas, TX 75202",
-        walkingDistance: 6, picUrl: "aquarium.png", type: "AQUARIUM", stationId: 15,
+        name: "The Dallas World Aquarium with a longer name",
+        location: "The Dallas World Aquarium, 1801 N Griffin St, Dallas, TX 75202",
+        walkingDistance: 6,
+        picUrl: "aquarium.png",
+        type: "AQUARIUM",
+        stationId: 50,
         amenities: ["INDOOR_SPACE"]
     },
     {

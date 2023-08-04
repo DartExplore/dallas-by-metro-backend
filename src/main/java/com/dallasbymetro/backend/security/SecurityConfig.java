@@ -1,6 +1,7 @@
 package com.dallasbymetro.backend.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -20,6 +21,9 @@ public abstract class SecurityConfig {
     @Autowired
     private Environment env;
 
+    @Value("${cors.allowedOrigins}")
+    private String[] allowedOrigins;
+
     protected void configure(HttpSecurity http) throws Exception {
         String apiKey = env.getProperty("API_KEY");
         http
@@ -36,7 +40,9 @@ public abstract class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("https://dallasbymetro.com");
+        for (String allowedOrigin : allowedOrigins) {
+            config.addAllowedOrigin(allowedOrigin);
+        }
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
