@@ -113,16 +113,11 @@ public class ReadController {
 
     @GetMapping(value = "/stations")
     public ResponseEntity<List<StationDTO>> getStationsByConnection(
-            @RequestParam(value = "currentStation") Long currentStation,
-            @RequestParam(value = "maxStationConnections") Integer maxStationConnections,
+            @RequestParam(value = "currentStation", required = false) Long currentStation,
+            @RequestParam(value = "maxStationConnections", required = false) Integer maxStationConnections,
             @RequestParam(value = "amenityIds", required = false) String amenityIdsString,
             @RequestParam(value = "maxWalkTime", required = false) Integer maxWalkTime,
             @RequestParam(value = "returnStationsWithNoPOIs", defaultValue = "false") Boolean returnEmpty) throws DartExploreException, ElementNotFoundException {
-
-        // Validate input parameters
-        if ((currentStation == null && maxStationConnections != null) || (currentStation != null && maxStationConnections == null)) {
-            throw new DartExploreException("Both currentStation and stationConnections must be provided together.");
-        }
 
         List<Long> amenityIdList = new ArrayList<>();
         if (amenityIdsString != null && !amenityIdsString.isEmpty()) {

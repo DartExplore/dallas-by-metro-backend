@@ -6,6 +6,7 @@ import com.dallasbymetro.backend.entity.Amenity;
 import com.dallasbymetro.backend.entity.PointOfInterest;
 import com.dallasbymetro.backend.entity.Station;
 import com.dallasbymetro.backend.entity.StationColor;
+import com.dallasbymetro.backend.exception.DartExploreException;
 import com.dallasbymetro.backend.exception.ElementNotFoundException;
 import com.dallasbymetro.backend.repository.AmenityRepository;
 import com.dallasbymetro.backend.repository.PointOfInterestRepository;
@@ -113,7 +114,24 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime, Boolean returnEmpty) throws ElementNotFoundException {
+    public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime, Boolean returnEmpty) throws ElementNotFoundException, DartExploreException {
+        if ((currentStation == null && stationConnections != null) || (currentStation != null && stationConnections == null)) {
+            throw new DartExploreException("Both currentStation and stationConnections must be provided together.");
+        }
+
+        if (currentStation == null) { // This implicitly means stationConnections is also null due to the above check
+            List<Station> allStations = (List<Station>) stationRepository.findAll();
+            Stream<StationDTO> stream = allStations.stream()
+                    .map(s -> prepareStationDTOWithFilteredPOIs(s, amenityIdList, maxWalkTime));
+
+            // Apply the filtering based on the returnEmpty flag
+            if (!returnEmpty) {
+                stream = stream.filter(s -> !s.getPointsOfInterest().isEmpty());
+            }
+
+            return stream.collect(Collectors.toList());
+        }
+
         Optional<Station> stationOptional = stationRepository.findByStationId(currentStation);
 
         if (stationOptional.isEmpty()) {
