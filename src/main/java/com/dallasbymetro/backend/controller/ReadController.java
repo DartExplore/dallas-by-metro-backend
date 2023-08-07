@@ -116,6 +116,7 @@ public class ReadController {
             @RequestParam(value = "currentStation", required = false) Long currentStation,
             @RequestParam(value = "maxStationConnections", required = false) Integer maxStationConnections,
             @RequestParam(value = "amenityIds", required = false) String amenityIdsString,
+            @RequestParam(value = "types", required = false) String typesString,
             @RequestParam(value = "maxWalkTime", required = false) Integer maxWalkTime,
             @RequestParam(value = "returnStationsWithNoPOIs", defaultValue = "false") Boolean returnEmpty) throws DartExploreException, ElementNotFoundException {
 
@@ -130,8 +131,12 @@ public class ReadController {
             }
         }
 
-        // Call the service with the new returnEmpty parameter
-        List<StationDTO> stations = stationService.getStationsByConnection(currentStation, maxStationConnections, amenityIdList, maxWalkTime, returnEmpty);
+        List<String> typesList = null;
+        if (typesString != null && !typesString.isEmpty()) {
+            typesList = Arrays.asList(typesString.split(","));
+        }
+
+        List<StationDTO> stations = stationService.getStationsByConnection(currentStation, maxStationConnections, amenityIdList, typesList, maxWalkTime, returnEmpty);
 
         return ResponseEntity.ok(stations);
     }
