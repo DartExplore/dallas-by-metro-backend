@@ -1,5 +1,6 @@
 package com.dallasbymetro.backend.controller;
 
+import com.dallasbymetro.backend.dto.AmenityDTO;
 import com.dallasbymetro.backend.dto.PointOfInterestDTO;
 import com.dallasbymetro.backend.dto.StationDTO;
 import com.dallasbymetro.backend.entity.Amenity;
@@ -99,8 +100,8 @@ public class ReadController {
     }
 
     @GetMapping(value = "/amenities")
-    public ResponseEntity<List<Amenity>> getAllAmenities() {
-        List<Amenity> amenities = amenityService.getAllAmenities();
+    public ResponseEntity<List<AmenityDTO>> getAllAmenities() {
+        List<AmenityDTO> amenities = amenityService.getAllAmenities();
         return new ResponseEntity<>(amenities, HttpStatus.OK);
     }
 
