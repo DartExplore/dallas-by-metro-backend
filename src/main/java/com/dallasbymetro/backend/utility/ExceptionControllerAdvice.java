@@ -1,6 +1,7 @@
 package com.dallasbymetro.backend.utility;
 
 import com.dallasbymetro.backend.exception.DartExploreException;
+import com.dallasbymetro.backend.exception.ElementNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.logging.Log;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -35,7 +37,8 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorInfo> generalExceptionHandler(Exception exception) {
-        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong, please check the log.", exception);
+        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong, please check the log.",
+                exception);
     }
 
     @ExceptionHandler(DartExploreException.class)
@@ -61,6 +64,16 @@ public class ExceptionControllerAdvice {
         String message = String.join(", ", errorMessages);
         return createErrorResponse(HttpStatus.BAD_REQUEST, message,
                 exception);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorInfo> missingRequestParameterHandler(MissingServletRequestParameterException exception) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), exception);
+    }
+
+    @ExceptionHandler(ElementNotFoundException.class)
+    public ResponseEntity<ErrorInfo> elementNotFoundHandler(ElementNotFoundException exception) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage(), exception);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

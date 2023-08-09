@@ -7,6 +7,7 @@ import com.dallasbymetro.backend.entity.PointOfInterest;
 import com.dallasbymetro.backend.entity.Station;
 import com.dallasbymetro.backend.entity.StationColor;
 import com.dallasbymetro.backend.exception.DartExploreException;
+import com.dallasbymetro.backend.exception.ElementNotFoundException;
 import com.dallasbymetro.backend.repository.AmenityRepository;
 import com.dallasbymetro.backend.repository.PointOfInterestRepository;
 import com.dallasbymetro.backend.repository.StationRepository;
@@ -32,12 +33,12 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<PointOfInterestDTO> getPOIs(List<Long> amenityIdList) throws DartExploreException {
+    public List<PointOfInterestDTO> getPOIs(List<Long> amenityIdList) throws ElementNotFoundException {
         int amenityCount = amenityIdList.size();
         List<Amenity> amenities = (amenityCount > 0) ? amenityRepository.findAllAmenitiesById(amenityIdList) : new ArrayList<>();
 
         if (amenities.size() != amenityCount) // at least one invalid amenity
-            throw new DartExploreException("At least one amenity in the list was invalid. Please correct and try again.");
+            throw new ElementNotFoundException("At least one amenity in the list was invalid. Please correct and try again.");
 
         return ((amenityCount > 0) ? pointOfInterestRepository.getPOIsByAmenities(amenities, amenityCount).stream() : // gets POI by amenities
                 StreamSupport.stream(pointOfInterestRepository.findAll().spliterator(), false)) // gets all POIs if no amenities
@@ -46,7 +47,7 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<StationDTO> getStationsByLines(List<String> lines) throws DartExploreException {
+    public List<StationDTO> getStationsByLines(List<String> lines) throws ElementNotFoundException {
         List<StationColor> colors = new ArrayList<>();
         String invalidColorString = null;
 
@@ -61,7 +62,7 @@ public class StationServiceImpl implements StationService {
         }
 
         if (invalidColorString != null) {
-            throw new DartExploreException("'" + invalidColorString + "' is not a valid StationColor.");
+            throw new ElementNotFoundException("'" + invalidColorString + "' is not a valid StationColor.");
         }
 
         return stationRepository.findStationsByColors(colors)
@@ -99,25 +100,42 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<PointOfInterestDTO> getPOIsById(List<Long> poiIds) throws DartExploreException {
+    public List<PointOfInterestDTO> getPOIsById(List<Long> poiIds) throws ElementNotFoundException {
         List<PointOfInterestDTO> poiList = new ArrayList<>();
         for (Long id : poiIds) {
             Optional<PointOfInterest> optionalPoi = pointOfInterestRepository.findById(id);
             if (optionalPoi.isPresent()) {
                 poiList.add(PointOfInterestDTO.prepareDTO(optionalPoi.get()));
             } else {
-                throw new DartExploreException("Point of Interest with id: " + id + " does not exist");
+                throw new ElementNotFoundException("Point of Interest with id: " + id + " does not exist");
             }
         }
         return poiList;
     }
 
     @Override
-    public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, Integer maxWalkTime, Boolean returnEmpty) throws DartExploreException {
+    public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, List<String> typesList, Integer maxWalkTime, Boolean returnEmpty) throws ElementNotFoundException, DartExploreException {
+        if ((currentStation == null && stationConnections != null) || (currentStation != null && stationConnections == null)) {
+            throw new DartExploreException("Both currentStation and stationConnections must be provided together.");
+        }
+
+        if (currentStation == null) { // This implicitly means stationConnections is also null due to the above check
+            List<Station> allStations = (List<Station>) stationRepository.findAll();
+            Stream<StationDTO> stream = allStations.stream()
+                    .map(s -> prepareStationDTOWithFilteredPOIs(s, amenityIdList, typesList, maxWalkTime));
+
+            // Apply the filtering based on the returnEmpty flag
+            if (!returnEmpty) {
+                stream = stream.filter(s -> !s.getPointsOfInterest().isEmpty());
+            }
+
+            return stream.collect(Collectors.toList());
+        }
+
         Optional<Station> stationOptional = stationRepository.findByStationId(currentStation);
 
         if (stationOptional.isEmpty()) {
-            throw new DartExploreException("Current Station with id: " + currentStation + " does not exist");
+            throw new ElementNotFoundException("Current Station with id: " + currentStation + " does not exist");
         }
 
         Station station = stationOptional.get();
@@ -127,7 +145,7 @@ public class StationServiceImpl implements StationService {
 
         // Transform stations to StationDTOs, check that POI have required amenities, and are within walk time
         Stream<StationDTO> stream = stationsWithinConnection.stream()
-                .map(s -> prepareStationDTOWithFilteredPOIs(s, amenityIdList, maxWalkTime));
+                .map(s -> prepareStationDTOWithFilteredPOIs(s, amenityIdList, typesList, maxWalkTime));
 
         // Apply the filtering based on the returnEmpty flag
         if (!returnEmpty) {
@@ -137,15 +155,15 @@ public class StationServiceImpl implements StationService {
         return stream.collect(Collectors.toList());
     }
 
-    private StationDTO prepareStationDTOWithFilteredPOIs(Station station, List<Long> amenityIdList, Integer maxWalkTime) {
+    private StationDTO prepareStationDTOWithFilteredPOIs(Station station, List<Long> amenityIdList, List<String> typesList, Integer maxWalkTime) {
         List<PointOfInterest> filteredPOIs;
 
-        // If amenityIdList is empty and maxWalkTime is null, don't filter the POIs
-        if ((amenityIdList == null || amenityIdList.isEmpty()) && maxWalkTime == null) {
+        if ((amenityIdList == null || amenityIdList.isEmpty()) && (typesList == null || typesList.isEmpty()) && maxWalkTime == null) {
             filteredPOIs = station.getPointOfInterest();
         } else {
             filteredPOIs = station.getPointOfInterest().stream()
                     .filter(poi -> PointOfInterestService.doPOIHaveAmenities(poi, amenityIdList))
+                    .filter(poi -> typesList == null || typesList.isEmpty() || typesList.contains(poi.getType()))
                     .filter(poi -> maxWalkTime == null || poi.getWalkingDistance() != null && poi.getWalkingDistance() <= maxWalkTime)
                     .collect(Collectors.toList());
         }
