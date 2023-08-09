@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,7 +22,10 @@ public class ExceptionControllerAdvice {
     private static final Log logger = LogFactory.getLog(ExceptionControllerAdvice.class);
 
     private ResponseEntity<ErrorInfo> createErrorResponse(HttpStatus status, String message, Exception exception) {
-        logger.error(message, exception);
+        if(status.is5xxServerError())
+            logger.error(message, exception);
+        else
+            logger.error(message);
         ErrorInfo errorInfo = new ErrorInfo();
         errorInfo.setErrorMessage(message);
         errorInfo.setErrorCode(status.value());
@@ -57,5 +61,10 @@ public class ExceptionControllerAdvice {
         String message = String.join(", ", errorMessages);
         return createErrorResponse(HttpStatus.BAD_REQUEST, message,
                 exception);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorInfo> notReadableHandler(HttpMessageNotReadableException exception) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), exception);
     }
 }
