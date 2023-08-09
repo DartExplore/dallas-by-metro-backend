@@ -1,0 +1,25 @@
+{
+  "name": "upload_script",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Tool to upload and update POI data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DartExplore/dallas-by-metro-backend.git"
+  },
+  "author": "Tyler Russell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DartExplore/dallas-by-metro-backend/issues"
+  },
+  "homepage": "https://github.com/DartExplore/dallas-by-metro-backend#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chalk": "^5.3.0",
+    "csv-parser": "^3.0.0"
+  }
+}

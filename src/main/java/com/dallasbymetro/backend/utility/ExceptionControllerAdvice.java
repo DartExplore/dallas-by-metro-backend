@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,9 +23,8 @@ import java.util.stream.Collectors;
 public class ExceptionControllerAdvice {
     private static final Log logger = LogFactory.getLog(ExceptionControllerAdvice.class);
 
-    private ResponseEntity<ErrorInfo> createErrorResponse(HttpStatus status, String message, Exception exception,
-                                                          boolean logException) {
-        if(logException)
+    private ResponseEntity<ErrorInfo> createErrorResponse(HttpStatus status, String message, Exception exception) {
+        if(status.is5xxServerError())
             logger.error(message, exception);
         else
             logger.error(message);
@@ -38,12 +38,12 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorInfo> generalExceptionHandler(Exception exception) {
         return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong, please check the log.",
-                exception, true);
+                exception);
     }
 
     @ExceptionHandler(DartExploreException.class)
     public ResponseEntity<ErrorInfo> dartExploreExceptionHandler(DartExploreException exception) {
-        return createErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), exception, false);
+        return createErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), exception);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -53,7 +53,7 @@ public class ExceptionControllerAdvice {
                 .collect(Collectors.toList());
         String message = String.join(", ", errorMessages);
         return createErrorResponse(HttpStatus.BAD_REQUEST, message,
-                new Exception(String.join(", ", errorMessages)), false);
+                new Exception(String.join(", ", errorMessages)));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -63,16 +63,21 @@ public class ExceptionControllerAdvice {
                 .collect(Collectors.toList());
         String message = String.join(", ", errorMessages);
         return createErrorResponse(HttpStatus.BAD_REQUEST, message,
-                exception, false);
+                exception);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorInfo> missingRequestParameterHandler(MissingServletRequestParameterException exception) {
-        return createErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), exception, false);
+        return createErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), exception);
     }
 
     @ExceptionHandler(ElementNotFoundException.class)
     public ResponseEntity<ErrorInfo> elementNotFoundHandler(ElementNotFoundException exception) {
-        return createErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage(), exception, false);
+        return createErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage(), exception);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorInfo> notReadableHandler(HttpMessageNotReadableException exception) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), exception);
     }
 }
