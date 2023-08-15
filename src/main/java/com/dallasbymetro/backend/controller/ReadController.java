@@ -115,6 +115,7 @@ public class ReadController {
     public ResponseEntity<List<StationDTO>> getStationsByConnection(
             @RequestParam(value = "currentStation", required = false) Long currentStation,
             @RequestParam(value = "maxStationConnections", required = false) Integer maxStationConnections,
+            @RequestParam(value = "maxTransfers", required = false) Integer maxTransfers,
             @RequestParam(value = "amenityIds", required = false) String amenityIdsString,
             @RequestParam(value = "types", required = false) String typesString,
             @RequestParam(value = "maxWalkTime", required = false) Integer maxWalkTime,
@@ -136,7 +137,7 @@ public class ReadController {
             typesList = Arrays.asList(typesString.split(","));
         }
 
-        List<StationDTO> stations = stationService.getStationsByConnection(currentStation, maxStationConnections, amenityIdList, typesList, maxWalkTime, returnEmpty);
+        List<StationDTO> stations = stationService.getStationsByConnection(currentStation, maxStationConnections, maxTransfers, amenityIdList, typesList, maxWalkTime, returnEmpty);
 
         return ResponseEntity.ok(stations);
     }
