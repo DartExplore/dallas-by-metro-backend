@@ -11,7 +11,7 @@ import com.dallasbymetro.backend.exception.ElementNotFoundException;
 import com.dallasbymetro.backend.repository.AmenityRepository;
 import com.dallasbymetro.backend.repository.PointOfInterestRepository;
 import com.dallasbymetro.backend.repository.StationRepository;
-import com.dallasbymetro.backend.utility.Pair;
+import com.dallasbymetro.backend.utility.StationNode;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -114,7 +114,7 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, List<String> typesList, Integer maxWalkTime, Boolean returnEmpty) throws ElementNotFoundException, DartExploreException {
+    public List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, Integer maxTransfers, List<Long> amenityIdList, List<String> typesList, Integer maxWalkTime, Boolean returnEmpty) throws ElementNotFoundException, DartExploreException {
         if ((currentStation == null && stationConnections != null) || (currentStation != null && stationConnections == null)) {
             throw new DartExploreException("Both currentStation and stationConnections must be provided together.");
         }
@@ -140,8 +140,8 @@ public class StationServiceImpl implements StationService {
 
         Station station = stationOptional.get();
 
-        // Perform BFS traversal in the service layer
-        List<Station> stationsWithinConnection = findStationsWithinConnection(station, stationConnections);
+        // Perform BFS traversal
+        List<Station> stationsWithinConnection = findStationsWithinConnection(station, stationConnections, maxTransfers);
 
         // Transform stations to StationDTOs, check that POI have required amenities, and are within walk time
         Stream<StationDTO> stream = stationsWithinConnection.stream()
@@ -172,47 +172,51 @@ public class StationServiceImpl implements StationService {
         return StationDTO.prepareStationDTO(station);
     }
 
-    private List<Station> findStationsWithinConnection(Station currentStation, Integer stationConnections) {
-        Queue<Pair<Station, Integer>> queue = new LinkedList<>();
-        Map<Station, Integer> visitedMap = new HashMap<>();
+    private List<Station> findStationsWithinConnection(Station currentStation, Integer stationConnections, Integer maxTransfers) {
+        Queue<StationNode> queue = new LinkedList<>();
+        Set<Station> visitedSet = new HashSet<>();
+        Set<Station> result = new HashSet<>();
+        if (maxTransfers == null) {
+            maxTransfers = 0;
+        }
 
-        // Create a comparator to sort the pairs by their level and station name
-        Comparator<Pair<Station, Integer>> pairComparator = Comparator
-                .<Pair<Station, Integer>>comparingInt(Pair::getSecond)
-                .thenComparing(pair -> pair.getFirst().getName());
+        // Enqueue current station with each of its colors
+        for (StationColor color : currentStation.getColor()) {
+            StationNode firstNode = new StationNode(currentStation, 0, 0, Set.of(color));
+            queue.add(firstNode);
+        }
 
-
-        // Use a TreeSet to keep the pairs sorted
-        Set<Pair<Station, Integer>> sortedVisitedPairs = new TreeSet<>(pairComparator);
-
-        Pair<Station, Integer> firstPair = new Pair<>(currentStation, 0);
-        queue.add(firstPair);
-        visitedMap.put(currentStation, 0);
-        sortedVisitedPairs.add(firstPair);
+        visitedSet.add(currentStation);
 
         while (!queue.isEmpty()) {
-            Pair<Station, Integer> stationPair = queue.poll();
-            Station station = stationPair.first;
-            Integer level = stationPair.second;
+            StationNode currentNode = queue.poll();
+            Station station = currentNode.station;
+            int currentLevel = currentNode.level;
+            int transferCount = currentNode.transferCount;
+            StationColor currentColor = currentNode.colors.iterator().next();
 
-            if (level < stationConnections) {
+            if (currentLevel < stationConnections) {
                 List<Station> connectedStations = stationRepository.findConnectedStations(station.getStationId());
 
                 for (Station connectedStation : connectedStations) {
-                    if (!visitedMap.containsKey(connectedStation)) {
-                        Pair<Station, Integer> nextPair = new Pair<>(connectedStation, level + 1);
-                        visitedMap.put(connectedStation, level + 1);
-                        queue.add(nextPair);
-                        sortedVisitedPairs.add(nextPair);
+                    if (!visitedSet.contains(connectedStation)) {
+                        boolean requiresTransfer = !connectedStation.getColor().contains(currentColor);
+                        int newTransferCount = requiresTransfer ? transferCount + 1 : transferCount;
+
+                        if (newTransferCount <= maxTransfers) {
+                            StationColor nextColor = requiresTransfer ? connectedStation.getColor().iterator().next() : currentColor;  // Pick the next line color
+                            StationNode nextNode = new StationNode(connectedStation, currentLevel + 1, newTransferCount, Set.of(nextColor));
+
+
+                            visitedSet.add(connectedStation);
+                            queue.add(nextNode);
+                            result.add(connectedStation);
+                        }
                     }
                 }
             }
         }
 
-        // Transform the sorted set of pairs to a list of stations
-
-        return sortedVisitedPairs.stream()
-                .map(pair -> pair.first)
-                .collect(Collectors.toList());
+        return new ArrayList<>(result);
     }
 }

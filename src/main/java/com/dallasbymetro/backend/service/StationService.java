@@ -25,5 +25,5 @@ public interface StationService {
 
     List<PointOfInterestDTO> getPOIsById(List<Long> poiIds) throws DartExploreException, ElementNotFoundException;
 
-    List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, List<Long> amenityIdList, List<String> typesList, Integer maxWalkTime, Boolean returnEmpty) throws DartExploreException, ElementNotFoundException;
+    List<StationDTO> getStationsByConnection(Long currentStation, Integer stationConnections, Integer maxTransfers, List<Long> amenityIdList, List<String> typesList, Integer maxWalkTime, Boolean returnEmpty) throws DartExploreException, ElementNotFoundException;
 }
