@@ -176,9 +176,13 @@ public class StationServiceImpl implements StationService {
         Queue<StationNode> queue = new LinkedList<>();
         Set<Station> visitedSet = new HashSet<>();
         Set<Station> result = new HashSet<>();
+
         if (maxTransfers == null) {
             maxTransfers = 0;
         }
+
+        // Add the currentStation to the result set
+        result.add(currentStation);
 
         // Enqueue current station with each of its colors
         for (StationColor color : currentStation.getColor()) {
@@ -206,7 +210,6 @@ public class StationServiceImpl implements StationService {
                         if (newTransferCount <= maxTransfers) {
                             StationColor nextColor = requiresTransfer ? connectedStation.getColor().iterator().next() : currentColor;  // Pick the next line color
                             StationNode nextNode = new StationNode(connectedStation, currentLevel + 1, newTransferCount, Set.of(nextColor));
-
 
                             visitedSet.add(connectedStation);
                             queue.add(nextNode);
