@@ -11,7 +11,7 @@ if(env != 'local' && env != 'prod'){
     process.exit(1);
 }
 
-const baseUrl = (env == 'local') ? 'http://localhost:8080/api' : 'https://dallasbymetro.com';
+const baseUrl = (env == 'local') ? 'http://localhost:8080/api' : 'https://api.dallasbymetro.com/api';
 
 const apiKey = process.env.X_API_KEY; // Read the API key from the environment variable
 
@@ -25,36 +25,42 @@ async function makeApiCall(rowData) {
     try {
         // data for request
         const poi = new POI(rowData.poiId, rowData.name, rowData.location,
-            rowData.walkingDistance, rowData.picUrl, rowData.type, rowData.amenities.split('_').map(
+            rowData.walkingDistance, rowData.picUrl, rowData.type, 
+            (rowData.amenities !== "") ? rowData.amenities.split('-').map(
                 (amenityId) => new Amenity(amenityId, "") // process amenities
-            ),
+            ) : [],
             rowData.stationId, rowData.stationName);
     
         // checking if poi exists
-        const poiResponse = await axios.get(baseUrl+'/public/poi', {
-            params: {
-                ID: poi.poiId
+        try {
+            const poiResponse = await axios.get(baseUrl+'/public/poi', {
+                        params: {
+                            ID: poi.poiId
+                        }
+                    });
+            
+            if(poiResponse.status === 200) { // poi exists; should update
+                console.log('POI with poiId='+poi.poiId+' exists. Updating.');
+                // putting data
+                const putResponse = await axios.put(baseUrl+'/private/poi', poi, {
+                    headers: {
+                        'x-api-key': apiKey
+                    }});
+                if(putResponse.status === 200)
+                    console.log(chalk.green('POI with poiId='+poi.poiId+' updated successfully.'));
             }
-        });
-
-        if(poiResponse.status === 200) { // poi exists; should update
-            console.log('POI with poiId='+poi.poiId+' exists. Updating.');
-            // putting data
-            const putResponse = await axios.put(baseUrl+'/private/poi', poi, {
-                headers: {
-                    'x-api-key': apiKey
-                }});
-            if(putResponse.status === 200)
-                console.log(chalk.green('POI with poiId='+poi.poiId+' updated successfully.'));
-        } else if(poiResponse.status < 500) { // poi does not exist; should create
-            console.log('POI with poiId='+poi.poiId+' does not exist. Creating.');
-            // posting data
-            const postResponse = await axios.post(baseUrl+'/private/poi', poi, {
-                headers: {
-                    'x-api-key': apiKey
-                }});
-            if(postResponse.status === 200)
-                console.log(chalk.green('POI with poiId='+poi.poiId+' created successfully.'));
+        } catch(error) {
+            if(error.response.status < 500) { // poi does not exist; should create
+                console.log('POI with poiId='+poi.poiId+' does not exist. Creating.');
+                // posting data
+                const postResponse = await axios.post(baseUrl+'/private/poi', poi, {
+                    headers: {
+                        'x-api-key': apiKey
+                    }});
+                if(postResponse.status === 200) 
+                    console.log(chalk.green('POI with poiId='+postResponse.data.poiId+' '+postResponse.data.name+
+                    ' created successfully. Please update this in the spreadsheet.'));
+            }
         }
     } catch(error) {
         console.log(chalk.red(error.message));
