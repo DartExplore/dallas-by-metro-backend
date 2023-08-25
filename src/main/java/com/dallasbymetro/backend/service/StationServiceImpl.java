@@ -141,12 +141,11 @@ public class StationServiceImpl implements StationService {
         Station station = stationOptional.get();
 
         // Perform BFS traversal
-        List<StationNode> stationNodesWithinConnection = findStationsWithinConnection(station, stationConnections, maxTransfers);
-        stationNodesWithinConnection.sort(Comparator.comparingInt(node -> node.level));
+        List<Station> stationsWithinConnection = findStationsWithinConnection(station, stationConnections, maxTransfers);
 
         // Transform stations to StationDTOs, check that POI have required amenities, and are within walk time
-        Stream<StationDTO> stream = stationNodesWithinConnection.stream()
-                .map(node -> prepareStationDTOWithFilteredPOIs(node.station, amenityIdList, typesList, maxWalkTime));
+        Stream<StationDTO> stream = stationsWithinConnection.stream()
+                .map(s -> prepareStationDTOWithFilteredPOIs(s, amenityIdList, typesList, maxWalkTime));
 
         // Apply the filtering based on the returnEmpty flag
         if (!returnEmpty) {
@@ -173,15 +172,17 @@ public class StationServiceImpl implements StationService {
         return StationDTO.prepareStationDTO(station);
     }
 
-    private List<StationNode> findStationsWithinConnection(Station currentStation, Integer stationConnections, Integer maxTransfers) {
+    private List<Station> findStationsWithinConnection(Station currentStation, Integer stationConnections, Integer maxTransfers) {
         Queue<StationNode> queue = new LinkedList<>();
         Set<Station> visitedSet = new HashSet<>();
-        List<StationNode> resultList = new ArrayList<>();
+        Set<Station> result = new HashSet<>();
 
         if (maxTransfers == null) {
             maxTransfers = 0;
         }
 
+        // Add the currentStation to the result set
+        result.add(currentStation);
 
         // Enqueue current station with each of its colors
         for (StationColor color : currentStation.getColor()) {
@@ -207,18 +208,18 @@ public class StationServiceImpl implements StationService {
                         int newTransferCount = requiresTransfer ? transferCount + 1 : transferCount;
 
                         if (newTransferCount <= maxTransfers) {
-                            StationColor nextColor = requiresTransfer ? connectedStation.getColor().iterator().next() : currentColor;
+                            StationColor nextColor = requiresTransfer ? connectedStation.getColor().iterator().next() : currentColor;  // Pick the next line color
                             StationNode nextNode = new StationNode(connectedStation, currentLevel + 1, newTransferCount, Set.of(nextColor));
 
                             visitedSet.add(connectedStation);
                             queue.add(nextNode);
-                            resultList.add(nextNode);
+                            result.add(connectedStation);
                         }
                     }
                 }
             }
         }
 
-        return resultList;
+        return new ArrayList<>(result);
     }
 }
